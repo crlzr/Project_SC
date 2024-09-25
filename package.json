@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "cors": "^2.8.5",
-    "netstat": "^0.0.2"
+    "netstat": "^0.0.2",
+    "stripe": "^16.12.0"
   }
 }

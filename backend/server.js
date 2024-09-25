@@ -6,10 +6,10 @@ const cloudinary = require('cloudinary').v2;
 const { auth } = require('express-oauth2-jwt-bearer');
 const Stripe = require('stripe');
 
+const stripe = require('stripe')('sk_test_wsFx86XDJWwmE4dMskBgJYrt');
+
 const app = express();
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-app.use(express.json());
-const PORT = process.env.PORT || 5004;
+const PORT = process.env.PORT || 5003;
 
 // Define allowed origins
 // const allowedOrigins = [
@@ -39,6 +39,10 @@ app.use((err, req, res, next) => {
   next();
 });
 
+
+app.use(express.static('public'));
+
+const YOUR_DOMAIN = 'http://localhost:5003';
 
 // JWT check middleware
 const jwtCheck = auth({
@@ -300,6 +304,23 @@ app.get('/:category_name/:itemId', async (req, res) => {
   }
 });
 
+// STRIPE PAYMENT
+app.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        price: '{{PRICE_ID}}',
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${YOUR_DOMAIN}?success=true`,
+    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+  });
+
+  res.redirect(303, session.url);
+});
 
 // Start server
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
