@@ -7,7 +7,7 @@ const TalkJS = ({ renterId, authToken }) => {
         const response = await fetch(`http://localhost:5005/chat/${renterId}`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`, // Include your JWT token here
+            Authorization: `Bearer ${authToken}`, // Include your JWT token here
           },
         });
 
