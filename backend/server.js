@@ -189,22 +189,40 @@ app.get('/profile', jwtCheck, async (req, res) => {
   // console.log(req.auth);
   const userId = req.auth.payload.sub; // Get user ID from Auth0 token
 
-
   // Check if user profile exists in memory
   if (userProfiles.has(userId)) {
     return res.status(200).json(userProfiles.get(userId)); // Return user profile
   }
 
-  // If profile does not exist, create one using Auth0 user info
-  const profile = {
-    name: req.auth.payload.name,
-    email: req.auth.payload.email,
-    picture: req.auth.payload.picture,
-    // Add other Auth0 user properties as needed
-  };
+  try {
+    // Fetch user info from Auth0
+    const token = req.headers.authorization.split(" ")[1]; // Extract token from the Authorization header
+    const userInfoResponse = await fetch('https://dev-2gae6bj1d7f1vnh2.us.auth0.com/userinfo', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  userProfiles.set(userId, profile); // Store profile in memory
-  res.status(200).json(profile);
+    if (!userInfoResponse.ok) {
+      throw new Error('Failed to fetch user info');
+    }
+
+    const userInfo = await userInfoResponse.json();
+
+    // Create profile using Auth0 user info
+    const profile = {
+      name: userInfo.name || "No name provided", // Check if name exists
+      email: userInfo.email || "No email provided", // Check if email exists
+      picture: userInfo.picture || "", // Check if picture exists
+      // Add other Auth0 user properties as needed
+    };
+
+    userProfiles.set(userId, profile); // Store profile in memory
+    return res.status(200).json(profile);
+  } catch (error) {
+    console.error('Error getting user profile:', error);
+    return res.status(500).send('Server error');
+  }
 });
 
 // Example endpoint to update user profile (optional)
