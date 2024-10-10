@@ -17,7 +17,7 @@ const Categories = () => {
   const fetchCategories = async () => {
     setLoading(true); // Set loading to true before fetching data
     try {
-      const response = await axios.get('http://localhost:5005/'); // Adjust the endpoint accordingly
+      const response = await axios.get('http://localhost:5006/'); // Adjust the endpoint accordingly
       setCategories(response.data); // Set the categories data
     } catch (error) {
       console.error('Error fetching categories:', error);
