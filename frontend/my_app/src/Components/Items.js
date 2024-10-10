@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 import Card from '@mui/material/Card';
@@ -19,11 +19,15 @@ import Modal from '@mui/material/Modal'; // Import Modal
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
 
 const ItemsListing = () => {
+  const navigate = useNavigate();
   const { category_name, itemId } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCalendar, setShowCalendar] = useState(false);
   const [confirmedDates, setConfirmedDates] = useState(null);
+  const handleRenterChatBox = () => {
+    navigate('/chat/${renterId}');
+  };
 
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -224,7 +228,9 @@ const ItemsListing = () => {
                   <StarIcon className="star-icon" alt="star-icon" />
                 </div>
               </div>
-              <ChatIcon className="chat-icon" alt="chat" />
+              <button onClick={handleRenterChatBox} className="chat-renter-button">
+                <ChatIcon className="chat-icon" alt="chat" />
+              </button>
             </div>
           </div>
           {/* Map container */}

@@ -239,18 +239,39 @@ app.put('/profile', jwtCheck, (req, res) => {
   res.status(404).json({ error: 'Profile not found' });
 });
 
-//TALK JS
-// Endpoint to fetch current user and renter details for chat
+// TALK JS
+// Endpoint to fetch current user and renter details for chat - from items listing page
 app.get('/chat/:renterId', jwtCheck, async (req, res) => {
   const { renterId } = req.params;
   const currentUserId = req.auth.payload.sub; // Get current user ID from Auth0 token
+
+  // Check if user profile exists in memory
+  if (userProfiles.has(currentUserId)) {
+    return res.status(200).json(userProfiles.get(currentUserId)); // Return user profile
+  }
+
   try {
+    // Fetch user info from Auth0
+    const token = req.headers.authorization.split(" ")[1]; // Extract token from the Authorization header
+    const userInfoResponse = await fetch('https://dev-2gae6bj1d7f1vnh2.us.auth0.com/userinfo', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // Check if the user info request was successful
+    if (!userInfoResponse.ok) {
+      console.error('Failed to fetch user info:', await userInfoResponse.text());
+      return res.status(500).json({ error: 'Failed to fetch user info' });
+    }
+
+    const userInfo = await userInfoResponse.json();
+
     // Get current user details from Auth0
     const currentUser = {
       id: currentUserId, // Use the Auth0 user ID
-      name: req.auth.payload.name || "No name provided", // Use name from Auth0 payload
-      email: req.auth.payload.email || "No email provided", // Use email from Auth0 payload
-      picture: req.auth.payload.picture || "", // Use picture from Auth0 payload
+      name: userInfo.name || "No name provided", // Use name from Auth0 payload
+      email: userInfo.email || "No email provided", // Use email from Auth0 payload
     };
 
     // Fetch renter details from the database using renterId
@@ -260,10 +281,13 @@ app.get('/chat/:renterId', jwtCheck, async (req, res) => {
       WHERE "Renter_id" = $1
     `;
     const renterResult = await pool.query(renterQuery, [renterId]);
+    
+    // Check if renter exists
     if (renterResult.rows.length === 0) {
       return res.status(404).json({ error: 'Renter not found' });
     }
-    
+
+    // Create renter user object
     const renterUser = {
       id: renterResult.rows[0].Renter_id, // Renter's ID
       name: renterResult.rows[0].Renter_name, // Renter's name
@@ -278,7 +302,6 @@ app.get('/chat/:renterId', jwtCheck, async (req, res) => {
         id: currentUser.id,
         name: currentUser.name,
         email: currentUser.email,
-        picture: currentUser.picture,
       },
     });
 
@@ -294,6 +317,7 @@ app.get('/chat/:renterId', jwtCheck, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch chat users' });
   }
 });
+
 
 
 // GET SPECIFIC CATEGORY

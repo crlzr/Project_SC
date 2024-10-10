@@ -4,10 +4,10 @@ const TalkJS = ({ renterId, authToken }) => {
   useEffect(() => {
     const fetchChatDetails = async () => {
       try {
-        const response = await fetch(`/chat/${renterId}`, {
+        const response = await fetch(`http://localhost:5005/chat/${renterId}`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${authToken}`, // Include your JWT token here
+            Authorization: `Bearer ${token}`, // Include your JWT token here
           },
         });
 

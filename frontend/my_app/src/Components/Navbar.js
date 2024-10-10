@@ -21,7 +21,7 @@ const Navbar = ({ onAccountClick }) => {
   };
 
   const handleChatBox = () => {
-    navigate('/chat/:renterId');
+    navigate('/chat/${renterId}');
   };
 
   return (

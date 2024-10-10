@@ -37,7 +37,7 @@ body {
 .navbar-center .nav-links li img {
   margin-bottom: 0.5rem;
 }
-.navbar-center .nav-links li .account-button, .navbar-center .nav-links li .explore-button {
+.navbar-center .nav-links li .account-button, .navbar-center .nav-links li .explore-button, .navbar-center .nav-links li .chat-button {
   background: none;
   border: none;
   color: #757575;
