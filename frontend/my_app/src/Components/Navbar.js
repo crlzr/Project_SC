@@ -10,15 +10,19 @@ import { useNavigate } from 'react-router-dom';
 const Navbar = ({ onAccountClick }) => {
   const navigate = useNavigate();
 
-  // Navigate to nearby items
-const handleFetchNearbyItems = () => {
-  navigate('/items/nearby');
-};
+    // Navigate to nearby items
+  const handleFetchNearbyItems = () => {
+    navigate('/items/nearby');
+  };
 
-// Navigate to profile page
-const handleProfilePage = () => {
-  navigate('/profile');
-};
+  // Navigate to profile page
+  const handleProfilePage = () => {
+    navigate('/profile');
+  };
+
+  const handleChatBox = () => {
+    navigate('/chat/:renterId');
+  };
 
   return (
     <nav className="navbar">
@@ -36,7 +40,9 @@ const handleProfilePage = () => {
           </li>
           <li>
             <ChatIcon className="nav-icon" alt="chat" />
-            <a href="/chat">Chat</a>
+            <button onClick={handleChatBox} className="chat-button">
+              Chat
+            </button>
           </li>
           <li>
             <AccountIcon className="nav-icon" alt="account" />

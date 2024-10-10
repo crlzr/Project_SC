@@ -213,7 +213,6 @@ app.get('/profile', jwtCheck, async (req, res) => {
     const profile = {
       name: userInfo.name || "No name provided", // Check if name exists
       email: userInfo.email || "No email provided", // Check if email exists
-      picture: userInfo.picture || "", // Check if picture exists
       // Add other Auth0 user properties as needed
     };
 
@@ -240,6 +239,61 @@ app.put('/profile', jwtCheck, (req, res) => {
   res.status(404).json({ error: 'Profile not found' });
 });
 
+//TALK JS
+// Endpoint to fetch current user and renter details for chat
+app.get('/chat/:renterId', jwtCheck, async (req, res) => {
+  const { renterId } = req.params;
+  const currentUserId = req.auth.payload.sub; // Get current user ID from Auth0 token
+  try {
+    // Get current user details from Auth0
+    const currentUser = {
+      id: currentUserId, // Use the Auth0 user ID
+      name: req.auth.payload.name || "No name provided", // Use name from Auth0 payload
+      email: req.auth.payload.email || "No email provided", // Use email from Auth0 payload
+      picture: req.auth.payload.picture || "", // Use picture from Auth0 payload
+    };
+
+    // Fetch renter details from the database using renterId
+    const renterQuery = `
+      SELECT "Renter_id", "Renter_name", "Rating", "Profile_pic"
+      FROM "Renters"
+      WHERE "Renter_id" = $1
+    `;
+    const renterResult = await pool.query(renterQuery, [renterId]);
+    if (renterResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Renter not found' });
+    }
+    
+    const renterUser = {
+      id: renterResult.rows[0].Renter_id, // Renter's ID
+      name: renterResult.rows[0].Renter_name, // Renter's name
+      email: "renter@example.com", // Optional: Add renter email if you have it
+      picture: renterResult.rows[0].Profile_pic || "", // Renter's profile picture
+    };
+
+    // Create TalkJS session for both users
+    const talk = new TalkJS.Session({
+      appId: process.env.TALKJS_APP_ID,
+      me: {
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+        picture: currentUser.picture,
+      },
+    });
+
+    // Here you can initialize or create a conversation if needed
+    // const conversation = talk.getOrCreateConversation(
+    //   TalkJS.oneToOneId(currentUser.id, renterUser.id)
+    // );
+
+    // Send the user info back along with TalkJS setup info
+    res.status(200).json({ currentUser, renterUser, talkAppId: process.env.TALKJS_APP_ID });
+  } catch (error) {
+    console.error('Error fetching user or renter details:', error);
+    res.status(500).json({ error: 'Failed to fetch chat users' });
+  }
+});
 
 
 // GET SPECIFIC CATEGORY

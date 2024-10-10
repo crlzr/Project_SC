@@ -55,7 +55,6 @@ const Profile = () => {
       <h2>User Profile</h2>
       {profile ? (
         <div>
-          <img src={profile.picture} alt={profile.name} />
           <p>Name: {profile.name}</p>
           <p>Email: {profile.email}</p>
           {/* Add other profile information here */}
