@@ -14,11 +14,18 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
-    console.log('Fetching renter data for ID:', renterId); // Log the renterId
-    axios
-      .get(`http://localhost:5005/api/renters/${renterId}`)
-      .then((response) => setRenter(response.data))
-      .catch((error) => console.error('Error fetching renter data:', error));
+    if (renterId) {
+      console.log('Fetching renter data for ID:', renterId);
+        axios.get(`http://localhost:5004/api/renters/1`) // Replace with an actual ID from your database
+            .then((response) => setRenter(response.data))
+            .catch((error) => console.error('Error fetching renter data:', error));
+      // axios
+      //   .get(`http://localhost:5004/api/renters/${renterId}`)
+      //   .then((response) => setRenter(response.data))
+          // .catch((error) => console.error('Error fetching renter data:', error));
+    } else {
+      console.error('Renter ID is undefined');
+    }
   }, [renterId]);
   
 

@@ -303,15 +303,16 @@ app.get('/:category_name/:itemId', async (req, res) => {
 app.get('/api/renters/:renterId', async (req, res) => {
   const { renterId } = req.params;
 
-  try {
-    // Query the database to get renter data by renterId
-    const result = await pool.query(`SELECT * FROM "Renters" WHERE "Renter_id" = $1`, [renterId]);
+  // Check if renterId is undefined or not a valid integer
+  if (!renterId || isNaN(renterId)) {
+    return res.status(400).json({ message: 'Invalid renter ID' });
+  }
 
+  try {
+    const result = await pool.query(`SELECT * FROM "Renters" WHERE "Renter_id" = $1`, [renterId]);
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Renter not found' });
     }
-
-    // Send renter data back as response
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error fetching renter data:', error);
