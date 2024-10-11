@@ -280,6 +280,7 @@ app.get('/:category_name/:itemId', async (req, res) => {
     SELECT *,
     "Categories"."Name" AS "CategoryName",
     "Renters"."Rating",
+    "Renters"."Renter_id",
     ST_X(ST_AsText("Renters"."location"::geometry)) AS "renter_longitude",
     ST_Y(ST_AsText("Renters"."location"::geometry)) AS "renter_latitude"
     FROM "Items"
@@ -300,8 +301,9 @@ app.get('/:category_name/:itemId', async (req, res) => {
 });
 
 //GET RENTERID FOR TALKJS
-app.get('/:renterId', async (req, res) => {
-  const { renterId } = req.params.renterId;
+app.get('/chat/:renterId', async (req, res) => {
+  const { renterId } = req.params;
+  console.log('Fetching renter id:', renterId);
 
   // Check if renterId is undefined or not a valid integer
   if (!renterId || isNaN(renterId)) {
@@ -310,7 +312,7 @@ app.get('/:renterId', async (req, res) => {
 
   const query =
     `
-    SELECT *,
+    SELECT "Renters"."Renter_id"
     FROM "Renters"
     WHERE "Renters"."Renter_id" = $1
     `;

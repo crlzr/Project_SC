@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 import Card from '@mui/material/Card';
@@ -25,10 +25,6 @@ const ItemsListing = () => {
   const [loading, setLoading] = useState(true);
   const [showCalendar, setShowCalendar] = useState(false);
   const [confirmedDates, setConfirmedDates] = useState(null);
-  
-  const handleRenterChatBox = () => {
-    navigate(`/chat/${item.Renter_id}`);
-  };
 
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -55,6 +51,11 @@ const ItemsListing = () => {
     };
 
     fetchItemDetails();
+
+    return () => {
+      // Cleanup any potential ongoing fetches or subscriptions
+      setItem(null);
+    };
   }, [category_name, itemId]);
 
   const handleRentNowClick = () => {
@@ -64,6 +65,11 @@ const ItemsListing = () => {
   const handleConfirmDates = (dates) => {
     setConfirmedDates(dates);
     setShowCalendar(false);
+  };
+
+  const handleRenterChatBox = () => {
+    console.log("Renter ID:", item.Renter_id);
+    navigate(`/chat/${item.Renter_id}`);
   };
   
 
