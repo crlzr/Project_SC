@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/profile" element={<><Home /><Profile /></>} />
         <Route path="/category/:category_name" element={<CategoryItems />} /> {/* New route for category items */}
         <Route path="/category/:category_name/:itemId" element={<ItemsListing />} /> {/* New route for item details */}
-        <Route path="/chat/:userId/:renterId" element={ChatPage} /> {/* New route for item details */}
+        <Route path="/chat/:renterId" element={<ChatPage />} />{/* New route for item details */}
         <Route path="/success" element={<SuccessPage />} /> {/* New route for SuccessPage */}
       </Routes>
     <Navbar onAccountClick={handleAccountClick} />  {/* Pass the function to Navbar */}

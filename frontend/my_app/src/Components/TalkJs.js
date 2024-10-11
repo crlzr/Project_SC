@@ -6,43 +6,43 @@ const TalkJSComponent = ({ user }) => {
   useEffect(() => {
     if (!user || !user.id) {
       console.error('userId is undefined.');
-      return; // Prevent further execution if user ID is undefined
+      return;
     }
 
-    const talkjs = async () => {
+    const initTalkJS = async () => {
       const talkSession = new Talk.Session({
         appId: process.env.REACT_APP_TALKJS_APP_ID,
         me: {
-          id: user.id, // Use user.id here
-          name: user.name, // Use user.name for display
-          email: user.email, // Use user.email for display
+          id: user.id,
+          name: user.name,
+          email: user.email,
         },
       });
 
-      // This assumes the renter prop is also passed down
       const renter = {
-        id: user.renter.id, // Access renter id from props
-        name: user.renter.name, // Access renter name from props
-        email: user.renter.email, // Access renter email from props
+        id: user.renter.id,
+        name: user.renter.name,
+        email: user.renter.email,
       };
 
-      // Create or get the conversation
-      const conversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(user.id, renter.id));
-      conversation.setParticipant(talkSession.me);
-      conversation.setParticipant(renter);
+      const conversation = talkSession.getOrCreateConversation(
+        Talk.oneOnOneId(user.id, renter.id)
+      );
+      conversation.setAttributes({
+        subject: `Chat with ${renter.name}`,
+      });
 
-      const inbox = talkSession.createInbox({ selected: conversation });
-      inbox.mount(document.getElementById('talkjs-container'));
+      talkSession.mount(document.getElementById('talkjs-container')); // Ensure this matches your container ID
     };
 
-    talkjs();
+    initTalkJS();
 
     return () => {
-      Talk.destroy();
+      Talk.destroy(); // Clean up TalkJS session on unmount
     };
   }, [user]);
 
-  return <div id="talkjs-container" style={{ height: '400px' }} />;
+  return <div id="talkjs-container" style={{ width: '100%', height: '500px' }} />;
 };
 
 export default TalkJSComponent;
