@@ -13,7 +13,7 @@ const Profile = () => {
       if (isAuthenticated) {
         try {
           const token = await getAccessTokenSilently();
-          const response = await fetch('http://localhost:5006/profile', {
+          const response = await fetch('http://localhost:5004/profile', {
             headers: {
               Authorization: `Bearer ${token}`,
             },

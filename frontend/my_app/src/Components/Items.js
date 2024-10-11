@@ -44,7 +44,7 @@ const ItemsListing = () => {
     const fetchItemDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:5006/${category_name}/${itemId}`);
+        const response = await axios.get(`http://localhost:5004/${category_name}/${itemId}`);
         setItem(response.data);
       } catch (error) {
         console.error('Error fetching item details:', error);
@@ -164,7 +164,7 @@ const ItemsListing = () => {
       localStorage.setItem('paymentEndDate', confirmedDates.endDate.toISOString());     // Store end date as ISO string
       localStorage.setItem('paymentMessage', 'Payment Successful');
 
-      const response = await axios.post('http://localhost:5006/create-checkout-session', {
+      const response = await axios.post('http://localhost:5004/create-checkout-session', {
         amount: totalAmount,
         category: item.Category_id,
         itemName: item.Item_name,

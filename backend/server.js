@@ -9,7 +9,7 @@ const Stripe = require('stripe');
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 app.use(express.json());
-const PORT = process.env.PORT || 5006;
+const PORT = process.env.PORT || 5004;
 
 // Define allowed origins
 // const allowedOrigins = [
@@ -300,12 +300,12 @@ app.get('/:category_name/:itemId', async (req, res) => {
 });
 
 //GET RENTERID FOR TALKJS
-app.get('/api/:userId/:renterId', async (req, res) => {
+app.get('/api/renters/:renterId', async (req, res) => {
   const { renterId } = req.params;
 
   try {
     // Query the database to get renter data by renterId
-    const result = await pool.query('SELECT * FROM "Renters" WHERE "Renter_id" = $1', [renterId]);
+    const result = await pool.query(`SELECT * FROM "Renters" WHERE "Renter_id" = $1`, [renterId]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Renter not found' });

@@ -16,7 +16,7 @@ const ChatPage = () => {
   useEffect(() => {
     console.log('Fetching renter data for ID:', renterId); // Log the renterId
     axios
-      .get(`/api/renters/${renterId}`)
+      .get(`http://localhost:5005/api/renters/${renterId}`)
       .then((response) => setRenter(response.data))
       .catch((error) => console.error('Error fetching renter data:', error));
   }, [renterId]);
