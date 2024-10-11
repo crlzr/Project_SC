@@ -300,16 +300,23 @@ app.get('/:category_name/:itemId', async (req, res) => {
 });
 
 //GET RENTERID FOR TALKJS
-app.get('/api/renters/:renterId', async (req, res) => {
-  const { renterId } = req.params;
+app.get('/:renterId', async (req, res) => {
+  const { renterId } = req.params.renterId;
 
   // Check if renterId is undefined or not a valid integer
   if (!renterId || isNaN(renterId)) {
     return res.status(400).json({ message: 'Invalid renter ID' });
   }
 
+  const query =
+    `
+    SELECT *,
+    FROM "Renters"
+    WHERE "Renters"."Renter_id" = $1
+    `;
+
   try {
-    const result = await pool.query(`SELECT * FROM "Renters" WHERE "Renter_id" = $1`, [renterId]);
+    const result = await pool.query(query, [renterId]);
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Renter not found' });
     }

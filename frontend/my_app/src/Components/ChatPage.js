@@ -6,6 +6,7 @@ import TalkJSComponent from './TalkJs';
 const ChatPage = () => {
   const { renterId } = useParams();
   const [renter, setRenter] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const user = {
     name: 'John Doe',
@@ -16,7 +17,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (renterId) {
       console.log('Fetching renter data for ID:', renterId);
-        axios.get(`http://localhost:5004/api/renters/1`) // Replace with an actual ID from your database
+        axios.get(`http://localhost:5004/${renterId}`) // Replace with an actual ID from your database
             .then((response) => setRenter(response.data))
             .catch((error) => console.error('Error fetching renter data:', error));
       // axios
@@ -25,8 +26,17 @@ const ChatPage = () => {
           // .catch((error) => console.error('Error fetching renter data:', error));
     } else {
       console.error('Renter ID is undefined');
+      setLoading(false);
     }
   }, [renterId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!renter) {
+    return <div>No renter found.</div>;
+  }
   
 
   return (
