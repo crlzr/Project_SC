@@ -7,7 +7,7 @@ import Categories from './Components/Categories';
 import CategoryItems from './Components/CategoryItems';
 import ItemsListing from './Components/Items';
 import Home from './Components/Home';
-import TalkJs from './Components/TalkJs';
+import ChatPage from './Components/ChatPage';
 import './index.css';
 import SuccessPage from './Components/SuccessPage';
 import Profile from './Components/Profile';
@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/profile" element={<><Home /><Profile /></>} />
         <Route path="/category/:category_name" element={<CategoryItems />} /> {/* New route for category items */}
         <Route path="/category/:category_name/:itemId" element={<ItemsListing />} /> {/* New route for item details */}
-        <Route path="/chat/:renterId" element={<TalkJs />} /> {/* New route for item details */}
+        <Route path="/chat/:userId/:renterId" element={ChatPage} /> {/* New route for item details */}
         <Route path="/success" element={<SuccessPage />} /> {/* New route for SuccessPage */}
       </Routes>
     <Navbar onAccountClick={handleAccountClick} />  {/* Pass the function to Navbar */}

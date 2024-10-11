@@ -26,7 +26,7 @@ const ItemsListing = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [confirmedDates, setConfirmedDates] = useState(null);
   const handleRenterChatBox = () => {
-    navigate('/chat/${renterId}');
+    navigate(`/chat/${item.renterId}`);
   };
 
   const mapContainerRef = useRef(null);
