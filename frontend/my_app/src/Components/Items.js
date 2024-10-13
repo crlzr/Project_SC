@@ -67,11 +67,6 @@ const ItemsListing = () => {
     setShowCalendar(false);
   };
 
-  const handleRenterChatBox = () => {
-    console.log("Renter ID:", item.Renter_id);
-    navigate(`/chat/${item.Renter_id}`);
-  };
-  
 
   useEffect(() => {
     console.log(mapContainerRef.current);
@@ -236,9 +231,7 @@ const ItemsListing = () => {
                   <StarIcon className="star-icon" alt="star-icon" />
                 </div>
               </div>
-              <button onClick={handleRenterChatBox} className="chat-renter-button">
                 <ChatIcon className="chat-icon" alt="chat" />
-              </button>
             </div>
           </div>
           {/* Map container */}
