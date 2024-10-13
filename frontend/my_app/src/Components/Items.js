@@ -14,6 +14,8 @@ import '../index.css';
 import mapboxgl from 'mapbox-gl'; // Import Mapbox
 import 'mapbox-gl/dist/mapbox-gl.css'; // Import Mapbox CSS
 import Modal from '@mui/material/Modal'; // Import Modal
+import Chat from './Session';
+
 
 
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
@@ -198,6 +200,7 @@ const ItemsListing = () => {
   }
 
 
+
   return (
     <div className="item-details-container">
       <Card sx={{ maxWidth: 400, margin: '20px' }} className="item-details-card">
@@ -231,7 +234,10 @@ const ItemsListing = () => {
                   <StarIcon className="star-icon" alt="star-icon" />
                 </div>
               </div>
+              <button>
                 <ChatIcon className="chat-icon" alt="chat" />
+                <Chat userId="sample_user_alice" conversationId="your_conversation_id" />
+              </button>
             </div>
           </div>
           {/* Map container */}
