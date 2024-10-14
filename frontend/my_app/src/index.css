@@ -535,4 +535,101 @@ button.rent-button {
   flex-direction: column;
 }
 
+.profile-header {
+  position: relative; /* Make this the positioning context */
+  background-color: #8ABEE8;
+  padding: 20px;
+  border-radius: 10px 10px 0 0;
+  height: 120px; /* Keep the background height fixed */
+  text-align: center; /* Center the text in the header */
+  /* The profile image and name are now positioned outside the header */
+}
+
+.profile-image-container {
+  position: absolute;
+  top: 90px; /* Move the image below the .profile-header */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.profile-image-container .profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-name {
+  position: absolute;
+  top: 190px; /* Position below the profile image */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.4rem;
+  font-family: "Inter", sans-serif;
+  color: #494949;
+  width: auto;
+  white-space: nowrap; /* Prevent wrapping */
+  text-align: center; /* Center the text */
+}
+
+.profile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.profile-container .profile-info {
+  display: flex; /* Enable flexbox */
+  justify-content: space-between; /* Align items to the left and right */
+  padding: 20px;
+  padding-top: 140px;
+  background-color: #fff;
+}
+.profile-container .profile-info p {
+  margin: 0; /* Remove the default margin */
+  font-size: 1.1rem;
+  font-family: "Inter", sans-serif;
+  color: #494949;
+}
+.profile-container .profile-info .label {
+  font-weight: bold; /* Make the label bold */
+  margin-left: -10px;
+}
+.profile-container .profile-info .email {
+  text-align: right; /* Align the email text to the right */
+}
+.profile-container .profile-features {
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 0.625rem;
+}
+.profile-container .profile-features .setting-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically align content */
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.1rem;
+  /* Container for the text on the left */
+  /* Add a ">" symbol on the far right */
+}
+.profile-container .profile-features .setting-option .setting-text {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  color: #494949;
+}
+.profile-container .profile-features .setting-option .right-arrow {
+  margin-left: auto; /* Push the arrow to the right */
+  margin-right: 10px;
+  color: #757575; /* Adjust color if needed */
+  font-size: 1.2rem; /* Adjust size to your preference */
+}
+
 /*# sourceMappingURL=index.css.map */

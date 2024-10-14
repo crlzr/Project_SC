@@ -1,5 +1,3 @@
-// Profile.js
-
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -21,7 +19,7 @@ const Profile = () => {
 
           if (response.ok) {
             const profileData = await response.json();
-            setProfile(profileData); // Set the profile data
+            setProfile(profileData);
           } else {
             console.error('Failed to fetch profile:', response.status);
           }
@@ -35,11 +33,11 @@ const Profile = () => {
       }
     };
 
-    fetchProfile(); // Fetch user profile when component mounts
+    fetchProfile();
   }, [isAuthenticated, getAccessTokenSilently]);
 
   if (loading) {
-    return <div>Loading profile...</div>; // Loading state
+    return <div>Loading profile...</div>;
   }
 
   if (!isAuthenticated) {
@@ -47,22 +45,37 @@ const Profile = () => {
       <div className="login-prompt">
         <h2>Please log in to see your profile.</h2>
       </div>
-    ); // Prompt to log in
+    );
   }
 
   return (
-    <div className="profile">
-      <h2>User Profile</h2>
-      {profile ? (
-        <div>
-          <p>Name: {profile.name}</p>
-          <p>Email: {profile.email}</p>
-          {/* Add other profile information here */}
+    <div className="profile-container">
+      <div className="profile-header">
+        <div className="profile-image-container">
+          <img src={user.picture}  alt="User Profile" className="profile-image" />
         </div>
-      ) : (
-        <p>No profile data found.</p>
-      )}
-    </div>
+        {/* Moved user name outside profile-image-container */}
+        <h2 className="user-name">{user.name || 'User Name'}</h2>
+      </div>
+      <div className="profile-info">
+        <p className="label">Email:</p>
+        <p className="email">{user.email}</p>
+      </div>
+      <div className="profile-features">
+        <div className="setting-option">
+          <p className="setting-text">Bookings</p>
+          <span className="right-arrow">&gt;</span>
+        </div>
+        <div className="setting-option">
+          <p className="setting-text">Reviews</p>
+          <span className="right-arrow">&gt;</span>
+        </div>
+        <div className="setting-option">
+          <p className="setting-text">Settings</p>
+          <span className="right-arrow">&gt;</span>
+        </div>
+      </div>
+      </div>
   );
 };
 

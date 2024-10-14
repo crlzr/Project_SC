@@ -8,6 +8,29 @@ const Home = () => {
   const [userAddress, setUserAddress] = useState({});
   const [loading, setLoading] = useState(true); // Initialize loading state
 
+
+    // Step 1: Create the state abbreviation mapping
+    const stateAbbreviations = {
+      "New South Wales": "NSW",
+      "Victoria": "VIC",
+      "Queensland": "QLD",
+      "Western Australia": "WA",
+      "South Australia": "SA",
+      "Tasmania": "TAS",
+      "Northern Territory": "NT",
+      "Australian Capital Territory": "ACT",
+      // Add other states and territories as needed
+    };
+  
+    const formatState = (state) => {
+      if (!state) return '';
+      return state
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    };
+
   // Fetch protected data for renters/nearby items
   const fetchProtectedData = useCallback(async () => {
     try {
@@ -60,7 +83,7 @@ const Home = () => {
               <h2 className="welcome">Welcome, {user.name}!</h2>
               {userAddress && (
                 <p className="user-address">
-                  {userAddress.street}, {userAddress.city}, {userAddress.state} {userAddress.postcode}
+                  {userAddress.street}, {userAddress.city}, {stateAbbreviations[formatState(userAddress.state)] || userAddress.state} {userAddress.postcode}
                 </p>
               )}
             </>
