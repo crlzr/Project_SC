@@ -206,11 +206,16 @@ const ItemsListing = () => {
       const conversation = session.getOrCreateConversation('new_conversation');
 
       const other = new Talk.User({
-        id: 'frank',
-        name: 'Frank',
-        email: 'frank@example.com',
-        photoUrl: 'https://talkjs.com/new-web/avatar-8.jpg',
-        welcomeMessage: 'Hey, how can I help?',
+        id: item.Renter_id,
+        name: item.Renter_name,
+        photoUrl: item.Profile_pic,
+        welcomeMessage: 'Hello',
+
+        // id: 'frank',
+        // name: 'Frank',
+        // email: 'frank@example.com',
+        // photoUrl: 'https://talkjs.com/new-web/avatar-8.jpg',
+        // welcomeMessage: 'Hey, how can I help?',
       });
       conversation.setParticipant(session.me);
       conversation.setParticipant(other);
@@ -261,7 +266,7 @@ const ItemsListing = () => {
                   <StarIcon className="star-icon" alt="star-icon" />
                 </div>
               </div>
-                <Chat syncUser={syncUser} />
+                <Chat syncUser={syncUser} syncConversation={syncConversation} />
             </div>
           </div>
           {/* Map container */}
