@@ -8,6 +8,7 @@ function Chat({ syncUser }) {
     const { category_name, itemId } = useParams();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [session, setSession] = useState(null); // State to store Talk.js session
 
     useEffect(() => {
         const fetchItemDetails = async () => {
@@ -25,20 +26,44 @@ function Chat({ syncUser }) {
         fetchItemDetails();
 
         return () => {
-            setItem(null); // Cleanup
-        };
-    }, [category_name, itemId]);
+          setItem(null); // Cleanup
+          if (session) {
+              session.destroy(); // Cleanup session on unmount
+          }
+      };
+  }, [category_name, itemId]);
 
-    const syncConversation = useCallback((session) => {
+  // Create Talk.js session when item is loaded
+  useEffect(() => {
+    if (item) {
+        console.log(syncUser); 
+        if (typeof syncUser === 'function') {
+          const newSession = new Talk.Session({
+              appId: process.env.REACT_APP_TALKJS_APP_ID,
+              me: syncUser(), // Pass the synced user here
+          });
+
+          setSession(newSession);
+      } else {
+        console.error('syncUser is not a function');
+    }
+  }
+  }, [item, syncUser]);
+
+
+    const syncConversation = useCallback((talkSession) => {
         if (!item) {
             console.warn("Item is not yet loaded, skipping conversation creation.");
             return; // Skip if item is not loaded
         }
 
         // Generate a unique conversation ID based on itemId
-        const conversationId = `item_${itemId}`;
+        const userId = talkSession.me.id;
+        const renterId = item.Renter_id; // Ensure this is the correct field from your item
+        const conversationId = `conversation_${userId}_${renterId}`;
+    
 
-        const conversation = session.getOrCreateConversation(conversationId);
+        const conversation = talkSession.getOrCreateConversation(conversationId);
 
         const other = new Talk.User({
             id: item.Renter_id,
@@ -47,7 +72,7 @@ function Chat({ syncUser }) {
             welcomeMessage: 'Hello',
         });
 
-        conversation.setParticipant(session.me);
+        conversation.setParticipant(talkSession.me);
         conversation.setParticipant(other);
 
         return conversation;
@@ -58,7 +83,7 @@ function Chat({ syncUser }) {
     return (
         <Popup
             conversationId={`item_${itemId}`}
-            syncConversation={syncConversation}
+            syncConversation={syncConversation} // Pass the current session
         />
     );
 }

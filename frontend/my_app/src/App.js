@@ -11,7 +11,7 @@ const Message = ({ message }) => (
 );
 
 const App = () => {
-  const { loginWithRedirect, user } = useAuth0(); // Get user data from Auth0
+  const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -40,60 +40,51 @@ const App = () => {
       console.error('Error fetching protected data:', error);
     }
   };
-
+  
   const syncUser = useCallback(() => {
-    if (!user) {
+    if (isAuthenticated && user) {
       return new Talk.User({
-        id: 'guest', // Fallback ID if user is not authenticated
+        id: user.sub,
+        name: user.name,
+        email: user.email,
+        photoUrl: user.picture || 'https://talkjs.com/new-web/avatar-7.jpg',
+        welcomeMessage: 'Hi!',
+      });
+    } else {
+      // Return a default guest user if not authenticated
+      return new Talk.User({
+        id: 'guest',
         name: 'Guest',
         email: 'guest@example.com',
         photoUrl: 'https://talkjs.com/new-web/avatar-7.jpg',
         welcomeMessage: 'Hi!',
       });
     }
+  }, [isAuthenticated, user]);
 
-    // Replace with actual user data from Auth0
-    return new Talk.User({
-      id: user.sub, // Use the Auth0 user ID
-      name: user.name || 'User', // Use the Auth0 user's name
-      email: user.email, // Use the Auth0 user's email
-      photoUrl: user.picture || 'https://talkjs.com/new-web/avatar-7.jpg', // Use Auth0 user's picture
-      welcomeMessage: 'Hi!',
-    });
-  }, [user]); // Add user as a dependency
+  // const syncConversation = useCallback((session) => {
+  //   // You can create a placeholder conversation or handle it in each component
+  //   const conversation = session.getOrCreateConversation('new_conversation');
+  //   return conversation;
+  // }, []);
 
-  // Handle adding an item to the cart
-  const addToCart = (item) => {
-    setCartItems((prevItems) => [...prevItems, item]);
-  };
-
-  const handleCheckout = (result) => {
-    // Reset cart after successful checkout
-    setCartItems([]);
-    setMessage("Thank you for your order!");
-  };
+  if (isLoading) return <div>Loading...</div>; // Handle loading state
 
   return (
-    <div>
-      <div>
-        {!isAuthenticated ? (
-          <button onClick={() => loginWithRedirect()}>Log In</button>
-        ) : (
-          <>
-            <button onClick={() => logout({ returnTo: window.location.origin })}>Log Out</button>
-            <h2>Welcome, {user.name}!</h2>
-          </>
-        )}
-      </div>
-      <div>
-        {message && <Message message={message} />}
-      </div>
-      {cartItems.length > 0 ? (
-        <Checkout items={cartItems} onCheckout={handleCheckout} />
-      ) : (
-        <ProductDisplay addToCart={addToCart} />
-      )}
-    </div>
+    <Session appId="tD4xpjcO" syncUser={syncUser}>
+      <Router>
+        <Routes>
+          <Route path="/items/nearby" element={<NearbyItems />} />
+          <Route path="/" element={<Categories />} />
+          <Route path="/profile" element={<><Home /><Profile /></>} />
+          <Route path="/category/:category_name" element={<CategoryItems />} />
+          <Route path="/category/:category_name/:itemId" element={<ItemsListing/>} />
+          {/* syncConversation={syncConversation} */}
+          <Route path="/success" element={<SuccessPage />} />
+        </Routes>
+        <Navbar onAccountClick={handleAccountClick} />
+      </Router>
+    </Session>
   );
 };
 
