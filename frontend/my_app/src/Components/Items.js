@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback} from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
@@ -15,8 +15,7 @@ import mapboxgl from 'mapbox-gl'; // Import Mapbox
 import 'mapbox-gl/dist/mapbox-gl.css'; // Import Mapbox CSS
 import Modal from '@mui/material/Modal'; // Import Modal
 import Chat from './Session';
-
-
+import Talk from 'talkjs';
 
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
 
@@ -191,6 +190,34 @@ const ItemsListing = () => {
     }
   };
 
+    // Define syncUser here
+    const syncUser = useCallback(() => {
+      return new Talk.User({
+        id: 'nina', // Replace with actual user ID
+        name: 'Nina', // Replace with actual user name
+        email: 'nina@example.com', // Replace with actual user email
+        photoUrl: 'https://talkjs.com/new-web/avatar-7.jpg', // Replace with actual user photo URL
+        welcomeMessage: 'Hi!',
+      });
+    }, []);
+
+    const syncConversation = useCallback((session) => {
+      // JavaScript SDK code here
+      const conversation = session.getOrCreateConversation('new_conversation');
+
+      const other = new Talk.User({
+        id: 'frank',
+        name: 'Frank',
+        email: 'frank@example.com',
+        photoUrl: 'https://talkjs.com/new-web/avatar-8.jpg',
+        welcomeMessage: 'Hey, how can I help?',
+      });
+      conversation.setParticipant(session.me);
+      conversation.setParticipant(other);
+
+      return conversation;
+    }, []);
+
   if (loading) {
     return <LogoLoader />;
   }
@@ -234,7 +261,7 @@ const ItemsListing = () => {
                   <StarIcon className="star-icon" alt="star-icon" />
                 </div>
               </div>
-                <Chat userId="sample_user_alice" conversationId="your_conversation_id" />
+                <Chat syncUser={syncUser} />
             </div>
           </div>
           {/* Map container */}
