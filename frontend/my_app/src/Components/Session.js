@@ -26,30 +26,29 @@ function Chat({ syncUser }) {
         fetchItemDetails();
 
         return () => {
-          setItem(null); // Cleanup
-          if (session) {
-              session.destroy(); // Cleanup session on unmount
-          }
-      };
-  }, [category_name, itemId]);
+            setItem(null); // Cleanup
+            if (session) {
+                session.destroy(); // Cleanup session on unmount
+            }
+        };
+    }, [category_name, itemId]);
 
-  // Create Talk.js session when item is loaded
-  useEffect(() => {
-    if (item) {
-        console.log(syncUser); 
-        if (typeof syncUser === 'function') {
-          const newSession = new Talk.Session({
-              appId: process.env.REACT_APP_TALKJS_APP_ID,
-              me: syncUser(), // Pass the synced user here
-          });
+    // Create Talk.js session when item is loaded
+    useEffect(() => {
+        if (item) {
+            console.log(syncUser);
+            if (typeof syncUser === 'function') {
+                const newSession = new Talk.Session({
+                    appId: process.env.REACT_APP_TALKJS_APP_ID,
+                    me: syncUser(), // Pass the synced user here
+                });
 
-          setSession(newSession);
-      } else {
-        console.error('syncUser is not a function');
-    }
-  }
-  }, [item, syncUser]);
-
+                setSession(newSession);
+            } else {
+                console.error('syncUser is not a function');
+            }
+        }
+    }, [item, syncUser]);
 
     const syncConversation = useCallback((talkSession) => {
         if (!item) {
@@ -61,7 +60,6 @@ function Chat({ syncUser }) {
         const userId = talkSession.me.id;
         const renterId = item.Renter_id; // Ensure this is the correct field from your item
         const conversationId = `conversation_${userId}_${renterId}`;
-    
 
         const conversation = talkSession.getOrCreateConversation(conversationId);
 
@@ -74,10 +72,6 @@ function Chat({ syncUser }) {
 
         conversation.setParticipant(talkSession.me);
         conversation.setParticipant(other);
-
-        // const inbox = session.createInbox();
-        // inbox.select(conversation);
-        // inbox.mount(document.getElementById("talkjs-container"));
 
         return conversation;
     }, [item, itemId]);
