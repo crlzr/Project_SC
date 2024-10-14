@@ -1,4 +1,4 @@
-import { Popup } from '@talkjs/react';
+import { Popup, Inbox } from '@talkjs/react';
 import { useEffect, useState, useCallback } from 'react';
 import Talk from 'talkjs';
 import axios from 'axios';
@@ -74,6 +74,10 @@ function Chat({ syncUser }) {
 
         conversation.setParticipant(talkSession.me);
         conversation.setParticipant(other);
+
+        // const inbox = session.createInbox();
+        // inbox.select(conversation);
+        // inbox.mount(document.getElementById("talkjs-container"));
 
         return conversation;
     }, [item, itemId]);

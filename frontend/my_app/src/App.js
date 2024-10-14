@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import "./App.css";
-import ProductDisplay from "./components/ProductDisplay";
-import Checkout from "./components/Checkout";
-
-const Message = ({ message }) => (
-  <section>
-    <p>{message}</p>
-  </section>
-);
+import Navbar from './Components/Navbar';
+import NearbyItems from './Components/NearbyItems';
+import Categories from './Components/Categories';
+import CategoryItems from './Components/CategoryItems';
+import ItemsListing from './Components/Items';
+import Home from './Components/Home';
+import './index.css';
+import SuccessPage from './Components/SuccessPage';
+import Profile from './Components/Profile';
+import { Session, Inbox } from '@talkjs/react';
+import Talk from 'talkjs';
 
 const App = () => {
   const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
@@ -71,10 +73,14 @@ const App = () => {
   if (isLoading) return <div>Loading...</div>; // Handle loading state
 
   return (
-    <Session appId="tD4xpjcO" syncUser={syncUser}>
+    <Session appId={process.env.REACT_APP_TALKJS_APP_ID} syncUser={syncUser}>
       <Router>
         <Routes>
           <Route path="/items/nearby" element={<NearbyItems />} />
+          <Route path="/chat" element={<Inbox 
+          conversationId={`conversation_${user.sub}`}
+        style={{ width: '100%', height: '500px' }}
+        ></Inbox>} />
           <Route path="/" element={<Categories />} />
           <Route path="/profile" element={<><Home /><Profile /></>} />
           <Route path="/category/:category_name" element={<CategoryItems />} />

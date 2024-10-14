@@ -4,8 +4,8 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import ChatIcon from '@mui/icons-material/Chat';
 import AccountIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
-
-
+import { Inbox } from "@talkjs/react";
+import Chat from "./Session";
 
 const Navbar = ({ onAccountClick }) => {
   const navigate = useNavigate();
@@ -18,6 +18,10 @@ const Navbar = ({ onAccountClick }) => {
   // Navigate to profile page
   const handleProfilePage = () => {
     navigate('/profile');
+  };
+
+  const handleInbox = () => {
+    navigate('/chat');
   };
 
   return (
@@ -36,7 +40,9 @@ const Navbar = ({ onAccountClick }) => {
           </li>
           <li>
             <ChatIcon className="nav-icon" alt="chat" />
+            <button onClick={handleInbox} >
               Chat
+            </button>
           </li>
           <li>
             <AccountIcon className="nav-icon" alt="account" />
