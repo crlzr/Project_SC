@@ -1,80 +1,66 @@
-import { Session } from '@talkjs/react';
 import { Popup } from '@talkjs/react';
 import { useEffect, useState, useCallback } from 'react';
 import Talk from 'talkjs';
 import axios from 'axios';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-
-function Chat() {
+function Chat({ syncUser }) {
     const { category_name, itemId } = useParams();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchItemDetails = async () => {
-          setLoading(true);
-          try {
-            const response = await axios.get(`http://localhost:5004/${category_name}/${itemId}`);
-            setItem(response.data);
-          } catch (error) {
-            console.error('Error fetching item details:', error);
-          } finally {
-            setLoading(false);
-          }
+            setLoading(true);
+            try {
+                const response = await axios.get(`http://localhost:5004/${category_name}/${itemId}`);
+                setItem(response.data);
+            } catch (error) {
+                console.error('Error fetching item details:', error);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchItemDetails();
 
         return () => {
-            // Cleanup any potential ongoing fetches or subscriptions
-            setItem(null);
-          };
-        }, [category_name, itemId]);
+            setItem(null); // Cleanup
+        };
+    }, [category_name, itemId]);
 
+    const syncConversation = useCallback((session) => {
+        if (!item) {
+            console.warn("Item is not yet loaded, skipping conversation creation.");
+            return; // Skip if item is not loaded
+        }
 
-  const syncUser = useCallback(() => {
-    // Rentee (person renting out stuff)
-    return new Talk.User({
-      id: 'nina',
-      name: 'Nina',
-      email: 'nina@example.com',
-      photoUrl: 'https://talkjs.com/new-web/avatar-7.jpg',
-      welcomeMessage: 'Hi!',
-    });
-  }, []);
+        // Generate a unique conversation ID based on itemId
+        const conversationId = `item_${itemId}`;
 
-  const syncConversation = useCallback((session) => {
-    const conversation = session.getOrCreateConversation('new_conversation');
+        const conversation = session.getOrCreateConversation(conversationId);
 
-    // Renter
-    const other = new Talk.User({
-        id: item.Renter_id,
-        name: item.Renter_name,
-        photoUrl: item.Profile_pic,
-        welcomeMessage: 'Hello',
+        const other = new Talk.User({
+            id: item.Renter_id,
+            name: item.Renter_name,
+            photoUrl: item.Profile_pic,
+            welcomeMessage: 'Hello',
+        });
 
-        // id: 'frank',
-        // name: 'Frank',
-        // email: 'frank@example.com',
-        // photoUrl: 'https://talkjs.com/new-web/avatar-8.jpg',
-        // welcomeMessage: 'Hey, how can I help?',
-      });
+        conversation.setParticipant(session.me);
+        conversation.setParticipant(other);
 
-    conversation.setParticipant(session.me);
-    conversation.setParticipant(other);
+        return conversation;
+    }, [item, itemId]);
 
-    return conversation;
-  }, []);
+    if (loading) return <div>Loading...</div>; // Optional loading state
 
-  return (
-    <Session appId="tD4xpjcO" syncUser={syncUser}>
-      <Popup
-        conversationId="new_conversation"
-        syncConversation={syncConversation}
-      />
-    </Session>
-  );
+    return (
+        <Popup
+            conversationId={`item_${itemId}`}
+            syncConversation={syncConversation}
+        />
+    );
 }
 
 export default Chat;
