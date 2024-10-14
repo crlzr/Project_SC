@@ -40,7 +40,7 @@ const Navbar = ({ onAccountClick }) => {
           </li>
           <li>
             <ChatIcon className="nav-icon" alt="chat" />
-            <button onClick={handleInbox} >
+            <button onClick={handleInbox} className="chat-button">
               Chat
             </button>
           </li>
