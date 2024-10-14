@@ -62,7 +62,9 @@ const App = () => {
         welcomeMessage: 'Hi!',
       });
     }
+    
   }, [isAuthenticated, user]);
+  
 
   // const syncConversation = useCallback((session) => {
   //   // You can create a placeholder conversation or handle it in each component
@@ -77,10 +79,23 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/items/nearby" element={<NearbyItems />} />
-          <Route path="/chat" element={<Inbox 
-          conversationId={`conversation_${user.sub}`}
-        style={{ width: '100%', height: '500px' }}
-        ></Inbox>} />
+           {/* Chat Route */}
+           <Route 
+            path="/chat" 
+            element={
+              isAuthenticated ? (
+                <Inbox
+                  conversationId={`conversation_${user.sub}`} 
+                  style={{ width: '100%', height: '500px' }} 
+                />
+              ) : (
+                <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                  <h2>You need to log in to access the chat</h2>
+                  <button onClick={loginWithRedirect}>Log In</button>
+                </div>
+              )
+            } 
+          />
           <Route path="/" element={<Categories />} />
           <Route path="/profile" element={<><Home /><Profile /></>} />
           <Route path="/category/:category_name" element={<CategoryItems />} />
