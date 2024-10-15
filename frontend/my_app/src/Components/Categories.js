@@ -50,7 +50,7 @@ const Categories = () => {
                     alt={category.Name}
                   />
                   <CardContent>
-                    <h3>{category.Name}</h3>
+                    <h4>{category.Name}</h4>
                   </CardContent>
                 </Link>
               </CardActionArea>
