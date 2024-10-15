@@ -94,11 +94,8 @@ body {
 }
 .categories-container .category-image {
   height: auto;
-  width: 95%;
-  border-radius: 0.625rem;
-  border: 0.125rem solid white;
+  width: 100%;
   margin: 0 auto;
-  margin-top: 0.5rem;
 }
 .categories-container h3 {
   color: #494949;

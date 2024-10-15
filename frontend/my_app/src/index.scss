@@ -85,7 +85,7 @@ body {
       flex: 0 0 calc(50% - 1rem); /* Two cards per row on small screens */
     }
   }
-    
+
   @media (max-width: 30rem) {
     .MuiCard-root {
       flex: 0 0 calc(100% - 1rem); /* One card per row on very small screens */
@@ -107,11 +107,11 @@ body {
 
   .category-image {
     height: auto;
-    width: 95%;
-    border-radius: 0.625rem;
-    border: 0.125rem solid white;
+    width: 100%;
+
+
     margin: 0 auto;
-    margin-top: 0.5rem;
+
   }
 
   h3 {
@@ -225,7 +225,7 @@ p.user-address {
         height: 1.2rem;
       }
     }
-  
+
     .renter-rating {
       font-size: 0.95rem;
       line-height: 1;
@@ -264,7 +264,7 @@ button {
     background-color: #f0f0f0; // Optional: change background color
     margin: 1rem 1rem;
   }
-  
+
   &.rent-button {
     background-color: #C9D7A4; // Button background color
     padding: 0.5rem 1rem; // Button padding
@@ -303,13 +303,13 @@ button {
     align-items: center; /* Center vertically */
     padding-bottom: 0.5rem;
   }
-  
+
   .item-name {
     margin: 0; /* Remove default margin */
     color: #494949;
     font-weight: 600;
   }
-  
+
   .item-price {
     margin: 0; /* Remove default margin */
     font-weight: 800;
@@ -320,7 +320,7 @@ button {
     justify-content: space-between; /* Space between the two items */
     align-items: center; /* Center vertically */
   }
-  
+
   .item-description,
   .item-availability {
     margin: 0; /* Remove default margin */
@@ -333,12 +333,12 @@ button {
     align-items: flex-start; /* Align items to the left */
     color: #494949;
     padding-top: 3rem;
-  
+
     .renter-info {
       display: flex;
       align-items: flex-start; /* Center items vertically */
       width: 100%; /* Ensure it takes the full width of the parent container */
-      
+
       .renter-profile-pic {
         width: 2.5rem; /* Set width */
         height: 2.5rem; /* Set height */
@@ -346,30 +346,30 @@ button {
         object-fit: cover; /* Ensure the image covers the area */
         margin-right: 0.625rem; /* Space between the image and the name */
       }
-  
+
       .renter-full-name {
         margin: 0; /* Remove default margin */
       }
-  
+
       .chat-icon {
         margin-left: auto; /* Pushes the chat icon to the right */
         color: #757575;
       }
     }
-  
+
     .rating-container {
       display: flex; /* Keep this as flex for horizontal alignment of stars */
       align-items: center; /* Center align */
       color: #494949;
       margin-top: -0.5rem;
     }
-  
+
     .star-icon {
       margin-right: 0.2rem;
       color: #C9D7A4;
       height: 1.35rem;
     }
-  
+
     .renter-rating {
       font-size: 0.95rem;
       line-height: 1;
@@ -557,7 +557,7 @@ button {
     align-items: center; // Align the dropdown and label
     font-family: "Inter", sans-serif;
     padding-left: 1rem;
-    
+
     .MuiInputBase-root {
       font-family: "Inter", sans-serif;
       color: #494949;
@@ -689,19 +689,19 @@ button {
     padding: 20px;
     padding-top: 140px;
     background-color: #fff;
-  
+
     p {
       margin: 0; /* Remove the default margin */
       font-size: 1.1rem;
       font-family: "Inter", sans-serif;
       color: #494949;
     }
-  
+
     .label {
       font-weight: bold; /* Make the label bold */
       margin-left: -10px;
     }
-  
+
     .email {
       text-align: right; /* Align the email text to the right */
     }
@@ -720,14 +720,14 @@ button {
       padding: 10px 0;
       border-bottom: 1px solid #ddd;
       font-size: 1.1rem;
-    
+
       /* Container for the text on the left */
       .setting-text {
         margin: 0;
         font-family: "Inter", sans-serif;
         color: #494949;
       }
-    
+
       /* Add a ">" symbol on the far right */
       .right-arrow {
         margin-left: auto; /* Push the arrow to the right */
