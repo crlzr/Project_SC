@@ -56,9 +56,37 @@ const NearbyItems = () => {
     markersRef.current = [];
   };
 
+  const calculateBoundingBox = (latitude, longitude, radiusKm) => {
+    const earthRadiusKm = 6371; // Earth's radius in km
+    const angularDistance = radiusKm / earthRadiusKm;
+
+    // Latitude bounds
+    const minLatitude = latitude - (angularDistance * (180 / Math.PI));
+    const maxLatitude = latitude + (angularDistance * (180 / Math.PI));
+
+    // Longitude bounds (need to adjust for Earth's curvature)
+    const minLongitude = longitude - (angularDistance * (180 / Math.PI)) / Math.cos(latitude * Math.PI / 180);
+    const maxLongitude = longitude + (angularDistance * (180 / Math.PI)) / Math.cos(latitude * Math.PI / 180);
+
+    return [
+      [minLongitude, minLatitude], // Southwest corner
+      [maxLongitude, maxLatitude]  // Northeast corner
+    ];
+  };
+
   const handleRadiusSelect = (event) => {
-    setRadius(event.target.value);
-    fetchItemsNearby(event.target.value);
+    const selectedRadius = event.target.value;
+    setRadius(selectedRadius);
+    fetchItemsNearby(selectedRadius);
+
+    // Adjust map to fit the new radius
+    if (userLocation && mapRef.current) {
+      const bounds = calculateBoundingBox(userLocation.latitude, userLocation.longitude, selectedRadius);
+      mapRef.current.fitBounds(bounds, {
+        padding: 20,
+        maxZoom: 14,
+      });
+    }
   };
 
   const fetchItemsNearby = useCallback(async (radius_km = radius) => {
@@ -160,14 +188,21 @@ const NearbyItems = () => {
   useEffect(() => {
     if (userLocation) {
       fetchItemsNearby();
+      const bounds = calculateBoundingBox(userLocation.latitude, userLocation.longitude, radius);
+      if (mapRef.current) {
+        mapRef.current.fitBounds(bounds, {
+          padding: 20,
+          maxZoom: 14,
+        });
+      }
     }
-  }, [userLocation, fetchItemsNearby]);
+  }, [userLocation, fetchItemsNearby, radius]);
 
-  useEffect(() => {
-    if (userLocation) {
-      fetchItemsNearby();
-    }
-  }, [userLocation, fetchItemsNearby]);
+  // useEffect(() => {
+  //   if (userLocation) {
+  //     fetchItemsNearby();
+  //   }
+  // }, [userLocation, fetchItemsNearby]);
 
   if (!isAuthenticated) {
     return (
