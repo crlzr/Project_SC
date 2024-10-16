@@ -271,12 +271,13 @@ button {
   border-radius: 0.625rem;
 
   &.item-chat-button {
-    margin-left: auto; /* Pushes the chat icon to the right */
-    margin-right: -14rem;
+    margin-left: 11rem; /* Pushes the chat icon to the right */
+    // margin-right: -14rem;
     color: #757575;
+    max-width: 0;
 
     @media (max-width: 30rem) {
-      margin-right: -9.5rem;
+      margin-right: 12rem;
     }
 
   }
