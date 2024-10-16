@@ -12,6 +12,7 @@ import SuccessPage from './Components/SuccessPage';
 import Profile from './Components/Profile';
 import { Session, Inbox } from '@talkjs/react';
 import Talk from 'talkjs';
+import SearchBar from './Components/SearchBar';
 
 const App = () => {
   const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
@@ -63,7 +64,8 @@ const App = () => {
               isAuthenticated ? (
                 <Inbox
                   conversationId={`conversation_${user.sub}`} 
-                  style={{ width: '100%', height: '500px' }} 
+                  style={{ width: '100%', height: '500px' }}
+                  className="talkjs-container"
                 />
               ) : (
                 <div style={{ textAlign: 'center', marginTop: '50px' }}>
@@ -73,7 +75,7 @@ const App = () => {
               )
             } 
           />
-          <Route path="/" element={<Categories />} />
+          <Route path="/" element={<><SearchBar /><Categories /></>} />
           <Route path="/profile" element={<><Home /><Profile /></>} />
           <Route path="/category/:category_name" element={<CategoryItems />} />
           <Route path="/category/:category_name/:itemId" element={<ItemsListing/>} />

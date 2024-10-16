@@ -322,5 +322,26 @@ app.post('/create-checkout-session', async (req, res) => {
   res.redirect(303, session.url);
 });
 
+// SEARCH BAR
+app.get('/item/search', async (req, res) => {
+  const searchQuery = req.query.q;
+  if (!searchQuery) {
+    return res.status(400).send('Search query is required');
+  }
+  try {
+    const query = `
+      SELECT * FROM "Items"
+      WHERE "Items"."Item_name" ILIKE $2
+    `;
+    const values = [`%${searchQuery}%`];
+    const result = await pool.query(query, values);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error searching for items:', error);
+    res.status(500).send('Error searching for items');
+  }
+});
+
+
 // Start server
 app.listen(PORT, () => console.log('Server running on port ' + PORT));

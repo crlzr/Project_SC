@@ -663,4 +663,46 @@ h2.slogan {
   font-size: 1.2rem; /* Adjust size to your preference */
 }
 
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+  width: 100%;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.2rem;
+  border: 1px solid #b6f3ba;
+  border-radius: 24px;
+}
+
+button {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #b6f3ba;
+  color: black;
+  border-radius: 15px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: rgb(87, 127, 87);
+}
+
+.Title {
+  padding: 2rem;
+  color: rgb(164, 223, 164);
+  font-size: 40px;
+}
+
 /*# sourceMappingURL=index.css.map */
