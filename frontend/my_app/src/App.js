@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import Navbar from './Components/Navbar';
@@ -15,6 +15,13 @@ import Talk from 'talkjs';
 import SearchBar from './Components/SearchBar';
 
 const App = () => {
+
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = (results) => {
+    setSearchResults(results);  // Store search results in state
+  };
+
   const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
 
   const handleAccountClick = () => {
@@ -40,15 +47,7 @@ const App = () => {
         welcomeMessage: 'Hi!',
       });
     }
-    
   }, [isAuthenticated, user]);
-  
-
-  // const syncConversation = useCallback((session) => {
-  //   // You can create a placeholder conversation or handle it in each component
-  //   const conversation = session.getOrCreateConversation('new_conversation');
-  //   return conversation;
-  // }, []);
 
   if (isLoading) return <div>Loading...</div>; // Handle loading state
 
@@ -75,11 +74,30 @@ const App = () => {
               )
             } 
           />
-          <Route path="/" element={<><SearchBar /><Categories /></>} />
+          <Route 
+            path="/" 
+            element={
+              <>
+                <SearchBar onSearch={handleSearch} />
+                <Categories />
+                {/* Display search results if any */}
+                <div className="search-results">
+                  {searchResults.length > 0 ? (
+                    <ul>
+                      {searchResults.map((item) => (
+                        <li key={item.Item_id}>{item.Item_name}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No results found</p>
+                  )}
+                </div>
+              </>
+            } 
+          />
           <Route path="/profile" element={<><Home /><Profile /></>} />
           <Route path="/category/:category_name" element={<CategoryItems />} />
           <Route path="/category/:category_name/:itemId" element={<ItemsListing/>} />
-          {/* syncConversation={syncConversation} */}
           <Route path="/success" element={<SuccessPage />} />
         </Routes>
         <Navbar onAccountClick={handleAccountClick} />
