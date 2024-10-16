@@ -3,7 +3,9 @@ import { useLocation } from 'react-router-dom'; // Import useLocation to retriev
 
 const SearchResults = () => {
   const location = useLocation();
-  const { results } = location.state || { results: [] }; // Get results from state
+  const results = location.state?.results || []; // Safely get results from state
+
+  console.log('Search Results:', results);
 
   return (
     <div>
@@ -13,7 +15,7 @@ const SearchResults = () => {
       ) : (
         <ul>
           {results.map((item) => (
-            <li key={item.id}>
+            <li key={item.Item_id}>
               <h3>{item.Item_name}</h3>
               <p>{item.Description}</p>
             </li>

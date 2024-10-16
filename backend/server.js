@@ -42,7 +42,7 @@ app.use((err, req, res, next) => {
 
 app.use(express.static('public'));
 
-const YOUR_DOMAIN = 'http://localhost:5003';
+const YOUR_DOMAIN = 'http://localhost:5005';
 
 // JWT check middleware
 const jwtCheck = auth({
@@ -115,13 +115,18 @@ app.get('/item/search', async (req, res) => {
       WHERE "Items"."Item_name" ILIKE $1
     `;
     const values = [`%${searchQuery}%`];
+    // const values = [`stroller`];
+    console.log("Executing Query:", query, "with values:", values);
     const result = await pool.query(query, values);
+    console.log(result.rows);
     res.json(result.rows);
   } catch (error) {
     console.error('Error searching for items:', error);
     res.status(500).send('Error searching for items');
   }
 });
+
+
 
 // STRIPE CHECKOUT SESSION
 app.post('/create-checkout-session', async (req, res) => {

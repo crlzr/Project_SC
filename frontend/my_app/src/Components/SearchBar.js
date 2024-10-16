@@ -23,6 +23,7 @@ const SearchBar = ({ onSearch }) => {
         throw new Error('Failed to fetch search results');
       }
       const data = await response.json();
+      console.log("Fetched Data:", data);
       onSearch(data);  // Pass the fetched results back to the parent (App.js)
       navigate(`/search?query=${query}`, { state: { results: data } });
     } catch (err) {
