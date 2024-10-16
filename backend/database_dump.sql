@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS public."Categories" CASCADE;
 DROP TABLE IF EXISTS public."Renters" CASCADE;
 
 --
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
@@ -227,7 +227,7 @@ COPY public."Items" ("Item_id", "Item_name", "Category_id", "Renter_id", "Descri
 30	Boxing Gloves	7	30	Comes in 3 different sizes, S/M/L	6	https://res.cloudinary.com/dbsawv974/image/upload/f_auto,q_auto/c_fill,g_auto,h_340,w_400/y0xdsebe3xjmskztec93?_a=BAMAH2M20	Available	Thomas
 31	Torch	8	31	Uses AA batteries (included)	2	https://res.cloudinary.com/dbsawv974/image/upload/f_auto,q_auto/c_fill,g_auto,h_340,w_400/ufswb8mxnfrrgiilzlvz?_a=BAMAH2M20	Available	Eleanor
 32	Portable Gas Cooker	8	32	Works well, does not come with gas canister	15	https://res.cloudinary.com/dbsawv974/image/upload/f_auto,q_auto/c_fill,g_auto,h_340,w_400/palknnf5pc8eyt8341lq?_a=BAMAH2M20	Available	Peter
-34	Stroller	6	12	Next level stroller	15	\N	\N	\N
+34	Stroller	6	12	Next level stroller	15	https://res.cloudinary.com/dbsawv974/image/upload/f_auto,q_auto/c_fill,g_auto,h_340,w_400/qpfcx8lqbhuebzmuitbm?_a=BAMAH2Oa0	Available\n	Francis\n
 \.
 
 
