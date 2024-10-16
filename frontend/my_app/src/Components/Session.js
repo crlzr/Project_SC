@@ -16,7 +16,7 @@ function Chat({ syncUser }) {
         const fetchItemDetails = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:5005/${category_name}/${itemId}`);
+                const response = await axios.get(`http://localhost:5004/${category_name}/${itemId}`);
                 setItem(response.data);
             } catch (error) {
                 console.error('Error fetching item details:', error);

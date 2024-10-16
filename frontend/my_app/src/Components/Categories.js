@@ -16,7 +16,7 @@ const Categories = () => {
   const fetchCategories = async () => {
     const delay = new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
     try {
-      const response = await axios.get('http://localhost:5005/');
+      const response = await axios.get('http://localhost:5004/');
 
       // Ensure both API fetching and 5 seconds delay are completed before proceeding
       await Promise.all([delay, setCategories(response.data)]);

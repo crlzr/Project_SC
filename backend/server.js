@@ -6,10 +6,10 @@ const cloudinary = require('cloudinary').v2;
 const { auth } = require('express-oauth2-jwt-bearer');
 const Stripe = require('stripe');
 
-const stripe = require('stripe')('sk_test_wsFx86XDJWwmE4dMskBgJYrt');
-
 const app = express();
-const PORT = process.env.PORT || 5005;
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+app.use(express.json());
+const PORT = process.env.PORT || 5004;
 
 // Define allowed origins
 // const allowedOrigins = [
@@ -39,10 +39,6 @@ app.use((err, req, res, next) => {
   next();
 });
 
-
-app.use(express.static('public'));
-
-const YOUR_DOMAIN = 'http://localhost:5005';
 
 // JWT check middleware
 const jwtCheck = auth({
@@ -88,6 +84,9 @@ cloudinary.config({
 
 
 
+// Signup Route
+
+// Login Route
 
 // ALL CATEGORIES - HOMEPAGE
 // Function to handle health check (fetch Categories)
@@ -101,33 +100,6 @@ const getCategories = (req, res) => {
 };
 // Route to get Categories data
 app.get('/', getCategories);
-
-
-// SEARCH BAR
-app.get('/item/search', async (req, res) => {
-  const searchQuery = req.query.q;
-  if (!searchQuery) {
-    return res.status(400).send('Search query is required');
-  }
-  try {
-    const query = `
-      SELECT * FROM "Items"
-      INNER JOIN "Renters" ON "Items"."Renter_id" = "Renters"."Renter_id"
-      WHERE "Items"."Item_name" ILIKE $1
-    `;
-    const values = [`%${searchQuery}%`];
-    // const values = [`stroller`];
-    console.log("Executing Query:", query, "with values:", values);
-    const result = await pool.query(query, values);
-    console.log(result.rows);
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error searching for items:', error);
-    res.status(500).send('Error searching for items');
-  }
-});
-
-
 
 // STRIPE CHECKOUT SESSION
 app.post('/create-checkout-session', async (req, res) => {
@@ -167,7 +139,29 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
-
+// SEARCH BAR
+app.get('/item/search', async (req, res) => {
+  const searchQuery = req.query.q;
+  if (!searchQuery) {
+    return res.status(400).send('Search query is required');
+  }
+  try {
+    const query = `
+      SELECT * FROM "Items"
+      INNER JOIN "Renters" ON "Items"."Renter_id" = "Renters"."Renter_id"
+      WHERE "Items"."Item_name" ILIKE $1
+    `;
+    const values = [`%${searchQuery}%`];
+    // const values = [`stroller`];
+    console.log("Executing Query:", query, "with values:", values);
+    const result = await pool.query(query, values);
+    console.log(result.rows);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error searching for items:', error);
+    res.status(500).send('Error searching for items');
+  }
+});
 
 // get items within a certain (e.g., 5km) radius (protected)
 app.get('/items/nearby', jwtCheck, async (req, res) => {
@@ -326,24 +320,6 @@ app.get('/:category_name/:itemId', async (req, res) => {
     console.error('Error executing query:', error);
     res.status(500).json({ error: 'Database query failed' });
   }
-});
-
-// STRIPE PAYMENT
-app.post('/create-checkout-session', async (req, res) => {
-  const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price: '{{PRICE_ID}}',
-        quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    success_url: `${YOUR_DOMAIN}?success=true`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
-  });
-
-  res.redirect(303, session.url);
 });
 
 
