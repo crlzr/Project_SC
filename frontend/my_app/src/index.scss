@@ -778,12 +778,30 @@ h2.slogan {
 
 
 // SearchBar
-
 .search-bar-container {
   display: flex;
   justify-content: center; // Center the search bar horizontally
   margin-top: 5rem; // Space between the header and search bar
   width: 100%; // Ensure the container takes the full width of its parent
+}
+
+.search-input-container {
+  display: flex;
+  align-items: center; // Align items vertically center
+
+  .search-icon-container {
+    position: relative; // Absolute positioning for the icon
+    right: 10px; // Position the icon 10px from the right
+    top: 50%; // Center vertically
+    transform: translateY(-50%); // Center adjustment
+    pointer-events: none; // Prevent mouse events from being captured by the icon
+
+    svg {
+      cursor: pointer; // Change cursor to pointer for the icon
+      width: 20px; // Adjust width of the icon
+      height: 20px; // Adjust height of the icon
+    }
+  }
 }
 
 form {
@@ -798,22 +816,8 @@ input {
   width: 100%; // Full width of the form
   padding: 0.75rem; // Add padding for a more spacious input
   font-size: 1.2rem; // Increase font size for better readability
-  border: 1px solid #b6f3ba; // Light gray border similar to Google's
+  border: 1px solid #C9D7A4; // Light gray border similar to Google's
   border-radius: 24px; // Rounded corners similar to Google's style
-}
-
-button {
-  padding: 0.8rem;
-  font-size: 1rem;
-  border: none;
-  background-color: #b6f3ba;
-  color: black;
-  border-radius: 15px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgb(87, 127, 87);
-  }
 }
 
 .Title {
@@ -821,5 +825,3 @@ button {
   color: rgb(164, 223, 164);
   font-size: 40px;
 }
-
-

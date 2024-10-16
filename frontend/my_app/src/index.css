@@ -670,6 +670,23 @@ h2.slogan {
   width: 100%;
 }
 
+.search-input-container {
+  display: flex;
+  align-items: center;
+}
+.search-input-container .search-icon-container {
+  position: relative;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.search-input-container .search-icon-container svg {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
 form {
   display: flex;
   align-items: center;
@@ -682,21 +699,8 @@ input {
   width: 100%;
   padding: 0.75rem;
   font-size: 1.2rem;
-  border: 1px solid #b6f3ba;
+  border: 1px solid #C9D7A4;
   border-radius: 24px;
-}
-
-button {
-  padding: 0.8rem;
-  font-size: 1rem;
-  border: none;
-  background-color: #b6f3ba;
-  color: black;
-  border-radius: 15px;
-  cursor: pointer;
-}
-button:hover {
-  background-color: rgb(87, 127, 87);
 }
 
 .Title {
