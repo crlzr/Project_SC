@@ -6,6 +6,7 @@ import AccountIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import { Inbox } from "@talkjs/react";
 import Chat from "./Session";
+import AddIcon from '@mui/icons-material/Add';
 
 const Navbar = ({ onAccountClick }) => {
   const navigate = useNavigate();
@@ -33,9 +34,15 @@ const Navbar = ({ onAccountClick }) => {
             <a href="/">Home</a>
           </li>
           <li>
-            <TravelExploreIcon className="nav-icon" alt="explore" />
+            <TravelExploreIcon className="nav-icon" alt="nearby" />
             <button onClick={handleFetchNearbyItems} className="explore-button">
-              Explore
+              Nearby
+            </button>
+          </li>
+          <li>
+            <AddIcon className="nav-icon" alt="Add Item" />
+            <button onClick={handleFetchNearbyItems} className="explore-button">
+              Add Item
             </button>
           </li>
           <li>
