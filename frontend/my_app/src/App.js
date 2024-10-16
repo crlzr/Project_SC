@@ -13,14 +13,11 @@ import Profile from './Components/Profile';
 import { Session, Inbox } from '@talkjs/react';
 import Talk from 'talkjs';
 import SearchBar from './Components/SearchBar';
+import SearchResults from './Components/SearchResult';
 
 const App = () => {
 
   const [searchResults, setSearchResults] = useState([]);
-
-  const handleSearch = (results) => {
-    setSearchResults(results);  // Store search results in state
-  };
 
   const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
 
@@ -57,7 +54,7 @@ const App = () => {
         <Routes>
           <Route path="/items/nearby" element={<NearbyItems />} />
            {/* Chat Route */}
-           <Route 
+          <Route 
             path="/chat" 
             element={
               isAuthenticated ? (
@@ -75,26 +72,19 @@ const App = () => {
             } 
           />
           <Route 
-            path="/" 
-            element={
-              <>
-                <SearchBar onSearch={handleSearch} />
-                <Categories />
-                {/* Display search results if any */}
-                <div className="search-results">
-                  {searchResults.length > 0 ? (
-                    <ul>
-                      {searchResults.map((item) => (
-                        <li key={item.Item_id}>{item.Item_name}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No results found</p>
-                  )}
-                </div>
-              </>
-            } 
-          />
+          path="/" 
+          element={
+            <div>
+              <SearchBar onSearch={setSearchResults} />
+              < Categories />
+            </div>
+          } 
+        />
+        {/* Route for search results */}
+        <Route 
+          path="/search" 
+          element={<SearchResults results={searchResults} />} 
+        />
           <Route path="/profile" element={<><Home /><Profile /></>} />
           <Route path="/category/:category_name" element={<CategoryItems />} />
           <Route path="/category/:category_name/:itemId" element={<ItemsListing/>} />

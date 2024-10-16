@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
   const [error, setError] = useState(null);  // To handle errors
   const [loading, setLoading] = useState(false);  // To show a loading state
+  const navigate = useNavigate();
+
   const handleInputChange = (event) => {
     setQuery(event.target.value);
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!query) return;  // Prevent empty search
@@ -19,6 +24,7 @@ const SearchBar = ({ onSearch }) => {
       }
       const data = await response.json();
       onSearch(data);  // Pass the fetched results back to the parent (App.js)
+      navigate(`/search?query=${query}`, { state: { results: data } });
     } catch (err) {
       setError(err.message);  // Set error state if the request fails
     } finally {
