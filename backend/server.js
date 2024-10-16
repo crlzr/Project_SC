@@ -112,6 +112,7 @@ app.get('/item/search', async (req, res) => {
   try {
     const query = `
       SELECT * FROM "Items"
+      INNER JOIN "Renters" ON "Items"."Renter_id" = "Renters"."Renter_id"
       WHERE "Items"."Item_name" ILIKE $1
     `;
     const values = [`%${searchQuery}%`];

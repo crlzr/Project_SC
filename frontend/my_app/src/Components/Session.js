@@ -69,7 +69,6 @@ function Chat({ syncUser }) {
             id: item.Renter_id,
             name: item.Renter_name,
             photoUrl: item.Profile_pic,
-            welcomeMessage: 'Hello',
         });
 
         conversation.setParticipant(talkSession.me);

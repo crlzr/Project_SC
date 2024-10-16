@@ -14,7 +14,7 @@ const Categories = () => {
   const [loading, setLoading] = useState(true); // Initialize loading state
 
   const fetchCategories = async () => {
-    const delay = new Promise((resolve) => setTimeout(resolve, 3000)); // 5 seconds delay
+    const delay = new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
     try {
       const response = await axios.get('http://localhost:5005/');
 

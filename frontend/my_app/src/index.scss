@@ -149,6 +149,15 @@ p.user-address {
   flex-direction: column;
   align-items: center; // Center item cards horizontally
   padding: 1rem; // Optional: padding around the container for better spacing
+  justify-content: center;
+
+  h2 {
+    font-weight: 600;
+    color: #494949;
+    padding-left: 1rem; // Add padding to the left if needed
+    margin: 0; // Remove margin for better control
+    padding-bottom: 1rem;
+  }
 
   .Category-items-title-address-container {
     align-self: flex-start; // Align title and address to the left
@@ -651,12 +660,12 @@ h2.slogan {
   justify-content: center; // Center vertically
   align-items: center; // Center horizontally
   text-align: center; // Center text alignment
-  padding-bottom: 5rem;
   padding-top: 1rem;
 
   h2 {
     font-family: "Inter", sans-serif;
     color: #494949;
+    padding: 1rem;
   }
 }
 
@@ -664,7 +673,6 @@ h2.slogan {
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center;     /* Center vertically */
-  padding-top: 2rem;
   flex-direction: column;
 }
 
@@ -780,48 +788,64 @@ h2.slogan {
 // SearchBar
 .search-bar-container {
   display: flex;
-  justify-content: center; // Center the search bar horizontally
-  margin-top: 5rem; // Space between the header and search bar
-  width: 100%; // Ensure the container takes the full width of its parent
-}
+  justify-content: center;
+  margin-top: 5rem;
+  width: 100%;
 
-.search-input-container {
-  display: flex;
-  align-items: center; // Align items vertically center
+  .search-input-container {
+    display: flex;
+    align-items: center;
+    position: relative; // Ensure the icon can be positioned inside the input
+    padding-bottom: 2rem;
+  }
 
-  .search-icon-container {
-    position: relative; // Absolute positioning for the icon
-    right: 10px; // Position the icon 10px from the right
-    top: 50%; // Center vertically
-    transform: translateY(-50%); // Center adjustment
-    pointer-events: none; // Prevent mouse events from being captured by the icon
+  form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
 
-    svg {
-      cursor: pointer; // Change cursor to pointer for the icon
-      width: 20px; // Adjust width of the icon
-      height: 20px; // Adjust height of the icon
+    input {
+      width: 100%;
+      padding: 0.75rem 2.5rem 0.75rem 1rem; // Add padding on the right for the icon
+      font-size: 1.2rem;
+      border: 1px solid #C9D7A4;
+      border-radius: 24px;
+    }
+
+    // Style for the search icon
+    .search-icon {
+      position: absolute;
+      right: 1rem; // Position the icon inside the input, adjust as needed
+      cursor: pointer;
+      color: #494949;
+      font-weight: 600;
     }
   }
 }
-
-form {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 600px; // Adjust this value for the desired maximum width
-  margin: 0 auto; // Center the form within its container
-}
-
-input {
-  width: 100%; // Full width of the form
-  padding: 0.75rem; // Add padding for a more spacious input
-  font-size: 1.2rem; // Increase font size for better readability
-  border: 1px solid #C9D7A4; // Light gray border similar to Google's
-  border-radius: 24px; // Rounded corners similar to Google's style
+.searchbar-categories {
+  form {
+    justify-content: center;
+  }
 }
 
 .Title {
   padding: 2rem;
   color: rgb(164, 223, 164);
   font-size: 40px;
+}
+
+.renter-profile-pic {
+  width: 2.5rem; /* Set width */
+  height: 2.5rem; /* Set height */
+  border-radius: 50%; /* Make the image circular */
+  object-fit: cover; /* Ensure the image covers the area */
+  margin-right: 0.625rem; /* Space between the image and the name */
+}
+
+.item-image {
+  height: auto;
+  border-radius: 0.625rem;
+  border: 0.125rem solid white;
 }

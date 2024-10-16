@@ -64,9 +64,9 @@ const App = () => {
                   className="talkjs-container"
                 />
               ) : (
-                <div style={{ textAlign: 'center', marginTop: '50px' }}>
-                  <h2>You need to log in to access the chat</h2>
-                  <button onClick={loginWithRedirect}>Log In</button>
+                <div className="login-prompt" style={{ textAlign: 'center' }}>
+                  <h2>You need to log in to access the chat.</h2>
+                  <button className="login-button" onClick={loginWithRedirect}>Log In</button>
                 </div>
               )
             } 
@@ -74,7 +74,7 @@ const App = () => {
           <Route 
           path="/" 
           element={
-            <div>
+            <div className="searchbar-categories">
               <SearchBar onSearch={setSearchResults} />
               < Categories />
             </div>
@@ -85,7 +85,7 @@ const App = () => {
           path="/search" 
           element={<SearchResults results={searchResults} />} 
         />
-          <Route path="/profile" element={<><Home /><Profile /></>} />
+          <Route path="/profile" element={<><Profile /><Home /></>} />
           <Route path="/category/:category_name" element={<CategoryItems />} />
           <Route path="/category/:category_name/:itemId" element={<ItemsListing/>} />
           <Route path="/success" element={<SuccessPage />} />

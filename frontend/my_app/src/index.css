@@ -129,6 +129,14 @@ p.user-address {
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  justify-content: center;
+}
+.Category-items-container h2 {
+  font-weight: 600;
+  color: #494949;
+  padding-left: 1rem;
+  margin: 0;
+  padding-bottom: 1rem;
 }
 .Category-items-container .Category-items-title-address-container {
   align-self: flex-start;
@@ -550,19 +558,18 @@ h2.slogan {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-bottom: 5rem;
   padding-top: 1rem;
 }
 .login-prompt h2 {
   font-family: "Inter", sans-serif;
   color: #494949;
+  padding: 1rem;
 }
 
 .centered-container {
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-  padding-top: 2rem;
   flex-direction: column;
 }
 
@@ -669,44 +676,56 @@ h2.slogan {
   margin-top: 5rem;
   width: 100%;
 }
-
-.search-input-container {
+.search-bar-container .search-input-container {
   display: flex;
   align-items: center;
-}
-.search-input-container .search-icon-container {
   position: relative;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
+  padding-bottom: 2rem;
 }
-.search-input-container .search-icon-container svg {
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-}
-
-form {
+.search-bar-container form {
   display: flex;
   align-items: center;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
 }
-
-input {
+.search-bar-container form input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
   font-size: 1.2rem;
   border: 1px solid #C9D7A4;
   border-radius: 24px;
+}
+.search-bar-container form .search-icon {
+  position: absolute;
+  right: 1rem;
+  cursor: pointer;
+  color: #494949;
+  font-weight: 600;
+}
+
+.searchbar-categories form {
+  justify-content: center;
 }
 
 .Title {
   padding: 2rem;
   color: rgb(164, 223, 164);
   font-size: 40px;
+}
+
+.renter-profile-pic {
+  width: 2.5rem; /* Set width */
+  height: 2.5rem; /* Set height */
+  border-radius: 50%; /* Make the image circular */
+  object-fit: cover; /* Ensure the image covers the area */
+  margin-right: 0.625rem; /* Space between the image and the name */
+}
+
+.item-image {
+  height: auto;
+  border-radius: 0.625rem;
+  border: 0.125rem solid white;
 }
 
 /*# sourceMappingURL=index.css.map */
