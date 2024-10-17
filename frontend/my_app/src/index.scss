@@ -68,75 +68,69 @@ body {
 }
 
 // LIST OF ALL CATEGORIES PAGE (HOMEPAGE)
-.categories-title {
-  text-align: center;
-  // font-weight: 600;
-  color: #494949;
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 1rem; /* Space between tiles */
+  max-width: 100%; /* Ensure container takes full width */
+  padding: 1rem;
+  justify-items: center;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for larger screens */
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for even larger screens */
+  }
 }
 
-.categories-container {
-  display: flex;
-  flex-wrap: wrap; /* Allow cards to wrap to the next row */
-  justify-content: center; /* Center cards in the container */
-  gap: 1rem; /* Space between cards */
+.category-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  background: white;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  height: 100%;
 
-  .MuiCard-root {
-    flex: 0 0 calc(33.33% - 1rem); /* Three cards per row with space for margins */
-    margin: 0.5rem; /* Space between cards */
-    max-width: 21.56rem; /* Restrict card size */
-    width: 100%; /* Ensure cards take full width available in the container */
+  &:hover {
+    transform: scale(1.05); /* Slightly enlarge the tile on hover */
   }
 
-
-  .category-card {
-   flex: 0 0 calc(33.33% - 1rem); /* Three cards per row with spacing */
-    margin: 0.5rem;
-    max-width: 345px; /* Set the maximum width of the card */
-    background: white;
-    border-radius: 0.625rem;
-    // border: 2px solid white;
-    // box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1);
-    // box-shadow: 0rem 0.5rem 1rem rgba(138, 190, 232, 0.6);
-    display: flex;
-    flex-direction: column;
-
-     /* Responsive adjustments for smaller screens */
-  @media (max-width: 48rem) {
-    .MuiCard-root {
-      flex: 0 0 calc(50% - 1.5rem); /* Two cards per row on small screens */
-    }
+  img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
   }
 
-  @media (max-width: 30rem) {
-    height: 160px;
+  &:hover img {
+    transform: scale(1.1); /* Zoom effect on hover */
+  }
 
-    .MuiCard-root {
-      flex: 0 0 calc(100% - 1rem); /* One card per row on very small screens */
-    }
+  .category-tile-content {
+    position: absolute;
+    bottom: 10%;
+    left: 0;
+    right: 0;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.5rem;
+    text-align: center;
 
     h4 {
-      color: #494949;
-      font-size: 0.8rem;
-      margin: 0 0 0.8125rem;
-      font-weight: 400;
-      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 550;
+      margin: 0;
+      font-family: poppins, sans-serif;
+      letter-spacing: 1px
     }
   }
-  }
 
-  .category-image {
-    height: auto;
-    width: 100%;
-    margin: 0 auto;
-
-  }
-
-  h4 {
-    color: #494949;
-    font-size: 1.3rem;
-    margin: 0 0 0.8125rem;
-    font-weight: 400;
-    text-align: center;
+  a.no-undies {
+    text-decoration: none;
+    color: inherit;
   }
 }
 
