@@ -9,7 +9,7 @@ const Stripe = require('stripe');
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 app.use(express.json());
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 5004;
 
 // Define allowed origins
 // const allowedOrigins = [
@@ -282,8 +282,10 @@ app.get('/:category_name', async (req, res) => {
     const result = await pool.query(query, [categoryName]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Category not found' });
+
     }
     res.status(200).json(result.rows);
+    console.log('Query Result:', result);
   } catch (error) {
     console.error('Error executing query:', error);
     res.status(500).json({ error: 'Database query failed' });
@@ -316,6 +318,7 @@ app.get('/:category_name/:itemId', async (req, res) => {
       return res.status(404).json({ error: 'Item not found' });
     }
     res.status(200).json(result.rows[0]);
+    console.log('Query Result:', result);
   } catch (error) {
     console.error('Error executing query:', error);
     res.status(500).json({ error: 'Database query failed' });
@@ -325,20 +328,21 @@ app.get('/:category_name/:itemId', async (req, res) => {
 
 // POST route to add a new item
 app.post('/items', async (req, res) => {
-  const { itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id } = req.body;
+  const { itemName, description, pricePerDay, imageUrl, availability, category_id } = req.body;
+
 
   // Validate the inputs
-  if (!itemName || !description || !pricePerDay || !category_id || !renter_id) {
+  if (!itemName || !description || !pricePerDay || !imageUrl || !availability  || !category_id) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
   try {
     const query = `
-      INSERT INTO "Items" ("Item_name", "Description", "Price_per_day", "Image_url", "Availability", "Category_id", "Renter_id")
-      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
-    `;
+    INSERT INTO "Items" ("Item_name", "Description", "Price_per_day", "Image_url", "Availability", "Category_id")
+    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+  `;
 
-    const values = [itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id];
+    const values = [itemName, description, pricePerDay, imageUrl, availability, category_id];
     const result = await pool.query(query, values);
 
     // Return the newly added item
@@ -348,6 +352,7 @@ app.post('/items', async (req, res) => {
     res.status(500).json({ error: 'Failed to add the item' });
   }
 });
+
 
 
 

@@ -21,6 +21,11 @@ const Navbar = ({ onAccountClick }) => {
     navigate('/profile');
   };
 
+    // Adding Items
+    const onAddItemClick = () => {
+      navigate('/items');
+    };
+
   const handleInbox = () => {
     navigate('/chat');
   };
@@ -41,7 +46,7 @@ const Navbar = ({ onAccountClick }) => {
           </li>
           <li>
             <AddIcon className="nav-icon" alt="Add Item" />
-            <button onClick={handleFetchNearbyItems} className="explore-button">
+            <button onClick={onAddItemClick} className="explore-button">
               Add Item
             </button>
           </li>

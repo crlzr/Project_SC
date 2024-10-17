@@ -14,6 +14,7 @@ import { Session, Inbox } from '@talkjs/react';
 import Talk from 'talkjs';
 import SearchBar from './Components/SearchBar';
 import SearchResults from './Components/SearchResult';
+import ItemForm from './Components/ItemForm';
 
 const App = () => {
 
@@ -24,7 +25,7 @@ const App = () => {
   const handleAccountClick = () => {
     loginWithRedirect();
   };
-  
+
   const syncUser = useCallback(() => {
     if (isAuthenticated && user) {
       return new Talk.User({
@@ -54,12 +55,12 @@ const App = () => {
         <Routes>
           <Route path="/items/nearby" element={<NearbyItems />} />
            {/* Chat Route */}
-          <Route 
-            path="/chat" 
+          <Route
+            path="/chat"
             element={
               isAuthenticated ? (
                 <Inbox
-                  conversationId={`conversation_${user.sub}`} 
+                  conversationId={`conversation_${user.sub}`}
                   style={{ width: '100%', height: '500px' }}
                   className="talkjs-container"
                 />
@@ -69,23 +70,24 @@ const App = () => {
                   <button className="login-button" onClick={loginWithRedirect}>Log In</button>
                 </div>
               )
-            } 
+            }
           />
-          <Route 
-          path="/" 
+          <Route
+          path="/"
           element={
             <div className="searchbar-categories">
               <SearchBar onSearch={setSearchResults} />
               < Categories />
             </div>
-          } 
+          }
         />
         {/* Route for search results */}
-        <Route 
-          path="/search" 
-          element={<SearchResults results={searchResults} />} 
+        <Route
+          path="/search"
+          element={<SearchResults results={searchResults} />}
         />
           <Route path="/profile" element={<><Profile /><Home /></>} />
+          <Route path="/items" element={<ItemForm />} />
           <Route path="/category/:category_name" element={<CategoryItems />} />
           <Route path="/category/:category_name/:itemId" element={<ItemsListing/>} />
           <Route path="/success" element={<SuccessPage />} />
