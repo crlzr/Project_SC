@@ -4,10 +4,10 @@ const ItemForm = () => {
   const [itemName, setItemName] = useState('');
   const [description, setDescription] = useState('');
   const [pricePerDay, setPricePerDay] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
   const [availability, setAvailability] = useState(false);
   const [categoryId, setCategoryId] = useState(1);
   const [renterId] = useState(1); // Set your default RenterID here
+  const [image, setImage] = useState(null); // State to handle image file
 
   const categories = [
     { id: 1, name: 'Electronics' },
@@ -23,30 +23,25 @@ const ItemForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newItem = {
-      itemName,
-      description,
-      pricePerDay: parseFloat(pricePerDay),
-      imageUrl,
-      availability,
-      category_id: categoryId,
-      renter_id: renterId, // Include renterId in the new item
-    };
+    const formData = new FormData();
+    formData.append('itemName', itemName);
+    formData.append('description', description);
+    formData.append('pricePerDay', pricePerDay);
+    formData.append('availability', availability);
+    formData.append('category_id', categoryId);
+    formData.append('renter_id', renterId); // Include renterId in the FormData
+    formData.append('image', image); // Append the image file
 
     try {
       const response = await fetch('http://localhost:5004/items', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newItem),
+        body: formData, // Send form data with image and other details
       });
 
       if (response.ok) {
         const result = await response.json();
         console.log('Item added:', result);
         alert('Item added successfully!');
-        // Optionally, reset the form or update state here
       } else {
         const error = await response.json();
         alert(`Error: ${error.error}`);
@@ -81,10 +76,8 @@ const ItemForm = () => {
         required
       />
       <input
-        type="url"
-        placeholder="Image URL"
-        value={imageUrl}
-        onChange={(e) => setImageUrl(e.target.value)}
+        type="file"
+        onChange={(e) => setImage(e.target.files[0])} // Handle image file input
         required
       />
       <label>
@@ -102,11 +95,12 @@ const ItemForm = () => {
           </option>
         ))}
       </select>
-      {/* Optionally show RenterID as read-only or hidden */}
+
+      {/* Hidden input for renterId */}
       <input
-        type="hidden"
-        value={renterId}
-        readOnly
+      type="hidden"
+      value={renterId}
+      readOnly
       />
 
       <button type="submit">Add Item</button>

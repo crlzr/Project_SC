@@ -1,10 +1,12 @@
 require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors'); // Import CORS
 const pool = require(__dirname + '/db.config.js');
 const cloudinary = require('cloudinary').v2;
 const { auth } = require('express-oauth2-jwt-bearer');
 const Stripe = require('stripe');
+const multer = require('multer');
 
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
@@ -53,6 +55,11 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+// Multer
+// Configure multer for file uploads
+const storage = multer.memoryStorage(); // Store uploaded files in memory
+const upload = multer({ storage });
 
 // Function to upload images on Cloudinary, transform them and get URL on command line
 // (async function() {
@@ -324,17 +331,81 @@ app.get('/:category_name/:itemId', async (req, res) => {
   }
 });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// POST route to upload image and save URL to the database
+app.post('/upload', async (req, res) => {
+  const { imageFile } = req.body; // Assuming you send the image as base64 string
+
+  try {
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(imageFile, {
+      upload_preset: 'your_preset', // Optional: use if you have a preset
+    });
+
+    const imageUrl = result.secure_url;
+    console.log('Image URL:', imageUrl);
+
+    // Save URL to PostgreSQL database
+    const query = 'INSERT INTO "Items" ("Image_url") VALUES ($1) RETURNING *;';
+    const values = [imageUrl];
+    const dbResult = await pool.query(query, values);
+
+    res.status(201).json({ message: 'Image uploaded successfully', item: dbResult.rows[0] });
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    res.status(500).json({ error: 'Failed to upload image' });
+  }
+});
 
 // POST route to add a new item
-app.post('/items', async (req, res) => {
-  const { itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id } = req.body;
+app.post('/items', upload.single('image'), async (req, res) => {
+  const { itemName, description, pricePerDay, availability, category_id, renter_id } = req.body;
+  const image = req.file; // Get the uploaded image
 
   // Validate the inputs
-  if (!itemName || !description || !pricePerDay || !imageUrl || !availability || !category_id || !renter_id) {
+  if (!itemName || !description || !pricePerDay || !image || !availability || !category_id || !renter_id) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
   try {
+    // Promisify the Cloudinary upload to use async/await
+    const uploadImageToCloudinary = (imageBuffer) => {
+      return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream({
+          resource_type: 'auto', // Automatically detect the resource type
+        }, (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve(result);
+        }).end(imageBuffer); // Use the image buffer for the upload
+      });
+    };
+
+    // Upload the image and get the result
+    const uploadResult = await uploadImageToCloudinary(image.buffer);
+
+    // Get the secure URL from Cloudinary response
+    const imageUrl = cloudinary.url(uploadResult.public_id, {
+      transformation: [
+        {
+          quality: 'auto',
+          fetch_format: 'auto'
+        },
+        {
+          width: 400,
+          height: 340,
+          crop: 'fill',
+          gravity: 'auto'
+        }
+      ]
+    });
+
+    console.log('Image URL:', imageUrl);
+
+    // Insert item details into the database
     const query = `
       INSERT INTO "Items" ("Item_name", "Description", "Price_per_day", "Image_url", "Availability", "Category_id", "Renter_id")
       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
@@ -350,6 +421,7 @@ app.post('/items', async (req, res) => {
     res.status(500).json({ error: 'Failed to add the item' });
   }
 });
+
 
 
 
