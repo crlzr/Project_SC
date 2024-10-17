@@ -52,6 +52,10 @@ const App = () => {
   return (
     <Session appId={process.env.REACT_APP_TALKJS_APP_ID} syncUser={syncUser}>
       <Router>
+      <div className="logo-container">
+          <img src={"sharecirclelogo.png"} alt="Logo" className="logo" />
+          <h1 className="logo-text">Share Circle</h1>
+        </div>
         <Routes>
           <Route path="/items/nearby" element={<NearbyItems />} />
            {/* Chat Route */}

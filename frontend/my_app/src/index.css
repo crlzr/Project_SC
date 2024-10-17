@@ -11,6 +11,11 @@ body {
   align-items: center;
   padding: 1rem;
 }
+.navbar-center {
+  border-radius: 0.625rem;
+  box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1);
+  position: sticky;
+}
 .navbar-center .nav-links {
   list-style-type: none;
   display: flex;
@@ -27,7 +32,7 @@ body {
 }
 .navbar-center .nav-links li .nav-icon {
   margin-bottom: 0.5rem;
-  color: #494949;
+  color: #8ABEE8;
 }
 .navbar-center .nav-links li a {
   color: #757575;
@@ -37,7 +42,7 @@ body {
 .navbar-center .nav-links li img {
   margin-bottom: 0.5rem;
 }
-.navbar-center .nav-links li .account-button, .navbar-center .nav-links li .explore-button, .navbar-center .nav-links li .chat-button {
+.navbar-center .nav-links li .account-button, .navbar-center .nav-links li .explore-button, .navbar-center .nav-links li .chat-button, .navbar-center .nav-links li .add-item-button {
   background: none;
   border: none;
   color: #757575;
@@ -72,16 +77,16 @@ body {
   flex: 0 0 calc(33.33% - 1rem); /* Three cards per row with spacing */
   margin: 0.5rem;
   max-width: 345px; /* Set the maximum width of the card */
-  background: #B7DFF5;
+  background: white;
   border-radius: 0.625rem;
-  border: 2px solid white;
+  box-shadow: 0rem 0.5rem 1rem rgba(138, 190, 232, 0.6);
   display: flex;
   flex-direction: column;
   /* Responsive adjustments for smaller screens */
 }
 @media (max-width: 48rem) {
   .categories-container .category-card .MuiCard-root {
-    flex: 0 0 calc(50% - 1rem); /* Two cards per row on small screens */
+    flex: 0 0 calc(50% - 1.5rem); /* Two cards per row on small screens */
   }
 }
 @media (max-width: 30rem) {
@@ -726,6 +731,22 @@ h2.slogan {
   height: auto;
   border-radius: 0.625rem;
   border: 0.125rem solid white;
+}
+
+.logo-container {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.logo-container h1.logo-text {
+  color: #494949;
+}
+.logo-container .logo {
+  padding-top: 2rem;
+  height: 150px;
+  width: 150px;
+  justify-content: center;
 }
 
 /*# sourceMappingURL=index.css.map */

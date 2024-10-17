@@ -40,7 +40,7 @@ const Categories = () => {
         <h2 className="categories-title">Categories</h2>
         <div className="categories-container">
           {categories.map((category) => (
-            <Card sx={{ maxWidth: 345, margin: '20px', height: '380px' }} key={category.ID} className="category-card">
+            <Card sx={{ maxWidth: 345, margin: '20px', height: '360px' }} key={category.ID} className="category-card">
               <CardActionArea>
                 <Link to={`/category/${category.Name}`} className="no-undies"> {/* Link to category items page */}
                   <CardMedia

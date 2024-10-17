@@ -6,7 +6,8 @@ import AccountIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import { Inbox } from "@talkjs/react";
 import Chat from "./Session";
-import AddIcon from '@mui/icons-material/Add';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const Navbar = ({ onAccountClick }) => {
   const navigate = useNavigate();
@@ -45,9 +46,9 @@ const Navbar = ({ onAccountClick }) => {
             </button>
           </li>
           <li>
-            <AddIcon className="nav-icon" alt="Add Item" />
-            <button onClick={onAddItemClick} className="explore-button">
-              Add Item
+            <AddCircleIcon className="nav-icon" alt="Add Item" />
+            <button onClick={onAddItemClick} className="add-item-button">
+              Item
             </button>
           </li>
           <li>

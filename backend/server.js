@@ -334,31 +334,6 @@ app.get('/:category_name/:itemId', async (req, res) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// POST route to upload image and save URL to the database
-app.post('/upload', async (req, res) => {
-  const { imageFile } = req.body; // Assuming you send the image as base64 string
-
-  try {
-    // Upload to Cloudinary
-    const result = await cloudinary.uploader.upload(imageFile, {
-      upload_preset: 'your_preset', // Optional: use if you have a preset
-    });
-
-    const imageUrl = result.secure_url;
-    console.log('Image URL:', imageUrl);
-
-    // Save URL to PostgreSQL database
-    const query = 'INSERT INTO "Items" ("Image_url") VALUES ($1) RETURNING *;';
-    const values = [imageUrl];
-    const dbResult = await pool.query(query, values);
-
-    res.status(201).json({ message: 'Image uploaded successfully', item: dbResult.rows[0] });
-  } catch (error) {
-    console.error('Error uploading image:', error);
-    res.status(500).json({ error: 'Failed to upload image' });
-  }
-});
-
 // POST route to add a new item
 app.post('/items', upload.single('image'), async (req, res) => {
   const { itemName, description, pricePerDay, availability, category_id, renter_id } = req.body;
