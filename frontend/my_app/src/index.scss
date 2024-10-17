@@ -48,7 +48,7 @@ body {
           margin-bottom: 0.5rem;
         }
 
-        .account-button, .explore-button, .chat-button, .add-item-button {
+        .account-button, .explore-button, .chat-button, .add-item-button, .home {
           background: none;
           border: none;
           color: #757575;
@@ -67,10 +67,34 @@ body {
 }
 
 // LIST OF ALL CATEGORIES PAGE (HOMEPAGE)
+
+.category-card {
+  position: relative;
+}
+
+.category-overlay {
+  position: absolute;
+  bottom: 0; /* Align to the bottom */
+  left: 0;
+  right: 0;
+  //background-color: rgba(201, 215, 164, 0.5); our green
+  //background-color: rgba(138, 190, 232, 0.5); our blue
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  color: white; /* Text color */
+  text-align: center; /* Center the text */
+  padding: 10px; /* Add some padding */
+}
+
+.category-image {
+  object-fit: cover; /* Ensure the image covers the space properly */
+  width: 100%; /* Make sure the image takes full width */
+  height: auto; /* Keep the aspect ratio */
+}
+
 .categories-title {
   text-align: center;
   // font-weight: 600;
-  color: #494949;
+  //color: #494949;
 }
 
 .categories-container {
@@ -95,7 +119,7 @@ body {
     border-radius: 0.625rem;
     // border: 2px solid white;
     // box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1);
-    box-shadow: 0rem 0.5rem 1rem rgba(138, 190, 232, 0.6);
+    //box-shadow: 0rem 0.5rem 1rem rgba(138, 190, 232, 0.6);
     display: flex;
     flex-direction: column;
 
@@ -131,7 +155,7 @@ body {
   }
 
   h4 {
-    color: #494949;
+    //color: #494949;
     font-size: 1.3rem;
     margin: 0 0 0.8125rem;
     font-weight: 400;
@@ -325,7 +349,7 @@ button {
   align-items: center; /* Center inner content horizontally */
   flex-direction: column; /* Stack items vertically if needed */
   padding: 1.25rem;
-  
+
   p.login-rent-prompt {
     text-align: center;
   }
@@ -997,3 +1021,4 @@ button[type="submit"]:hover {
 }
 
 }
+
