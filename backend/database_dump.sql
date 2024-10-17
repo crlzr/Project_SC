@@ -22,13 +22,12 @@ SET row_security = off;
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
-	DROP TABLE IF EXISTS public."Items" CASCADE;
-	DROP TABLE IF EXISTS public."Categories" CASCADE;
-	DROP TABLE IF EXISTS public."Renters" CASCADE;
-
+DROP TABLE IF EXISTS public."Items" CASCADE;
+DROP TABLE IF EXISTS public."Categories" CASCADE;
+DROP TABLE IF EXISTS public."Renters" CASCADE;
 
 --
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
@@ -225,6 +224,8 @@ COPY public."Items" ("Item_id", "Item_name", "Category_id", "Renter_id", "Descri
 37	Small Bike	8	\N	A high-performance bike for on-road adventures	4	https://example.com/bike2.jpg	true	\N
 39	Med Bike	8	\N	A high-performance bike for on-road adventures	5	https://example.com/bike2.jpg	true	\N
 36	Mountain Bike	8	\N	A high-performance bike for off-road adventures	20	https://example.com/bike.jpg	Available	\N
+40	Sample Item	8	\N	This is a sample item description.	20	http://example.com/image.jpg	true	\N
+41	Mouse 	2	1	Where is my mouse cursor	5	http://mouseexample.com	true	Bob
 \.
 
 
@@ -287,7 +288,7 @@ SELECT pg_catalog.setval('public."Items_Category_id_seq"', 1, false);
 -- Name: Items_Item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Items_Item_id_seq"', 39, true);
+SELECT pg_catalog.setval('public."Items_Item_id_seq"', 41, true);
 
 
 --
