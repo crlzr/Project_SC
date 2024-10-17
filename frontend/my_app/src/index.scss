@@ -3,6 +3,12 @@ body {
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: url('/public/stacked-waves-haikei.svg');
+  background-repeat: no-repeat; /* Abstract patterns usually don't repeat */
+  background-size: cover; /* Adjust according to your design */
+  background-position: center; /* Center the pattern */
+  background-color: #f0f0f0; /* Set a base color behind the abstract pattern */
 }
 
 .navbar {
@@ -992,13 +998,9 @@ button[type="submit"]:hover {
 }
 }
 
-/* Update your index.css */
-.whole-homepage {
-  background-image: url('/public/stacked-waves-haikei.svg');
-  background-repeat: no-repeat; /* Abstract patterns usually don't repeat */
-  background-size: cover; /* Adjust according to your design */
-  background-position: center; /* Center the pattern */
-  background-color: #f0f0f0; /* Set a base color behind the abstract pattern */
-}
+// /* Update your index.css */
+// .whole-homepage {
+
+// }
 
 
