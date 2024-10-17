@@ -1000,9 +1000,11 @@ button[type="submit"]:hover {
 
 /* Update your index.css */
 .whole-homepage {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='499' height='709' preserveAspectRatio='none' viewBox='0 0 499 709'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1449%26quot%3b)' fill='none'%3e%3crect width='499' height='709' x='0' y='0' fill='rgba(201%2c 212%2c 122%2c 0.43)'%3e%3c/rect%3e%3cpath d='M0%2c253.38C46.552%2c261.083%2c85.576%2c220.224%2c126.946%2c197.532C171.639%2c173.017%2c230.951%2c161.512%2c252.07%2c115.117C273.188%2c68.723%2c250.498%2c14.154%2c232.049%2c-33.364C216.41%2c-73.644%2c182.874%2c-101.295%2c155.171%2c-134.456C126.866%2c-168.337%2c109.46%2c-216.194%2c67.596%2c-230.212C25.516%2c-244.302%2c-18.988%2c-221.872%2c-60.705%2c-206.742C-100.116%2c-192.448%2c-134.862%2c-171.508%2c-167.344%2c-145.004C-205.818%2c-113.61%2c-253.101%2c-86.057%2c-267.025%2c-38.392C-281.43%2c10.919%2c-274.817%2c70.999%2c-241.985%2c110.511C-209.844%2c149.191%2c-145.847%2c133.99%2c-102.541%2c159.558C-61.821%2c183.599%2c-46.653%2c245.66%2c0%2c253.38' fill='rgba(191%2c 204%2c 97%2c 0.43)'%3e%3c/path%3e%3cpath d='M499 1010.0029999999999C556.359 1020.915 621.604 1006.523 665.365 967.869 707.896 930.302 708.504 866.28 723.634 811.587 736.347 765.63 755.342 720.284 746.832 673.367 738.4739999999999 627.288 703.033 593.681 677.042 554.725 646.877 509.512 633.0509999999999 444.977 582.003 426.317 531.037 407.687 474.007 436.426 426.847 463.269 385.904 486.573 370.416 535.822 335.01099999999997 566.902 291.534 605.069 218.611 612.054 196.47199999999998 665.503 174.17399999999998 719.336 190.721 786.799 224.166 834.513 256.174 880.1759999999999 321.882 881.456 368.882 911.467 415.685 941.352 444.448 999.625 499 1010.0029999999999' fill='rgba(211%2c 220%2c 147%2c 0.43)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1449'%3e%3crect width='499' height='709' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
-  
-  min-height: 100vh; /* Ensures the background covers the full height of the viewport */
-  background-size: cover; /* Ensures the gradient fills the area */
+  background-image: url('/public/stacked-waves-haikei.svg');
+  background-repeat: no-repeat; /* Abstract patterns usually don't repeat */
+  background-size: cover; /* Adjust according to your design */
+  background-position: center; /* Center the pattern */
+  background-color: #f0f0f0; /* Set a base color behind the abstract pattern */
 }
+
 

@@ -33,7 +33,7 @@ const ItemForm = () => {
     formData.append('image', image); // Append the image file
 
     try {
-      const response = await fetch('http://localhost:5004/items', {
+      const response = await fetch('http://localhost:5005/items', {
         method: 'POST',
         body: formData, // Send form data with image and other details
       });
