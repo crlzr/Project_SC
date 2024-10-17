@@ -50,6 +50,7 @@ const App = () => {
   if (isLoading) return <div>Loading...</div>; // Handle loading state
 
   return (
+    <div className="whole-homepage">
     <Session appId={process.env.REACT_APP_TALKJS_APP_ID} syncUser={syncUser}>
       <Router>
       <div className="logo-container">
@@ -99,6 +100,7 @@ const App = () => {
         <Navbar onAccountClick={handleAccountClick} />
       </Router>
     </Session>
+    </div>
   );
 };
 
