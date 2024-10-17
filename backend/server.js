@@ -207,7 +207,6 @@ const userProfiles = new Map(); // In-memory store for user profiles
 
 // Middleware to get user profile
 app.get('/profile', jwtCheck, async (req, res) => {
-  console.log("**********TEST*******");
   // console.log(req.auth);
   const userId = req.auth.payload.sub; // Get user ID from Auth0 token
 
@@ -328,21 +327,20 @@ app.get('/:category_name/:itemId', async (req, res) => {
 
 // POST route to add a new item
 app.post('/items', async (req, res) => {
-  const { itemName, description, pricePerDay, imageUrl, availability, category_id } = req.body;
-
+  const { itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id } = req.body;
 
   // Validate the inputs
-  if (!itemName || !description || !pricePerDay || !imageUrl || !availability  || !category_id) {
+  if (!itemName || !description || !pricePerDay || !imageUrl || !availability || !category_id || !renter_id) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
   try {
     const query = `
-    INSERT INTO "Items" ("Item_name", "Description", "Price_per_day", "Image_url", "Availability", "Category_id")
-    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
-  `;
+      INSERT INTO "Items" ("Item_name", "Description", "Price_per_day", "Image_url", "Availability", "Category_id", "Renter_id")
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
+    `;
 
-    const values = [itemName, description, pricePerDay, imageUrl, availability, category_id];
+    const values = [itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id];
     const result = await pool.query(query, values);
 
     // Return the newly added item

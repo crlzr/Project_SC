@@ -6,17 +6,18 @@ const ItemForm = () => {
   const [pricePerDay, setPricePerDay] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [availability, setAvailability] = useState(false);
-  const [categoryId, setCategoryId] = useState(8); // Default category
+  const [categoryId, setCategoryId] = useState(1);
+  const [renterId] = useState(1); // Set your default RenterID here
 
   const categories = [
-    { id: 1, name: 'Baby & Kids' },
-    { id: 2, name: 'Electronics' },
+    { id: 1, name: 'Electronics' },
+    { id: 2, name: 'Clothes' },
     { id: 3, name: 'Tools & Equipment' },
     { id: 4, name: 'Furniture' },
     { id: 5, name: 'Entertainment' },
-    { id: 6, name: 'Health & Fitness' },
-    { id: 7, name: 'Outdoor' },
-    { id: 8, name: 'Clothes' },
+    { id: 6, name: 'Baby & Kids' },
+    { id: 7, name: 'Health & Fitness' },
+    { id: 8, name: 'Outdoor' },
   ];
 
   const handleSubmit = async (e) => {
@@ -29,6 +30,7 @@ const ItemForm = () => {
       imageUrl,
       availability,
       category_id: categoryId,
+      renter_id: renterId, // Include renterId in the new item
     };
 
     try {
@@ -100,6 +102,13 @@ const ItemForm = () => {
           </option>
         ))}
       </select>
+      {/* Optionally show RenterID as read-only or hidden */}
+      <input
+        type="hidden"
+        value={renterId}
+        readOnly
+      />
+
       <button type="submit">Add Item</button>
     </form>
   );
