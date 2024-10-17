@@ -22,12 +22,13 @@ SET row_security = off;
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
-DROP TABLE IF EXISTS public."Items" CASCADE;
-DROP TABLE IF EXISTS public."Categories" CASCADE;
-DROP TABLE IF EXISTS public."Renters" CASCADE;
+	DROP TABLE IF EXISTS public."Items" CASCADE;
+	DROP TABLE IF EXISTS public."Categories" CASCADE;
+	DROP TABLE IF EXISTS public."Renters" CASCADE;
+
 
 --
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner:
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
@@ -160,13 +161,6 @@ ALTER TABLE ONLY public."Items" ALTER COLUMN "Item_id" SET DEFAULT nextval('publ
 
 
 --
--- Name: Items Category_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Items" ALTER COLUMN "Category_id" SET DEFAULT nextval('public."Items_Category_id_seq"'::regclass);
-
-
---
 -- Name: Renters Renter_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -228,6 +222,9 @@ COPY public."Items" ("Item_id", "Item_name", "Category_id", "Renter_id", "Descri
 31	Torch	8	31	Uses AA batteries (included)	2	https://res.cloudinary.com/dbsawv974/image/upload/f_auto,q_auto/c_fill,g_auto,h_340,w_400/ufswb8mxnfrrgiilzlvz?_a=BAMAH2M20	Available	Eleanor
 32	Portable Gas Cooker	8	32	Works well, does not come with gas canister	15	https://res.cloudinary.com/dbsawv974/image/upload/f_auto,q_auto/c_fill,g_auto,h_340,w_400/palknnf5pc8eyt8341lq?_a=BAMAH2M20	Available	Peter
 34	Stroller	6	12	Next level stroller	15	https://res.cloudinary.com/dbsawv974/image/upload/f_auto,q_auto/c_fill,g_auto,h_340,w_400/qpfcx8lqbhuebzmuitbm?_a=BAMAH2Oa0	Available\n	Francis\n
+37	Small Bike	8	\N	A high-performance bike for on-road adventures	4	https://example.com/bike2.jpg	true	\N
+39	Med Bike	8	\N	A high-performance bike for on-road adventures	5	https://example.com/bike2.jpg	true	\N
+36	Mountain Bike	8	\N	A high-performance bike for off-road adventures	20	https://example.com/bike.jpg	Available	\N
 \.
 
 
@@ -290,7 +287,7 @@ SELECT pg_catalog.setval('public."Items_Category_id_seq"', 1, false);
 -- Name: Items_Item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Items_Item_id_seq"', 8, true);
+SELECT pg_catalog.setval('public."Items_Item_id_seq"', 39, true);
 
 
 --

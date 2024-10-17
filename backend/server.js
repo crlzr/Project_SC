@@ -9,7 +9,7 @@ const Stripe = require('stripe');
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 app.use(express.json());
-const PORT = process.env.PORT || 5004;
+const PORT = process.env.PORT || 5005;
 
 // Define allowed origins
 // const allowedOrigins = [
@@ -321,6 +321,35 @@ app.get('/:category_name/:itemId', async (req, res) => {
     res.status(500).json({ error: 'Database query failed' });
   }
 });
+
+
+// POST route to add a new item
+app.post('/items', async (req, res) => {
+  const { itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id } = req.body;
+
+  // Validate the inputs
+  if (!itemName || !description || !pricePerDay || !category_id || !renter_id) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO "Items" ("Item_name", "Description", "Price_per_day", "Image_url", "Availability", "Category_id", "Renter_id")
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
+    `;
+
+    const values = [itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id];
+    const result = await pool.query(query, values);
+
+    // Return the newly added item
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error inserting new item:', error);
+    res.status(500).json({ error: 'Failed to add the item' });
+  }
+});
+
+
 
 
 // Start server
