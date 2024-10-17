@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -747,6 +748,108 @@ h2.slogan {
   height: 150px;
   width: 150px;
   justify-content: center;
+.item-form-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f8f9fa;
+  font-family: "Arial", sans-serif;
+  /* Style the checkbox when checked */
+  /* Add a checkmark when checked (optional) */
+  /* Checkbox label */
+}
+.item-form-body .add-item-form {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+.item-form-body input[type=text],
+.item-form-body input[type=number],
+.item-form-body input[type=file] {
+  box-sizing: border-box; /* Ensures padding and borders are included in width */
+  width: 100%; /* Makes input fields take full width of the container */
+  padding: 12px;
+  margin: 0; /* Removes default margin */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  height: 44px; /* Consistent height for all input fields */
+}
+.item-form-body input[type=text]:focus,
+.item-form-body input[type=number]:focus,
+.item-form-body input[type=file]:focus {
+  border-color: #C9D7A4; /* Airbnb's teal color */
+  outline: none;
+}
+.item-form-body select {
+  box-sizing: border-box; /* Ensures padding and borders are included in width */
+  width: 100%; /* Makes input fields take full width of the container */
+  padding: 12px;
+  margin: 0; /* Removes default margin */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  height: 44px; /* Consistent height for all input fields */
+}
+.item-form-body select:focus {
+  border-color: #C9D7A4;
+  outline: none;
+}
+.item-form-body input[type=checkbox] {
+  appearance: none; /* Removes the default checkbox */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.item-form-body input[type=checkbox]:checked {
+  background-color: #C9D7A4; /* Airbnb's teal color when checked */
+}
+.item-form-body input[type=checkbox]:checked::after {
+  content: "✔";
+  color: white;
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+}
+.item-form-body label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+.item-form-body button[type=submit] {
+  background-color: #C9D7A4; /* Airbnb's red color */
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 50%; /* Make the button width smaller for centering */
+  margin: 0 auto; /* Center the button */
+}
+.item-form-body button[type=submit]:hover {
+  background-color: #8ABEE8;
+}
+@media (max-width: 480px) {
+  .item-form-body form {
+    width: 90%;
+  }
 }
 
 /*# sourceMappingURL=index.css.map */

@@ -11,7 +11,7 @@ const multer = require('multer');
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 app.use(express.json());
-const PORT = process.env.PORT || 5004;
+const PORT = process.env.PORT || 5005;
 
 // Define allowed origins
 // const allowedOrigins = [

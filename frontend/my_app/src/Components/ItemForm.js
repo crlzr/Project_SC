@@ -53,7 +53,8 @@ const ItemForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <body className='item-form-body'>
+    <form onSubmit={handleSubmit} className='add-item-form'>
       <input
         type="text"
         placeholder="Item Name"
@@ -105,6 +106,7 @@ const ItemForm = () => {
 
       <button type="submit">Add Item</button>
     </form>
+  </body>
   );
 };
 
