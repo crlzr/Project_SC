@@ -215,7 +215,7 @@ const NearbyItems = () => {
 
   return (
     <div className="Nearby-items-map-container">
-      <h1 className="Nearby-items">Nearby Items</h1>
+      <h2 className="Nearby-items">Nearby Items</h2>
       <div className="address-bar">
         {userAddress && (
           <p className="user-address">

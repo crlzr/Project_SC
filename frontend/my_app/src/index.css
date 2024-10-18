@@ -536,15 +536,12 @@ h2.slogan {
 }
 
 .Nearby-items {
-  font-weight: 600;
-  color: #494949;
-  padding-left: 1rem;
-  margin: 0;
   padding-top: 2rem;
-  font-size: 32px;
   margin-bottom: 20px;
   text-align: center;
-  font-family: "Inter", sans-serif;
+  color: #757575;
+  margin: 1rem 0;
+  font-size: 30px;
 }
 
 .Nearby-items-map-container {
@@ -563,7 +560,7 @@ h2.slogan {
   margin-bottom: 4rem;
   margin-top: 0.5rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 40%;
+  width: 0%;
   justify-content: space-between;
 }
 .Nearby-items-map-container .address-bar .push-pin-icon {
