@@ -57,7 +57,7 @@ const ItemForm = () => {
     <form onSubmit={handleSubmit} className='add-item-form'>
       <input
         type="text" id='item-name-field'
-        placeholder="Item Name"
+        placeholder="Item Name e.g. Drone Zero X"
         value={itemName}
         onChange={(e) => setItemName(e.target.value)}
         required
