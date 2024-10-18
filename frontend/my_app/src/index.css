@@ -21,6 +21,7 @@ body {
   box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1);
   background: white;
   position: sticky;
+  width: auto;
 }
 .navbar-center .nav-links {
   list-style-type: none;
@@ -35,6 +36,18 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 0.75rem;
+  position: relative;
+}
+.navbar-center .nav-links li.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5rem;
+  height: 0.2rem;
+  background-color: #8ABEE8;
+  border-radius: 2px;
 }
 .navbar-center .nav-links li .nav-icon {
   margin-bottom: 0.5rem;
@@ -43,34 +56,16 @@ body {
 .navbar-center .nav-links li .nav-icon.active {
   color: #8ABEE8;
 }
-.navbar-center .nav-links li a {
+.navbar-center .nav-links li a, .navbar-center .nav-links li button {
   color: #757575;
   font-weight: 600;
   text-decoration: none;
-}
-.navbar-center .nav-links li a.active {
-  color: #8ABEE8;
-}
-.navbar-center .nav-links li .account-button,
-.navbar-center .nav-links li .explore-button,
-.navbar-center .nav-links li .chat-button,
-.navbar-center .nav-links li .add-item-button {
   background: none;
   border: none;
-  color: #757575;
-  text-decoration: none;
   cursor: pointer;
-  font-weight: 600;
   font-family: inherit;
-  padding: 0;
-  font-size: inherit;
-  line-height: inherit;
-  transition: color 0.3s;
 }
-.navbar-center .nav-links li .account-button.active,
-.navbar-center .nav-links li .explore-button.active,
-.navbar-center .nav-links li .chat-button.active,
-.navbar-center .nav-links li .add-item-button.active {
+.navbar-center .nav-links li a.active, .navbar-center .nav-links li button.active {
   color: #8ABEE8;
 }
 

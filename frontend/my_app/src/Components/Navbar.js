@@ -10,22 +10,24 @@ const Navbar = ({ onAccountClick }) => {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
 
-  // Navigate to nearby items
-  const handleFetchNearbyItems = () => {
+  // Navigation functions
+  const handleFetchNearbyItems = (e) => {
+    e.preventDefault();
     navigate('/items/nearby');
   };
 
-  // Navigate to profile page
-  const handleProfilePage = () => {
+  const handleProfilePage = (e) => {
+    e.preventDefault();
     navigate('/profile');
   };
 
-  // Adding Items
-  const onAddItemClick = () => {
+  const onAddItemClick = (e) => {
+    e.preventDefault();
     navigate('/items');
   };
 
-  const handleInbox = () => {
+  const handleInbox = (e) => {
+    e.preventDefault();
     navigate('/chat');
   };
 
@@ -35,31 +37,33 @@ const Navbar = ({ onAccountClick }) => {
         <ul className="nav-links">
           <li className={location.pathname === '/' ? 'active' : ''}>
             <HomeIcon className={`nav-icon ${location.pathname === '/' ? 'active' : ''}`} alt="home" />
-            <a href="/">Home</a>
+            <a href="/" className={location.pathname === '/' ? 'active' : ''}>
+              Home
+            </a>
           </li>
           <li className={location.pathname === '/items/nearby' ? 'active' : ''}>
             <TravelExploreIcon className={`nav-icon ${location.pathname === '/items/nearby' ? 'active' : ''}`} alt="nearby" />
-            <button onClick={handleFetchNearbyItems} className="explore-button">
+            <a href="/items/nearby" onClick={handleFetchNearbyItems} className={location.pathname === '/items/nearby' ? 'active' : ''}>
               Nearby
-            </button>
+            </a>
           </li>
           <li className={location.pathname === '/items' ? 'active' : ''}>
             <AddCircleIcon className={`nav-icon ${location.pathname === '/items' ? 'active' : ''}`} alt="Add Item" />
-            <button onClick={onAddItemClick} className="add-item-button">
+            <a href="/items" onClick={onAddItemClick} className={location.pathname === '/items' ? 'active' : ''}>
               Item
-            </button>
+            </a>
           </li>
           <li className={location.pathname === '/chat' ? 'active' : ''}>
             <ChatIcon className={`nav-icon ${location.pathname === '/chat' ? 'active' : ''}`} alt="chat" />
-            <button onClick={handleInbox} className="chat-button">
+            <a href="/chat" onClick={handleInbox} className={location.pathname === '/chat' ? 'active' : ''}>
               Chat
-            </button>
+            </a>
           </li>
           <li className={location.pathname === '/profile' ? 'active' : ''}>
             <AccountIcon className={`nav-icon ${location.pathname === '/profile' ? 'active' : ''}`} alt="account" />
-            <button onClick={handleProfilePage} className="account-button">
+            <a href="/profile" onClick={handleProfilePage} className={location.pathname === '/profile' ? 'active' : ''}>
               Account
-            </button>
+            </a>
           </li>
         </ul>
       </div>

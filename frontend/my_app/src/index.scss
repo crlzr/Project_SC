@@ -22,6 +22,8 @@ body {
     box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1);
     background: white;
     position: sticky;
+    width: auto;
+
 
     .nav-links {
       list-style-type: none;
@@ -36,50 +38,54 @@ body {
         flex-direction: column;
         align-items: center;
         padding: 0.75rem;
+        position: relative;
+
+        // Apply style for the active item
+        &.active {
+          // Add a small line above the icon
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1.5rem; // Line width
+            height: 0.2rem; // Line height
+            background-color: #8ABEE8; // Same color as the active state
+            border-radius: 2px; // Round the edges of the line
+          }
+        }
 
         .nav-icon {
           margin-bottom: 0.5rem;
           color: #757575;
 
-          // Highlight the active icon
+          // Apply color for the active icon
           &.active {
-            color: #8ABEE8; // Change color to highlight the active icon
+            color: #8ABEE8;
           }
         }
 
-        a {
+        a, button {
           color: #757575;
           font-weight: 600;
           text-decoration: none;
-          &.active {
-            color: #8ABEE8; // Change color for active link
-          }
-        }
-
-        .account-button,
-        .explore-button,
-        .chat-button,
-        .add-item-button {
           background: none;
           border: none;
-          color: #757575;
-          text-decoration: none;
           cursor: pointer;
-          font-weight: 600;
           font-family: inherit;
-          padding: 0;
-          font-size: inherit;
-          line-height: inherit;
-          transition: color 0.3s;
 
           &.active {
-            color: #8ABEE8; // Change color for active button
+            color: #8ABEE8;
           }
         }
       }
     }
   }
 }
+
+
+
 
 
 // LIST OF ALL CATEGORIES PAGE (HOMEPAGE)
