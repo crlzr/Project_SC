@@ -20,6 +20,7 @@ const NearbyItems = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [userAddress, setUserAddress] = useState({});
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState('name'); // New state for sorting
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const userMarkerRef = useRef(null);
@@ -89,6 +90,26 @@ const NearbyItems = () => {
     }
   };
 
+  //Sorting Options
+  const sortItems = (items) => {
+    switch (sortOption) {
+      case 'name':
+        return [...items].sort((a, b) => a.Item_name.localeCompare(b.Item_name));
+      case 'name-desc':
+        return [...items].sort((a, b) => b.Item_name.localeCompare(a.Item_name));
+      case 'price':
+        return [...items].sort((a, b) => a.Price_per_day - b.Price_per_day);
+      case 'price-desc':
+        return [...items].sort((a, b) => b.Price_per_day - a.Price_per_day);
+      case 'distance':
+        return [...items].sort((a, b) => a.distance - b.distance);
+      case 'distance-desc':
+        return [...items].sort((a, b) => b.distance - a.distance);
+      default:
+        return items;
+    }
+  };
+
   const fetchItemsNearby = useCallback(async (radius_km = radius) => {
     if (userLocation) {
       setLoading(true);
@@ -105,14 +126,14 @@ const NearbyItems = () => {
         }
 
         const data = await response.json();
-        setNearbyItems(data);
+        setNearbyItems(sortItems(data)); // Sort items on fetch
       } catch (error) {
         console.error('Error fetching nearby items:', error);
       } finally {
         setLoading(false);
       }
     }
-  }, [getAccessTokenSilently, userLocation, radius]);
+  }, [getAccessTokenSilently, userLocation, radius, sortOption]);
 
   useEffect(() => {
     if (userLocation && mapContainerRef.current) {
@@ -236,6 +257,18 @@ const NearbyItems = () => {
           </Select>
           <p>Search radius: {radius} km</p>
         </div>
+      </div>
+
+      <div className="sort-selector">
+        <Select value={sortOption} onChange={(e) => setSortOption(e.target.value)} label="Sort By">
+          <MenuItem value="name">Name (A-Z)</MenuItem>
+          <MenuItem value="name-desc">Name (Z-A)</MenuItem>
+          <MenuItem value="price">Price (Low to High)</MenuItem>
+          <MenuItem value="price-desc">Price (High to Low)</MenuItem>
+          <MenuItem value="distance">Distance (Closest)</MenuItem>
+          <MenuItem value="distance-desc">Distance (Furthest)</MenuItem>
+        </Select>
+        {/* <p>Sorted by: {sortOption}</p> */}
       </div>
 
       <div ref={mapContainerRef} style={{ width: '100%', height: '300px' }} className="map-container" />
