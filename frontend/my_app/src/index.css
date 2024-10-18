@@ -63,6 +63,11 @@ body {
   transition: color 0.3s;
 }
 
+h2.categories-title {
+  color: #494949;
+  text-align: center;
+}
+
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2 columns */
@@ -86,22 +91,21 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 0.625rem;
-  box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  background: white;
   text-align: center;
   transition: transform 0.3s ease-in-out;
   height: 100%;
 }
 .category-tile:hover {
-  transform: scale(1.05); /* Slightly enlarge the tile on hover */
+  animation: doingggg 0.5s forwards;
 }
 .category-tile img {
-  width: 100%;
-  height: auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 0.625rem;
   transition: transform 0.3s ease-in-out;
 }
-.category-tile:hover img {
-  transform: scale(1.1); /* Zoom effect on hover */
+.category-tile img:hover {
+  transform: scale(1.1);
 }
 .category-tile .category-tile-content {
   position: absolute;
@@ -117,14 +121,30 @@ body {
   font-size: 1.2rem;
   font-weight: 550;
   margin: 0;
-  font-family: poppins, sans-serif;
   letter-spacing: 1px;
-}
-.category-tile a.no-undies {
-  text-decoration: none;
-  color: inherit;
+  color: white;
 }
 
+@keyframes doingggg {
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-2px);
+  }
+  40% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(-1px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 .no-undies {
   text-decoration: none;
   color: inherit;
@@ -688,6 +708,9 @@ h2.slogan {
   justify-content: center;
   margin-top: 5rem;
   width: 100%;
+}
+.search-bar-container h2.categories-title {
+  color: #494949;
 }
 .search-bar-container .search-input-container {
   display: flex;
