@@ -931,7 +931,6 @@ h2.slogan {
   height: 100vh;
   margin: 0;
   background-color: #f8f9fa;
-  font-family: 'Arial', sans-serif;
 
   .add-item-form {
     background-color: white;
@@ -943,10 +942,24 @@ h2.slogan {
     flex-direction: column;
     gap: 20px;
     align-items: center;
+    font-family: 'Montserrat', sans-serif;
   }
 
-  input[type="text"],
+//   input[type="text"] {
+//     box-sizing: border-box; /* Ensures padding and borders are included in width */
+//     width: 100%;            /* Makes input fields take full width of the container */
+//     padding: 12px;
+//     margin: 0;              /* Removes default margin */
+//     border: 1px solid #ccc;
+//     border-radius: 8px;
+//     font-size: 16px;
+//     transition: border-color 0.3s ease;
+//     height: 44px;    /* Consistent height for all input fields */
+//     font-family: 'Montserrat', sans-serif;
+// }
+
   input[type="number"],
+  input[type="text"],
   input[type="file"] {
     box-sizing: border-box; /* Ensures padding and borders are included in width */
     width: 100%;            /* Makes input fields take full width of the container */
@@ -956,13 +969,50 @@ h2.slogan {
     border-radius: 8px;
     font-size: 16px;
     transition: border-color 0.3s ease;
-    height: 44px;           /* Consistent height for all input fields */
+    height: 44px;    /* Consistent height for all input fields */
+    font-family: 'Montserrat', sans-serif;
 }
 
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="file"]:focus {
   border-color: #C9D7A4; /* Airbnb's teal color */
+  outline: none;
+}
+
+/* Specific styling for item name field */
+// #item-name-field {
+//   background-color: #f8f9fa; /* Light background for item name input */
+// }
+
+.item-description-container-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px; /* Adjust spacing as needed */
+}
+
+/* Specific styling for item description field */
+#item-description-field {
+  // background-color: #f3f3f3; /* Slightly different background for description */
+  min-height: 250px;          /* Set minimum height for description */
+  padding: 12px;              /* Add padding to avoid text sticking to edges */
+  font-size: 16px;            /* Adjust the font size */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;           /* Allow users to resize the description vertically */
+  box-sizing: border-box;
+  width: 100%;
+  overflow-y: auto;           /* Enable vertical scrolling if needed */
+  font-family: 'Montserrat', sans-serif;
+}
+
+#item-description-field::placeholder {
+  color: #888; /* Set color for the placeholder */
+}
+
+#item-description-field:focus {
+  border-color: #C9D7A4;
   outline: none;
 }
 
@@ -983,30 +1033,30 @@ select:focus {
   outline: none;
 }
 
-input[type="checkbox"] {
-  appearance: none; /* Removes the default checkbox */
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+// input[type="checkbox"] {
+//   appearance: none; /* Removes the default checkbox */
+//   width: 20px;
+//   height: 20px;
+//   border: 2px solid #ccc;
+//   border-radius: 4px;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease;
+// }
 
-/* Style the checkbox when checked */
-input[type="checkbox"]:checked {
-  background-color: #C9D7A4; /* Airbnb's teal color when checked */
-}
+// /* Style the checkbox when checked */
+// input[type="checkbox"]:checked {
+//   background-color: #C9D7A4; /* Airbnb's teal color when checked */
+// }
 
-/* Add a checkmark when checked (optional) */
-input[type="checkbox"]:checked::after {
-  content: '✔';
-  color: white;
-  display: block;
-  text-align: center;
-  font-size: 14px;
-  line-height: 20px;
-}
+// /* Add a checkmark when checked (optional) */
+// input[type="checkbox"]:checked::after {
+//   content: '✔';
+//   color: white;
+//   display: block;
+//   text-align: center;
+//   font-size: 14px;
+//   line-height: 20px;
+// }
 
 /* Checkbox label */
 label {
@@ -1028,6 +1078,7 @@ button[type="submit"] {
   transition: background-color 0.3s ease;
   width: 50%; /* Make the button width smaller for centering */
   margin: 0 auto; /* Center the button */
+  font-family: 'Montserrat', sans-serif;
 }
 
 button[type="submit"]:hover {

@@ -1,4 +1,3 @@
-@charset "UTF-8";
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -809,9 +808,8 @@ h2.slogan {
   height: 100vh;
   margin: 0;
   background-color: #f8f9fa;
-  font-family: "Arial", sans-serif;
-  /* Style the checkbox when checked */
-  /* Add a checkmark when checked (optional) */
+  /* Specific styling for item name field */
+  /* Specific styling for item description field */
   /* Checkbox label */
 }
 .item-form-body .add-item-form {
@@ -824,9 +822,10 @@ h2.slogan {
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  font-family: "Montserrat", sans-serif;
 }
-.item-form-body input[type=text],
 .item-form-body input[type=number],
+.item-form-body input[type=text],
 .item-form-body input[type=file] {
   box-sizing: border-box; /* Ensures padding and borders are included in width */
   width: 100%; /* Makes input fields take full width of the container */
@@ -837,11 +836,37 @@ h2.slogan {
   font-size: 16px;
   transition: border-color 0.3s ease;
   height: 44px; /* Consistent height for all input fields */
+  font-family: "Montserrat", sans-serif;
 }
 .item-form-body input[type=text]:focus,
 .item-form-body input[type=number]:focus,
 .item-form-body input[type=file]:focus {
   border-color: #C9D7A4; /* Airbnb's teal color */
+  outline: none;
+}
+.item-form-body .item-description-container-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px; /* Adjust spacing as needed */
+}
+.item-form-body #item-description-field {
+  min-height: 250px; /* Set minimum height for description */
+  padding: 12px; /* Add padding to avoid text sticking to edges */
+  font-size: 16px; /* Adjust the font size */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical; /* Allow users to resize the description vertically */
+  box-sizing: border-box;
+  width: 100%;
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  font-family: "Montserrat", sans-serif;
+}
+.item-form-body #item-description-field::placeholder {
+  color: #888; /* Set color for the placeholder */
+}
+.item-form-body #item-description-field:focus {
+  border-color: #C9D7A4;
   outline: none;
 }
 .item-form-body select {
@@ -858,26 +883,6 @@ h2.slogan {
 .item-form-body select:focus {
   border-color: #C9D7A4;
   outline: none;
-}
-.item-form-body input[type=checkbox] {
-  appearance: none; /* Removes the default checkbox */
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.item-form-body input[type=checkbox]:checked {
-  background-color: #C9D7A4; /* Airbnb's teal color when checked */
-}
-.item-form-body input[type=checkbox]:checked::after {
-  content: "✔";
-  color: white;
-  display: block;
-  text-align: center;
-  font-size: 14px;
-  line-height: 20px;
 }
 .item-form-body label {
   display: flex;
@@ -896,6 +901,7 @@ h2.slogan {
   transition: background-color 0.3s ease;
   width: 50%; /* Make the button width smaller for centering */
   margin: 0 auto; /* Center the button */
+  font-family: "Montserrat", sans-serif;
 }
 .item-form-body button[type=submit]:hover {
   background-color: #8ABEE8;
