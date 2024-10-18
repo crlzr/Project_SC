@@ -61,7 +61,7 @@ const CategoryItems = () => {
       <div className="items-container">
         {items.length > 0 ? (
           items.map(item => (
-            <Card sx={{ maxWidth: 360, margin: '10px' }} key={item.Item_id} className="category-items-card">
+            <Card sx={{}} key={item.Item_id} className="category-items-card">
               <Link to={`/category/${category_name}/${item.Item_id}`} className="no-undies"> {/* Link to item details */}
                 <CardActionArea>
                   <CardMedia
