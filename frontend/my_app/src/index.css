@@ -214,6 +214,16 @@ p.user-address {
   width: 100%;
   align-items: center;
 }
+.Category-items-container .items-container .category-items-card {
+  border-radius: 0.625rem;
+  align-items: center;
+  height: 330px;
+}
+.Category-items-container .items-container .category-items-card .item-image {
+  height: auto;
+  width: 160px;
+  border-radius: 0.625rem 0.625rem 0 0;
+}
 .Category-items-container .items-container .MuiCard-root {
   flex: 0 0 calc(50% - 1.25rem);
   margin: 0.375rem;
@@ -235,11 +245,6 @@ p.user-address {
 .Category-items-container .items-container .renter-full-name {
   font-size: 0.95rem;
   margin: 0;
-}
-.Category-items-container .item-image {
-  height: auto;
-  border-radius: 0.625rem;
-  border: 0.125rem solid white;
 }
 .Category-items-container h3.item-header,
 .Category-items-container p {
@@ -539,12 +544,15 @@ h2.slogan {
 }
 
 .Nearby-items {
+  font-weight: 600;
+  color: #494949;
+  padding-left: 1rem;
+  margin: 0;
   padding-top: 2rem;
+  font-size: 32px;
   margin-bottom: 20px;
   text-align: center;
-  color: #757575;
-  margin: 1rem 0;
-  font-size: 30px;
+  font-family: "Inter", sans-serif;
 }
 
 .Nearby-items-map-container {
@@ -563,7 +571,7 @@ h2.slogan {
   margin-bottom: 4rem;
   margin-top: 0.5rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 0%;
+  width: 40%;
   justify-content: space-between;
 }
 .Nearby-items-map-container .address-bar .push-pin-icon {
@@ -782,12 +790,6 @@ h2.slogan {
   border-radius: 50%; /* Make the image circular */
   object-fit: cover; /* Ensure the image covers the area */
   margin-right: 0.625rem; /* Space between the image and the name */
-}
-
-.item-image {
-  height: auto;
-  border-radius: 0.625rem;
-  border: 0.125rem solid white;
 }
 
 .logo-container {

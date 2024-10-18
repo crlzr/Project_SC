@@ -245,6 +245,18 @@ p.user-address {
     justify-content: center; // Center item cards horizontally
     width: 100%; // Ensure items container takes full width
     align-items: center;
+    
+    .category-items-card {
+      border-radius: 0.625rem;
+      align-items: center;
+      height: 330px;
+      
+    .item-image {
+      height: auto;
+      width: 160px;
+      border-radius: 0.625rem 0.625rem 0 0;
+    }
+    }
 
     .MuiCard-root {
       flex: 0 0 calc(50% - 1.25rem); // Adjust this for the card size
@@ -273,12 +285,6 @@ p.user-address {
     }
   }
 
-
-  .item-image {
-    height: auto;
-    border-radius: 0.625rem;
-    border: 0.125rem solid white;
-  }
 
   h3.item-header,
   p {
@@ -921,11 +927,6 @@ h2.slogan {
   margin-right: 0.625rem; /* Space between the image and the name */
 }
 
-.item-image {
-  height: auto;
-  border-radius: 0.625rem;
-  border: 0.125rem solid white;
-}
 
 .logo-container {
   justify-content: center;
