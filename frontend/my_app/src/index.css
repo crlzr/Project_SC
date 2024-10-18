@@ -559,7 +559,7 @@ h2.slogan {
   background-color: #f7f7f7;
   border: 1px solid #B7DFF5;
   border-radius: 0.625rem;
-  padding: 7px 7px;
+  padding: 7px;
   margin-bottom: 4rem;
   margin-top: 0.5rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -570,6 +570,16 @@ h2.slogan {
   margin-right: 0.5rem; /* Space between icon and text */
   color: #757575; /* Color of the icon */
   vertical-align: middle; /* Aligns icon vertically with text */
+}
+@media (max-width: 768px) {
+  .Nearby-items-map-container .address-bar {
+    width: 90%;
+    padding: 5px;
+    margin-bottom: 2rem;
+  }
+  .Nearby-items-map-container .address-bar .push-pin-icon {
+    margin-right: 0.25rem;
+  }
 }
 .Nearby-items-map-container .user-address {
   font-family: "Inter", sans-serif;

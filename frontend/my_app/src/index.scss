@@ -634,19 +634,31 @@ h2.slogan {
     background-color: #f7f7f7; // Light background to resemble a search bar
     border: 1px solid #B7DFF5; // Border color similar to input fields
     border-radius: 0.625rem; // Rounded corners to look like a search bar
-    padding: 7px 7px; // Padding to space the elements inside
+    padding: 7px; // Padding to space the elements inside
     margin-bottom: 4rem; // Space below the search bar
-    margin-top: 0.5rem;
+    margin-top: 0.5rem; // Space above the search bar
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Slight shadow for depth
-    width: 40%;
-    justify-content: space-between;
-
+    width: 40%; // Width for larger screens
+    justify-content: space-between; // Space between items
+  
     .push-pin-icon {
       margin-right: 0.5rem; /* Space between icon and text */
       color: #757575; /* Color of the icon */
       vertical-align: middle; /* Aligns icon vertically with text */
     }
+  
+    // Media query for smaller screens
+    @media (max-width: 768px) {
+      width: 90%; // Adjust width for mobile
+      padding: 5px; // Reduce padding for mobile
+      margin-bottom: 2rem; // Reduce bottom margin for mobile
+  
+      .push-pin-icon {
+        margin-right: 0.25rem; // Reduce space between icon and text
+      }
+    }
   }
+  
 
   .user-address {
     font-family: "Inter", sans-serif;
