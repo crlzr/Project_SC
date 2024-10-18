@@ -1,18 +1,16 @@
 import React from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import ChatIcon from '@mui/icons-material/Chat';
 import AccountIcon from '@mui/icons-material/AccountCircle';
-import { useNavigate } from 'react-router-dom';
-import { Inbox } from "@talkjs/react";
-import Chat from "./Session";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const Navbar = ({ onAccountClick }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
 
-    // Navigate to nearby items
+  // Navigate to nearby items
   const handleFetchNearbyItems = () => {
     navigate('/items/nearby');
   };
@@ -22,10 +20,10 @@ const Navbar = ({ onAccountClick }) => {
     navigate('/profile');
   };
 
-    // Adding Items
-    const onAddItemClick = () => {
-      navigate('/items');
-    };
+  // Adding Items
+  const onAddItemClick = () => {
+    navigate('/items');
+  };
 
   const handleInbox = () => {
     navigate('/chat');
@@ -35,30 +33,30 @@ const Navbar = ({ onAccountClick }) => {
     <nav className="navbar">
       <div className="navbar-center">
         <ul className="nav-links">
-          <li>
-            <HomeIcon className="nav-icon" alt="home" />
+          <li className={location.pathname === '/' ? 'active' : ''}>
+            <HomeIcon className={`nav-icon ${location.pathname === '/' ? 'active' : ''}`} alt="home" />
             <a href="/">Home</a>
           </li>
-          <li>
-            <TravelExploreIcon className="nav-icon" alt="nearby" />
+          <li className={location.pathname === '/items/nearby' ? 'active' : ''}>
+            <TravelExploreIcon className={`nav-icon ${location.pathname === '/items/nearby' ? 'active' : ''}`} alt="nearby" />
             <button onClick={handleFetchNearbyItems} className="explore-button">
               Nearby
             </button>
           </li>
-          <li>
-            <AddCircleIcon className="nav-icon" alt="Add Item" />
+          <li className={location.pathname === '/items' ? 'active' : ''}>
+            <AddCircleIcon className={`nav-icon ${location.pathname === '/items' ? 'active' : ''}`} alt="Add Item" />
             <button onClick={onAddItemClick} className="add-item-button">
               Item
             </button>
           </li>
-          <li>
-            <ChatIcon className="nav-icon" alt="chat" />
+          <li className={location.pathname === '/chat' ? 'active' : ''}>
+            <ChatIcon className={`nav-icon ${location.pathname === '/chat' ? 'active' : ''}`} alt="chat" />
             <button onClick={handleInbox} className="chat-button">
               Chat
             </button>
           </li>
-          <li>
-            <AccountIcon className="nav-icon" alt="account" />
+          <li className={location.pathname === '/profile' ? 'active' : ''}>
+            <AccountIcon className={`nav-icon ${location.pathname === '/profile' ? 'active' : ''}`} alt="account" />
             <button onClick={handleProfilePage} className="account-button">
               Account
             </button>

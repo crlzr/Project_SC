@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import Font Awesome Icon component
+import { faBabyCarriage, faLaptop, faTools, faCouch, faFilm, faHeartbeat, faMountain, faTshirt } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
 import HomepageLoader from './HomepageLoader'; // Import your loader component
 import '../index.css'; // Assuming your custom CSS is here
 
@@ -24,6 +26,18 @@ const Categories = () => {
     fetchCategories();
   }, []);
 
+  // Mapping category names to Font Awesome icons
+  const iconMap = {
+    "Baby & Kids": faBabyCarriage, // Baby & Kids category
+    "Electronics": faLaptop, // Electronics category
+    "Tools & Equipment": faTools, // Tools & Equipment category
+    "Furniture": faCouch, // Furniture category
+    "Entertainment": faFilm, // Entertainment category
+    "Health & Fitness": faHeartbeat, // Health & Fitness category
+    "Outdoor": faMountain, // Outdoor category
+    "Clothes": faTshirt, // Clothes category
+  };
+
   return (
     <>
       {loading ? (
@@ -31,14 +45,14 @@ const Categories = () => {
       ) : (
         <>
           <h2 className="categories-title">Categories</h2>
-          <div className="categories-grid"> {/* Updated container class */}
+          <div className="categories-grid">
             {categories.map((category) => (
-              <div key={category.ID} className="category-tile"> {/* Each tile */}
+              <div key={category.ID} className="category-tile">
                 <Link to={`/category/${category.Name}`} className="no-undies">
-                  <img
-                    src={category.Category_pic}
-                    alt={category.Name}
-                    className="category-tile-image"
+                  <FontAwesomeIcon
+                    icon={iconMap[category.Name] || faBabyCarriage} // Use mapped icon or default to faBaby
+                    size="3x" // Set icon size
+                    className="category-tile-icon" // Add a class for styling
                   />
                   <div className="category-tile-content">
                     <h4>{category.Name}</h4>

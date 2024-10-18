@@ -13,19 +13,16 @@ body {
 
 .navbar {
   display: flex;
-  justify-content: center; // Centered as per your original code
+  justify-content: center;
   align-items: center;
-  padding: 1rem; // No change since it's already in rem
+  padding: 1rem;
 
   &-center {
-    // border: 0.05rem solid;
-    // border-color: #757575;
     border-radius: 0.625rem;
-    // box-shadow: 0rem 0.25rem 0.5rem rgba(201, 215, 164, 0.1);
     box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1);
-    // background: linear-gradient(to bottom, #C9D7A4, white);
     background: white;
     position: sticky;
+
     .nav-links {
       list-style-type: none;
       display: flex;
@@ -42,41 +39,55 @@ body {
 
         .nav-icon {
           margin-bottom: 0.5rem;
-          color: #8ABEE8;
+          color: #757575;
+
+          // Highlight the active icon
+          &.active {
+            color: #8ABEE8; // Change color to highlight the active icon
+          }
         }
 
         a {
           color: #757575;
           font-weight: 600;
           text-decoration: none;
+          &.active {
+            color: #8ABEE8; // Change color for active link
+          }
         }
 
-        img {
-          margin-bottom: 0.5rem;
-        }
-
-        .account-button, .explore-button, .chat-button, .add-item-button {
+        .account-button,
+        .explore-button,
+        .chat-button,
+        .add-item-button {
           background: none;
           border: none;
           color: #757575;
-          text-decoration: none; // Remove any underline
+          text-decoration: none;
           cursor: pointer;
           font-weight: 600;
-          font-family: inherit; // Inherit font family
-          padding: 0; // Remove default padding
-          font-size: inherit; // Inherit font size
-          line-height: inherit; // Inherit line height
-          transition: color 0.3s; // Smooth transition for hover effect
+          font-family: inherit;
+          padding: 0;
+          font-size: inherit;
+          line-height: inherit;
+          transition: color 0.3s;
+
+          &.active {
+            color: #8ABEE8; // Change color for active button
+          }
         }
       }
     }
   }
 }
 
+
 // LIST OF ALL CATEGORIES PAGE (HOMEPAGE)
 h2.categories-title {
-  color: #494949;
+  color: #757575;
   text-align: center;
+  margin: 1rem 0; // Add some margin for spacing
+  font-size: 30px;
 }
 
 .categories-grid {
@@ -102,7 +113,37 @@ h2.categories-title {
   border-radius: 0.625rem;
   text-align: center;
   transition: transform 0.3s ease-in-out;
-  height: 100%;
+  width: 150px; // Set a fixed width for uniformity
+  height: 150px; // Set a fixed height for uniformity
+  background-color: #ffffff; // Set background color to white
+  border: 2px solid #ffffff; // Set border color to white
+  box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1); // Optional: add a subtle shadow for depth
+  display: flex; // Use flexbox for centering the content
+  flex-direction: column; // Arrange content vertically
+  align-items: center; // Center items horizontally
+  justify-content: center; // Center items vertically
+
+  // Adjust icon size
+  .category-tile-icon {
+    font-size: 2.5rem; // Adjust icon size to 2.5rem (you can tweak this)
+    color: #8ABEE8; // Set icon color
+  }
+
+  // Move title below icon
+  .category-tile-content {
+    margin-top: 0.5rem; // Add some spacing above the title
+    color: #757575; // Set title color to match your design
+    background: transparent; // Remove background
+    padding: 0; // Remove padding
+
+    h4 {
+      font-size: 1.2rem; // Adjust font size as needed
+      font-weight: 550;
+      margin: 0;
+      letter-spacing: 1px;
+      color: #757575; // Ensure the title is clearly visible
+    }
+  }
 
   // "Doingggg" effect on hover
   &:hover {
@@ -110,33 +151,14 @@ h2.categories-title {
   }
 
   img {
-    width: 180px;
-    height: 180px;
+    width: 100px; // Adjust image size as needed
+    height: 100px; // Ensure the image is square
     border-radius: 0.625rem;
     transition: transform 0.3s ease-in-out; // Added transition for image zoom
 
     // Zoom effect on hover
     &:hover {
       transform: scale(1.1);
-    }
-  }
-
-  .category-tile-content {
-    position: absolute;
-    bottom: 10%;
-    left: 0;
-    right: 0;
-    color: white;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 0.5rem;
-    text-align: center;
-
-    h4 {
-      font-size: 1.2rem;
-      font-weight: 550;
-      margin: 0;
-      letter-spacing: 1px;
-      color: white;
     }
   }
 }
@@ -150,6 +172,8 @@ h2.categories-title {
   80% { transform: translateY(0); }
   100% { transform: translateY(0); }
 }
+
+
 
 
 
@@ -819,7 +843,7 @@ h2.slogan {
   width: 100%;
 
   h2.categories-title {
-    color: #494949;
+    color: #757575;
   }
 
   .search-input-container {
