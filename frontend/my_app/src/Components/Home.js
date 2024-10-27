@@ -1,41 +1,39 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserLocation } from '../Location';
-import HomepageLoader from './HomepageLoader';
 
 const Home = () => {
   const { loginWithRedirect, logout, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
   const [userAddress, setUserAddress] = useState({});
   const [loading, setLoading] = useState(true); // Initialize loading state
 
+  // Step 1: Create the state abbreviation mapping
+  const stateAbbreviations = {
+    "New South Wales": "NSW",
+    "Victoria": "VIC",
+    "Queensland": "QLD",
+    "Western Australia": "WA",
+    "South Australia": "SA",
+    "Tasmania": "TAS",
+    "Northern Territory": "NT",
+    "Australian Capital Territory": "ACT",
+  };
 
-    // Step 1: Create the state abbreviation mapping
-    const stateAbbreviations = {
-      "New South Wales": "NSW",
-      "Victoria": "VIC",
-      "Queensland": "QLD",
-      "Western Australia": "WA",
-      "South Australia": "SA",
-      "Tasmania": "TAS",
-      "Northern Territory": "NT",
-      "Australian Capital Territory": "ACT",
-      // Add other states and territories as needed
-    };
-  
-    const formatState = (state) => {
-      if (!state) return '';
-      return state
-        .toLowerCase()
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-    };
+  const formatState = (state) => {
+    if (!state) return '';
+    return state
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
 
   // Fetch protected data for renters/nearby items
   const fetchProtectedData = useCallback(async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await fetch('http://localhost:5004/', {
+      // const response = await fetch('http://localhost:5005/', {
+      const response = await fetch('https://project-sc.onrender.com', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -72,7 +70,7 @@ const Home = () => {
   return (
     <div className="centered-container">
       {loading ? ( // Show loader while loading
-        <HomepageLoader />
+        <div></div>
       ) : (
         <>
           {!isAuthenticated ? (

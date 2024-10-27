@@ -3,22 +3,39 @@ body {
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: url('/public/stacked-waves-haikei.svg');
+  background-repeat: no-repeat; /* Abstract patterns usually don't repeat */
+  background-size: cover; /* Adjust according to your design */
+  background-position: center; /* Center the pattern */
+  background-color: #f0f0f0; /* Set a base color behind the abstract pattern */
+
+  // extra styling components, keeps background image positioned
+  height: 100vh;   // Ensures the background takes full height
+  width: 100vw;    // Ensures the background takes full width
+  background-attachment: fixed; // Fix background to not scroll with content
+  padding-bottom: 15rem;
 }
 
 .navbar {
   display: flex;
-  justify-content: center; // Centered as per your original code
+  justify-content: center;
   align-items: center;
-  padding: 1rem; // No change since it's already in rem
+  padding: 1rem;
+  text-align: center;
+  position: fixed;
+  bottom: 0;        // Ensure it stays at the bottom
+  left: 0;          // Align to the left
+  right: 0;         // Stretch to the right
+  z-index: 1000;    // Ensure it's above other content
 
   &-center {
-    // border: 0.05rem solid;
-    // border-color: #757575;
     border-radius: 0.625rem;
-    // box-shadow: 0rem 0.25rem 0.5rem rgba(201, 215, 164, 0.1);
     box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1);
-    // background: linear-gradient(to bottom, #C9D7A4, white);
-    position: sticky;
+    background: white;
+    width: auto;
+
+
     .nav-links {
       list-style-type: none;
       display: flex;
@@ -32,136 +49,152 @@ body {
         flex-direction: column;
         align-items: center;
         padding: 0.75rem;
+        position: relative;
+
+        // Apply style for the active item
+        &.active {
+          // Add a small line above the icon
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1.5rem; // Line width
+            height: 0.2rem; // Line height
+            background-color: #8ABEE8; // Same color as the active state
+            border-radius: 2px; // Round the edges of the line
+          }
+        }
 
         .nav-icon {
           margin-bottom: 0.5rem;
-          color: #8ABEE8;
+          color: #757575;
+
+          // Apply color for the active icon
+          &.active {
+            color: #8ABEE8;
+          }
         }
 
-        a {
+        a, button {
           color: #757575;
           font-weight: 600;
           text-decoration: none;
-        }
-
-        img {
-          margin-bottom: 0.5rem;
-        }
-
-        .account-button, .explore-button, .chat-button, .add-item-button, .home {
           background: none;
           border: none;
-          color: #757575;
-          text-decoration: none; // Remove any underline
           cursor: pointer;
-          font-weight: 600;
-          font-family: inherit; // Inherit font family
-          padding: 0; // Remove default padding
-          font-size: inherit; // Inherit font size
-          line-height: inherit; // Inherit line height
-          transition: color 0.3s; // Smooth transition for hover effect
+          font-family: inherit;
+
+          &.active {
+            color: #8ABEE8;
+          }
         }
       }
     }
   }
 }
 
+
+
+
+
 // LIST OF ALL CATEGORIES PAGE (HOMEPAGE)
-
-.category-card {
-  position: relative;
-}
-
-.category-overlay {
-  position: absolute;
-  bottom: 0; /* Align to the bottom */
-  left: 0;
-  right: 0;
-  //background-color: rgba(201, 215, 164, 0.5); our green
-  //background-color: rgba(138, 190, 232, 0.5); our blue
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  color: white; /* Text color */
-  text-align: center; /* Center the text */
-  padding: 10px; /* Add some padding */
-}
-
-.category-image {
-  object-fit: cover; /* Ensure the image covers the space properly */
-  width: 100%; /* Make sure the image takes full width */
-  height: auto; /* Keep the aspect ratio */
-}
-
-.categories-title {
+h2.categories-title {
+  color: #757575;
   text-align: center;
-  // font-weight: 600;
-  //color: #494949;
+  margin: 1rem 0; // Add some margin for spacing
+  font-size: 30px;
 }
 
-.categories-container {
-  display: flex;
-  flex-wrap: wrap; /* Allow cards to wrap to the next row */
-  justify-content: center; /* Center cards in the container */
-  gap: 1rem; /* Space between cards */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 1rem; /* Space between tiles */
+  max-width: 100%; /* Ensure container takes full width */
+  padding: 1rem;
+  justify-items: center;
 
-  .MuiCard-root {
-    flex: 0 0 calc(33.33% - 1rem); /* Three cards per row with space for margins */
-    margin: 0.5rem; /* Space between cards */
-    max-width: 21.56rem; /* Restrict card size */
-    width: 100%; /* Ensure cards take full width available in the container */
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for larger screens */
   }
 
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for even larger screens */
+  }
+}
 
-  .category-card {
-   flex: 0 0 calc(33.33% - 1rem); /* Three cards per row with spacing */
-    margin: 0.5rem;
-    max-width: 345px; /* Set the maximum width of the card */
-    background: white;
-    border-radius: 0.625rem;
-    // border: 2px solid white;
-    // box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1);
-    //box-shadow: 0rem 0.5rem 1rem rgba(138, 190, 232, 0.6);
-    display: flex;
-    flex-direction: column;
+.category-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  width: 150px; // Set a fixed width for uniformity
+  height: 150px; // Set a fixed height for uniformity
+  background-color: #ffffff; // Set background color to white
+  border: 2px solid #ffffff; // Set border color to white
+  box-shadow: 0rem 0.5rem 0.7rem rgba(0, 0, 0, 0.1); // Optional: add a subtle shadow for depth
+  display: flex; // Use flexbox for centering the content
+  flex-direction: column; // Arrange content vertically
+  align-items: center; // Center items horizontally
+  justify-content: center; // Center items vertically
 
-     /* Responsive adjustments for smaller screens */
-  @media (max-width: 48rem) {
-    .MuiCard-root {
-      flex: 0 0 calc(50% - 1.5rem); /* Two cards per row on small screens */
-    }
+  // Adjust icon size
+  .category-tile-icon {
+    font-size: 2.5rem; // Adjust icon size to 2.5rem (you can tweak this)
+    color: #8ABEE8; // Set icon color
   }
 
-  @media (max-width: 30rem) {
-    height: 160px;
-
-    .MuiCard-root {
-      flex: 0 0 calc(100% - 1rem); /* One card per row on very small screens */
-    }
+  // Move title below icon
+  .category-tile-content {
+    margin-top: 0.5rem; // Add some spacing above the title
+    color: #757575; // Set title color to match your design
+    background: transparent; // Remove background
+    padding: 0; // Remove padding
 
     h4 {
-      color: #494949;
-      font-size: 0.8rem;
-      margin: 0 0 0.8125rem;
-      font-weight: 400;
-      text-align: center;
+      font-size: 1.2rem; // Adjust font size as needed
+      font-weight: 550;
+      margin: 0;
+      letter-spacing: 1px;
+      color: #757575; // Ensure the title is clearly visible
     }
   }
+
+  // "Doingggg" effect on hover
+  &:hover {
+    animation: doingggg 0.5s forwards; // Apply doingggg animation
   }
 
-  .category-image {
-    height: auto;
-    width: 100%;
-    margin: 0 auto;
+  img {
+    width: 100px; // Adjust image size as needed
+    height: 100px; // Ensure the image is square
+    border-radius: 0.625rem;
+    transition: transform 0.3s ease-in-out; // Added transition for image zoom
 
-  }
-
-  h4 {
-    //color: #494949;
-    font-size: 1.3rem;
-    margin: 0 0 0.8125rem;
-    font-weight: 400;
-    text-align: center;
+    // Zoom effect on hover
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
+
+// Subtle "Doingggg" Animation Keyframes
+@keyframes doingggg {
+  0% { transform: translateY(0); }
+  20% { transform: translateY(-2px); }  // Reduced upward movement
+  40% { transform: translateY(0); }
+  60% { transform: translateY(-1px); }  // Further reduced upward movement
+  80% { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+
+
+
+
+
 
 // STUFF WE DONT WANT UNDERLINED
 .no-undies {
@@ -173,7 +206,6 @@ p.user-address {
   display: block;
   color: #494949;
   margin: 1rem 0;
-  padding-left: 1rem; // Adjusted from 20px to 1.25rem
 }
 
 // LIST OF ITEMS IN A SPECIFIC CATEGORY PAGE AND NEARBY ITEMS
@@ -183,6 +215,7 @@ p.user-address {
   align-items: center; // Center item cards horizontally
   padding: 1rem; // Optional: padding around the container for better spacing
   justify-content: center;
+  padding-bottom: 7rem;
 
   h2 {
     font-weight: 600;
@@ -204,6 +237,7 @@ p.user-address {
     padding-left: 1rem; // Add padding to the left if needed
     margin: 0; // Remove margin for better control
     padding-bottom: 1rem;
+    padding-top: 1rem;
   }
 
   p.user-address {
@@ -219,12 +253,35 @@ p.user-address {
     width: 100%; // Ensure items container takes full width
     align-items: center;
 
-    .MuiCard-root {
-      flex: 0 0 calc(50% - 1.25rem); // Adjust this for the card size
-      margin: 0.375rem; // Space between cards
-      max-width: 21.56rem; // Optional: restrict card size
-      width: 100%; // Ensure cards take full width available in the container
+    .category-items-card {
+      border-radius: 0.625rem;
+      align-items: center;
+      height: 450px;
+
+    .item-image {
+      height: 250px;
+      width: 380px;
+      border-radius: 0.625rem 0.625rem 0 0;
     }
+  }
+
+  .MuiCard-root {
+    flex: 0 0 calc(50% - 1.25rem); // Default to two cards per row
+    margin: 0.375rem;
+    max-width: 20rem;
+    width: 100%;
+    padding-left: 30px;
+    height: 475px;
+
+    @media (max-width: 768px) { // For tablet and smaller screens
+      flex: 0 0 calc(100% - 1.25rem); // One card per row
+      max-width: 80%;
+    }
+
+    @media (min-width: 1024px) { // For larger screens
+      flex: 0 0 calc(33.33% - 1.25rem); // Three cards per row
+    }
+  }
 
     .renter-profile-pic {
       width: 2.5rem; /* Set width */
@@ -238,6 +295,8 @@ p.user-address {
       display: flex;
       align-items: flex-start; /* Center items vertically */
       width: 100%; /* Ensure it takes the full width of the parent container */
+      padding-top: 1rem;
+
     }
 
     .renter-full-name {
@@ -246,21 +305,37 @@ p.user-address {
     }
   }
 
-
-  .item-image {
-    height: auto;
-    border-radius: 0.625rem;
-    border: 0.125rem solid white;
-  }
-
-  h3.item-header,
   p {
     color: #494949;
     text-decoration: none;
   }
 
+  p.item-price {
+    color: 494949;
+    margin-top: 5px;
+    font-size: 1.3rem;
+    font-family: "Inter", sans-serif;
+    padding-bottom: 1rem;
+  }
+
+  // SEARCH RESULTS
+  .search-result-price {
+    color: 494949;
+    font-size: 1.3rem;
+    font-family: "Inter", sans-serif;
+}
   h3.item-header {
     font-weight: 700;
+    margin: 0;
+    color: #494949;
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
+
+  p.distance-info {
+    font-size: 1rem;
+    padding-left: 12.5rem;
+    margin-top: 1.5rem;
   }
 }
 
@@ -286,7 +361,6 @@ h2.welcome {
   display: block;
   color: #494949;
   margin: 1rem 0;
-  padding-left: 1rem;
 }
 
 // BUTTONS
@@ -302,6 +376,7 @@ button {
   cursor: pointer;
   transition: background-color 0.3s;
   border-radius: 0.625rem;
+  font-size: 20px;
 
   &.item-chat-button {
     margin-left: 11rem; /* Pushes the chat icon to the right */
@@ -325,12 +400,16 @@ button {
     max-width: 9.375rem; // Optional: limit the maximum width
     background-color: #f0f0f0; // Optional: change background color
     margin: 1rem 1rem;
+    height: 60px;
+    border: 1px solid;
+    //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
   }
 
   &.rent-button, &.rent-login-button {
     background-color: #C9D7A4; // Button background color
     padding: 0.5rem 1rem; // Button padding
-    color: #494949; // Text color
+    color: white; // Text color
     border: none; // Remove default border
     border-radius: 0.625rem; // Rounded corners
     cursor: pointer; // Pointer cursor on hover
@@ -339,6 +418,8 @@ button {
     margin: 1rem auto; // Center horizontally using margin
     max-width: 13.75rem; // Optional: set a maximum width for the button
     text-align: center; // Center text inside the button
+    height: 60px;
+    box-shadow: 0rem 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -350,13 +431,34 @@ button {
   flex-direction: column; /* Stack items vertically if needed */
   padding: 1.25rem;
 
+  padding-bottom: 4rem;
+
+  .back-button-container {
+    width: 100%;
+    display: flex; /* Add this to control icon position */
+    justify-content: flex-start; /* Aligns the back button to the left */
+    padding-left: 0.5rem; /* Optional, for some space on the left side */
+
+    .back-icon {
+      font-size: 30px;
+      cursor: pointer;
+      padding-left: 0; /* Ensure no padding here */
+      color: #494949;
+    }
+  }
+
   p.login-rent-prompt {
     text-align: center;
+  }
+  p.distance-info {
+    padding-left: 0;
   }
 
   .item-details-card {
     box-shadow: 0rem 0.25rem 0.5rem rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow */
     border-radius: 0.625rem; /* Rounded corners for the card */
+
+    align-items: center;
   }
 
   .item-image {
@@ -387,10 +489,19 @@ button {
     align-items: center; /* Center vertically */
   }
 
-  .item-description,
+  .item-description {
+    padding-right: 20px;
+    color: #757575;
+    display: inline-block;
+    width: auto;
+  }
+
   .item-availability {
     margin: 0; /* Remove default margin */
     color: #757575;
+    display: inline-block;
+    width: 200px;
+    margin-left: 8rem;
   }
 
   .renter-container {
@@ -400,10 +511,12 @@ button {
     color: #494949;
     padding-top: 3rem;
 
+
     .renter-info {
       display: flex;
       align-items: flex-start; /* Center items vertically */
       width: 100%; /* Ensure it takes the full width of the parent container */
+
 
       .renter-profile-pic {
         width: 2.5rem; /* Set width */
@@ -471,7 +584,9 @@ button {
     color: #494949;
     font-family: "Inter", sans-serif;
     padding: 0;
+    padding-top: 1rem;
     margin: 0;
+    font-size: 18px;
   }
 
   .date-range {
@@ -486,13 +601,14 @@ button {
 .proceed-button {
   margin-top: 1rem; /* Add some space above the button */
   padding: 10px 20px; /* Add padding for the button */
-  background-color: #B7DFF5; /* Green background */
-  color: #494949; /* White text */
+  background-color: #B7DFF5;
+  color: #494949;
   border: 3px solid transparent; /* Remove border */
   border-radius: 0.625rem; /* Rounded corners */
   cursor: pointer; /* Pointer cursor on hover */
-  font-size: 16px; /* Increase font size */
+  font-size: 20px; /* Increase font size */
   width: 13.75rem;
+  height: 60px;
 }
 
 .proceed-button:hover {
@@ -503,10 +619,15 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 70vh;
   flex-direction: column;
   color:#494949;
   font-family: "Inter", sans-serif;
+  margin-top: 0rem;
+
+  .MuiCard-root {
+    border-radius: 0.625rem;
+  }
 
   .rental-period {
     display: flex;
@@ -525,12 +646,14 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Full height to center the loader */
+  height: 35vh; /* Full height to center the loader */
 
   .loader-image {
     width: 11rem; /* Adjust the size of your logo */
     height: 11rem;
     animation: pulse 1.5s ease-in-out infinite; /* Updated animation for pulsing */
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1))
+    drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
   }
 }
 
@@ -551,7 +674,7 @@ button {
 
 //HOMEPAGE LOADER
 h2.slogan {
-  color:#C9D7A4;
+  color: #8abee8;
   text-align: center;
   padding-bottom: 0.2rem;
 }
@@ -569,35 +692,106 @@ h2.slogan {
   flex-direction: column;
   align-items: center;  // Center items horizontally
   justify-content: center; // Center items vertically if you want the entire container to be centered vertically
+  padding-bottom: 7rem;
 
   .Nearby-item-image {
-    height: auto;
+    height: 250px;
+    border-radius: 0.625rem 0.625rem 0 0;
+    width: 350px;
   }
-}
 
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr)); // Adjust min width of cards
-  gap: 1.25rem; // Space between grid items
-}
+
+  .MuiCard-root {
+    flex: 0 0 calc(50% - 1.25rem); // Default to two cards per row
+    margin: 1rem;
+    max-width: 20rem;
+    width: 100%;
+    border-radius: 0.625rem;
+    padding-bottom: 1rem;
+
+
+    @media (max-width: 768px) { // For tablet and smaller screens
+      flex: 0 0 calc(100% - 1.25rem); // One card per row
+      max-width: 90%;
+    }
+
+    @media (min-width: 1024px) { // For larger screens
+      flex: 0 0 calc(33.33% - 1.25rem); // Three cards per row
+    }
+  }
+
+    .renter-profile-pic {
+      width: 2.5rem; /* Set width */
+      height: 2.5rem; /* Set height */
+      border-radius: 50%; /* Make the image circular */
+      object-fit: cover; /* Ensure the image covers the area */
+      margin-right: 0.625rem; /* Space between the image and the name */
+    }
+
+    .renter-info {
+      display: flex;
+      align-items: flex-start; /* Center items vertically */
+      width: 100%; /* Ensure it takes the full width of the parent container */
+      padding-top: 1rem;
+
+    }
+
+    .renter-full-name {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+  }
+
+  p {
+    color: #494949;
+    text-decoration: none;
+  }
+
+  p.item-price {
+    color: 494949;
+    margin-top: 5px;
+    font-size: 1.3rem;
+    font-family: "Inter", sans-serif;
+  }
+  h3.item-header {
+    font-weight: 700;
+    margin: 0;
+    color: #494949;
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
+
+  p.distance-info {
+    font-size: 1rem;
+    padding-left: 13.5rem;
+    margin-top: 1.5rem;
+  }
+
+    .rating-container {
+      display: flex; /* Keep this as flex for horizontal alignment of stars */
+      align-items: center; /* Center align */
+      color: #494949;
+      margin-top: -0.5rem;
+      .star-icon {
+        margin-right: 0.2rem;
+        color: #C9D7A4;
+        height: 1.2rem;
+      }
+    }
+
+    .renter-rating {
+      font-size: 0.95rem;
+      line-height: 1;
+      padding-right: 0.09rem;
+    }
 
 .category-items-card {
   display: flex; // Ensures card content is centered
   flex-direction: column; // Keeps the card's content stacked
   justify-content: space-between; // Space between elements inside the card
+  height: 450px;
 }
 
-.Nearby-items {
-  font-weight: 600;
-  color: #494949;
-  padding-left: 1rem; // Add padding to the left if needed
-  margin: 0; // Remove margin for better control
-  padding-top: 2rem;
-  font-size: 32px;
-  margin-bottom: 20px;
-  text-align: center; // Center the title text
-  font-family: "Inter", sans-serif;
-}
 
 .Nearby-items-map-container {
   // Styles for the container that holds the map and other items
@@ -606,25 +800,41 @@ h2.slogan {
   align-items: center;  // Center items horizontally
   justify-content: center;
 
+  h2.Nearby-items {
+    color: #494949;
+  }
+
   .address-bar {
     display: flex;
     align-items: center;
     background-color: #f7f7f7; // Light background to resemble a search bar
     border: 1px solid #B7DFF5; // Border color similar to input fields
     border-radius: 0.625rem; // Rounded corners to look like a search bar
-    padding: 7px 7px; // Padding to space the elements inside
+    padding: 7px; // Padding to space the elements inside
     margin-bottom: 4rem; // Space below the search bar
-    margin-top: 0.5rem;
+    margin-top: 0.5rem; // Space above the search bar
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Slight shadow for depth
-    width: 40%;
-    justify-content: space-between;
+    width: 40%; // Width for larger screens
+    justify-content: space-between; // Space between items
 
     .push-pin-icon {
       margin-right: 0.5rem; /* Space between icon and text */
       color: #757575; /* Color of the icon */
       vertical-align: middle; /* Aligns icon vertically with text */
     }
+
+    // Media query for smaller screens
+    @media (max-width: 768px) {
+      width: 90%; // Adjust width for mobile
+      padding: 5px; // Reduce padding for mobile
+      margin-bottom: 2rem; // Reduce bottom margin for mobile
+
+      .push-pin-icon {
+        margin-right: 0.25rem; // Reduce space between icon and text
+      }
+    }
   }
+
 
   .user-address {
     font-family: "Inter", sans-serif;
@@ -757,7 +967,7 @@ h2.slogan {
 .profile-container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 50px 20px 50px 20px;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -823,8 +1033,12 @@ h2.slogan {
 .search-bar-container {
   display: flex;
   justify-content: center;
-  margin-top: 5rem;
+  margin-top: 1rem;
   width: 100%;
+
+  h2.categories-title {
+    color: #757575;
+  }
 
   .search-input-container {
     display: flex;
@@ -839,6 +1053,7 @@ h2.slogan {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
+    justify-content: center;
 
     input {
       width: 100%;
@@ -859,9 +1074,12 @@ h2.slogan {
   }
 }
 .searchbar-categories {
+  padding-bottom: 7rem;
+
   form {
     justify-content: center;
   }
+
 }
 
 .Title {
@@ -878,11 +1096,6 @@ h2.slogan {
   margin-right: 0.625rem; /* Space between the image and the name */
 }
 
-.item-image {
-  height: auto;
-  border-radius: 0.625rem;
-  border: 0.125rem solid white;
-}
 
 .logo-container {
   justify-content: center;
@@ -896,22 +1109,41 @@ h2.slogan {
   }
   .logo {
     padding-top: 2rem;
-    height: 150px;
-    width: 150px;
+    height: 80px;
+    width: 80px;
     justify-content: center;
   }
 
 }
+
+// TALK JS CHAT
+// chat button on itemsListing page
+.chat-button {
+  .item-chat-button {
+    @media (max-width: 30rem) {
+      margin-right: 1rem;
+    }
+  }
+}
+.Hub{
+  padding-bottom:-50px;
+}
+
+.Inbox, .Inbox>.hub-underlay {
+  width: 100%;
+  height: 80%;
+}
+
+
 //itemForm section
 
 .item-form-body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
   background-color: #f8f9fa;
-  font-family: 'Arial', sans-serif;
+  padding-bottom: 8rem;
+
 
   .add-item-form {
     background-color: white;
@@ -921,12 +1153,26 @@ h2.slogan {
     width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 40px;
     align-items: center;
+    font-family: 'Montserrat', sans-serif;
   }
 
-  input[type="text"],
+//   input[type="text"] {
+//     box-sizing: border-box; /* Ensures padding and borders are included in width */
+//     width: 100%;            /* Makes input fields take full width of the container */
+//     padding: 12px;
+//     margin: 0;              /* Removes default margin */
+//     border: 1px solid #ccc;
+//     border-radius: 8px;
+//     font-size: 16px;
+//     transition: border-color 0.3s ease;
+//     height: 44px;    /* Consistent height for all input fields */
+//     font-family: 'Montserrat', sans-serif;
+// }
+
   input[type="number"],
+  input[type="text"],
   input[type="file"] {
     box-sizing: border-box; /* Ensures padding and borders are included in width */
     width: 100%;            /* Makes input fields take full width of the container */
@@ -936,13 +1182,50 @@ h2.slogan {
     border-radius: 8px;
     font-size: 16px;
     transition: border-color 0.3s ease;
-    height: 44px;           /* Consistent height for all input fields */
+    height: 44px;    /* Consistent height for all input fields */
+    font-family: 'Montserrat', sans-serif;
 }
 
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="file"]:focus {
   border-color: #C9D7A4; /* Airbnb's teal color */
+  outline: none;
+}
+
+/* Specific styling for item name field */
+// #item-name-field {
+//   background-color: #f8f9fa; /* Light background for item name input */
+// }
+
+.item-description-container-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px; /* Adjust spacing as needed */
+}
+
+/* Specific styling for item description field */
+#item-description-field {
+  // background-color: #f3f3f3; /* Slightly different background for description */
+  min-height: 250px;          /* Set minimum height for description */
+  padding: 12px;              /* Add padding to avoid text sticking to edges */
+  font-size: 16px;            /* Adjust the font size */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;           /* Allow users to resize the description vertically */
+  box-sizing: border-box;
+  width: 100%;
+  overflow-y: auto;           /* Enable vertical scrolling if needed */
+  font-family: 'Montserrat', sans-serif;
+}
+
+#item-description-field::placeholder {
+  color: #888; /* Set color for the placeholder */
+}
+
+#item-description-field:focus {
+  border-color: #C9D7A4;
   outline: none;
 }
 
@@ -963,30 +1246,30 @@ select:focus {
   outline: none;
 }
 
-input[type="checkbox"] {
-  appearance: none; /* Removes the default checkbox */
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+// input[type="checkbox"] {
+//   appearance: none; /* Removes the default checkbox */
+//   width: 20px;
+//   height: 20px;
+//   border: 2px solid #ccc;
+//   border-radius: 4px;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease;
+// }
 
-/* Style the checkbox when checked */
-input[type="checkbox"]:checked {
-  background-color: #C9D7A4; /* Airbnb's teal color when checked */
-}
+// /* Style the checkbox when checked */
+// input[type="checkbox"]:checked {
+//   background-color: #C9D7A4; /* Airbnb's teal color when checked */
+// }
 
-/* Add a checkmark when checked (optional) */
-input[type="checkbox"]:checked::after {
-  content: '✔';
-  color: white;
-  display: block;
-  text-align: center;
-  font-size: 14px;
-  line-height: 20px;
-}
+// /* Add a checkmark when checked (optional) */
+// input[type="checkbox"]:checked::after {
+//   content: '✔';
+//   color: white;
+//   display: block;
+//   text-align: center;
+//   font-size: 14px;
+//   line-height: 20px;
+// }
 
 /* Checkbox label */
 label {
@@ -1003,11 +1286,13 @@ button[type="submit"] {
   border: none;
   padding: 12px;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: 50%; /* Make the button width smaller for centering */
   margin: 0 auto; /* Center the button */
+  font-family: 'Montserrat', sans-serif;
+  height: 60px;
 }
 
 button[type="submit"]:hover {
@@ -1019,6 +1304,70 @@ button[type="submit"]:hover {
     width: 90%;
   }
 }
-
 }
+
+// SUCCESS PAGE
+// .Success-page {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 20px;
+//   min-height: 100vh; // Ensure it takes the full viewport height
+
+//   .MuiCard-root {
+//     border-radius: 0.625rem;
+//   }
+
+//   .success {
+//     margin-bottom: 30px;
+//   }
+// }
+
+.card {
+  max-width: 400px;
+  margin: auto; // Center the card horizontally
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
+}
+
+.card-media {
+  height: 300px;
+}
+
+.card-content {
+  padding: 16px; // Padding inside the card
+}
+
+h5 {
+  margin-bottom: 16px; // Space below the title
+}
+
+h6 {
+  margin: 8px 0; // Space above and below the item name
+  padding-top: 1rem;
+}
+
+.body1 {
+  color: #666; // Secondary text color
+}
+
+.color-primary {
+  color: #1976d2; // Primary color for the total price
+}
+
+
+// /* Update your index.css */
+// .whole-homepage {
+//   position: fixed; /* Ensures the background stays in place when scrolling */
+//   top: 0;
+//   left: 0;
+//   width: 100vw; /* Full viewport width */
+//   height: 100vh; /* Full viewport height */
+//   background-image: url('/public/stacked-waves-haikei.svg');
+//   background-repeat: no-repeat;
+//   background-size: cover;
+//   background-position: center;
+//   background-color: #f0f0f0;
+//   z-index: -1; /* Makes sure the */
+//   }
+
 

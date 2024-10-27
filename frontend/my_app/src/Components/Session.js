@@ -1,4 +1,4 @@
-import { Popup, Inbox } from '@talkjs/react';
+import { Popup } from '@talkjs/react';
 import { useEffect, useState, useCallback } from 'react';
 import Talk from 'talkjs';
 import axios from 'axios';
@@ -16,7 +16,8 @@ function Chat({ syncUser }) {
         const fetchItemDetails = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:5004/${category_name}/${itemId}`);
+                // const response = await axios.get(`http://localhost:5005/${category_name}/${itemId}`);
+                const response = await axios.get(`https://project-sc.onrender.com/${category_name}/${itemId}`);
                 setItem(response.data);
             } catch (error) {
                 console.error('Error fetching item details:', error);
@@ -33,7 +34,7 @@ function Chat({ syncUser }) {
                 session.destroy(); // Cleanup session on unmount
             }
         };
-    }, [category_name, itemId]);
+    }, [category_name, itemId, session]);
 
     // Create Talk.js session when item is loaded
     useEffect(() => {
@@ -75,12 +76,12 @@ function Chat({ syncUser }) {
         conversation.setParticipant(other);
 
         return conversation;
-    }, [item, itemId]);
+    }, [item]);
 
     if (loading) return <div>Loading...</div>; // Optional loading state
 
     return (
-        <div>
+        <div className="chat-button">
             <button className="item-chat-button">
                 <ChatIcon onClick={() => setIsPopupOpen(true)}/>
             </button>
@@ -89,6 +90,7 @@ function Chat({ syncUser }) {
                     conversationId={`item_${itemId}`}
                     syncConversation={syncConversation} // Pass the current session
                     onClose={() => setIsPopupOpen(false)} // Optionally handle closing
+                    style={{ width: '100%', height: '60%' }}
                 />
             )}
         </div>

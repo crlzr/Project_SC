@@ -10,7 +10,6 @@ const LogoLoader = () => {
         alt="Loading..." 
         className="loader-image" 
       />
-      <p>Loading...</p>
     </div>
   );
 };

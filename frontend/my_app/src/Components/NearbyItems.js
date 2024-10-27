@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserLocation } from '../Location';
 import mapboxgl from 'mapbox-gl';
@@ -15,16 +15,16 @@ import LogoLoader from './LogoLoader';
 import '../index.css';
 
 const NearbyItems = () => {
-  const { loginWithRedirect, logout, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [nearbyItems, setNearbyItems] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [userAddress, setUserAddress] = useState({});
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState('name'); // New state for sorting
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const userMarkerRef = useRef(null);
   const markersRef = useRef([]);
-  const { category_name } = useParams();
   const [radius, setRadius] = useState(5);
 
   mapboxgl.accessToken = process.env.REACT_APP_MB_TOKEN;
@@ -56,6 +56,7 @@ const NearbyItems = () => {
     markersRef.current = [];
   };
 
+  // Automatic Mapbox Zoom
   const calculateBoundingBox = (latitude, longitude, radiusKm) => {
     const earthRadiusKm = 6371; // Earth's radius in km
     const angularDistance = radiusKm / earthRadiusKm;
@@ -89,12 +90,46 @@ const NearbyItems = () => {
     }
   };
 
+  //Sorting Options
+  const sortItems = useCallback((items) => {
+    switch (sortOption) {
+      case 'name':
+        return [...items].sort((a, b) => a.Item_name.localeCompare(b.Item_name));
+      case 'name-desc':
+        return [...items].sort((a, b) => b.Item_name.localeCompare(a.Item_name));
+      case 'price':
+        return [...items].sort((a, b) => a.Price_per_day - b.Price_per_day);
+      case 'price-desc':
+        return [...items].sort((a, b) => b.Price_per_day - a.Price_per_day);
+      case 'distance':
+        return [...items].sort((a, b) => a.distance - b.distance);
+      case 'distance-desc':
+        return [...items].sort((a, b) => b.distance - a.distance);
+      default:
+        return items;
+    }
+  }, [sortOption]);
+
+  // Define distance from user to item location
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in km
+  };
+
+
   const fetchItemsNearby = useCallback(async (radius_km = radius) => {
     if (userLocation) {
       setLoading(true);
       try {
         const token = await getAccessTokenSilently();
-        const response = await fetch(`http://localhost:5004/items/nearby?latitude=${userLocation.latitude}&longitude=${userLocation.longitude}&radius_km=${radius_km}`, {
+        // const response = await fetch(`http://localhost:5005/items/nearby?latitude=${userLocation.latitude}&longitude=${userLocation.longitude}&radius_km=${radius_km}`, {
+        const response = await fetch(`https://project-sc.onrender.com/items/nearby?latitude=${userLocation.latitude}&longitude=${userLocation.longitude}&radius_km=${radius_km}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -105,15 +140,29 @@ const NearbyItems = () => {
         }
 
         const data = await response.json();
-        setNearbyItems(data);
+
+         // Calculate the distance from the user to each item
+        const itemsWithDistance = data.map(item => {
+          const distance = calculateDistance(
+            userLocation.latitude,
+            userLocation.longitude,
+            item.renter_latitude,
+            item.renter_longitude
+          );
+          return { ...item, distance }; // Add distance to the item object
+        });
+
+
+        setNearbyItems(sortItems(itemsWithDistance)); // Sort items after adding distance
       } catch (error) {
         console.error('Error fetching nearby items:', error);
       } finally {
         setLoading(false);
       }
     }
-  }, [getAccessTokenSilently, userLocation, radius]);
+  }, [getAccessTokenSilently, userLocation, radius, sortItems]);
 
+  //Mapbox
   useEffect(() => {
     if (userLocation && mapContainerRef.current) {
       if (!mapRef.current) {
@@ -122,6 +171,7 @@ const NearbyItems = () => {
           style: 'mapbox://styles/mapbox/standard',
           center: [userLocation.longitude, userLocation.latitude],
           zoom: 11,
+          maxZoom: 12,
         });
 
         const navControl = new mapboxgl.NavigationControl();
@@ -215,7 +265,7 @@ const NearbyItems = () => {
 
   return (
     <div className="Nearby-items-map-container">
-      <h1 className="Nearby-items">Nearby Items</h1>
+      <h2 className="Nearby-items">Nearby Items</h2>
       <div className="address-bar">
         {userAddress && (
           <p className="user-address">
@@ -238,6 +288,18 @@ const NearbyItems = () => {
         </div>
       </div>
 
+      <div className="sort-selector">
+        <Select value={sortOption} onChange={(e) => setSortOption(e.target.value)} label="Sort By">
+          <MenuItem value="name">Name (A-Z)</MenuItem>
+          <MenuItem value="name-desc">Name (Z-A)</MenuItem>
+          <MenuItem value="price">Price (Low to High)</MenuItem>
+          <MenuItem value="price-desc">Price (High to Low)</MenuItem>
+          <MenuItem value="distance">Distance (Closest)</MenuItem>
+          <MenuItem value="distance-desc">Distance (Furthest)</MenuItem>
+        </Select>
+        {/* <p>Sorted by: {sortOption}</p> */}
+      </div>
+
       <div ref={mapContainerRef} style={{ width: '100%', height: '300px' }} className="map-container" />
 
       {loading ? (
@@ -247,25 +309,39 @@ const NearbyItems = () => {
           {nearbyItems.length > 0 ? (
             <div className="cards-grid">
               {nearbyItems.map(item => (
-                <Card sx={{ maxWidth: 345, margin: '20px' }} key={item.Item_id} className="category-items-card">
+                <Card sx={{}} key={item.Item_id} className="category-items-card">
                   <Link to={`/category/${item.category}/${item.Item_id}`} className="no-undies">
                     <CardActionArea>
                       <CardMedia
                         component="img"
                         className="Nearby-item-image"
-                        height="100"
                         image={item.Image_url}
                         alt={item.Item_name}
                       />
                       <CardContent>
-                        <h3 className="item-header">{item.Item_name}</h3>
-                        <div className="rating-container">
-                          <p className="renter-rating">{item.Rating}</p>
-                          <StarIcon className="star-icon" alt="star-icon" />
+                    <h3 className="item-header">{item.Item_name}</h3>
+                    <div className="renter-container">
+                      <div className="renter-info">
+                        <img
+                        src={item.Pic}
+                        alt="Renter Profile"
+                        className="renter-profile-pic"
+                        />
+                        <div className="renter-details">
+                          <p className="renter-full-name">{item.Renter_name}</p>
+                          <div className="rating-container">
+                            <p className="renter-rating"> {item.Rating}</p> {/* Add rating instead */}
+                            <StarIcon className="star-icon" alt="star-icon" />
+                          </div>
                         </div>
-                        <p className="item-price">Price: ${item.Price_per_day} per day</p>
-                        <p className="renter-name">Renter: {item.Renter_name}</p>
-                      </CardContent>
+                      </div>
+                      <p className="item-price">${item.Price_per_day} per day</p>
+                      <p className='distance-info'>
+                        {item.distance ? `${item.distance.toFixed(1)} km away` : 'Distance not available'}
+                      </p>
+                      {/* <img src={item.Image_url} alt={item.Item_name} /> */}
+                    </div>
+                  </CardContent>
                     </CardActionArea>
                   </Link>
                 </Card>

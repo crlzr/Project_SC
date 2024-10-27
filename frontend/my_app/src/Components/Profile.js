@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import HomepageLoader from './HomepageLoader'; // Import HomepageLoader
 
 const Profile = () => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [setProfile] = useState(null); // Correctly initialize profile state
+  const [loading, setLoading] = useState(true); // Initialize loading state
 
   useEffect(() => {
     const fetchProfile = async () => {
       if (isAuthenticated) {
         try {
           const token = await getAccessTokenSilently();
-          const response = await fetch('http://localhost:5004/profile', {
+          // const response = await fetch('http://localhost:5005/profile', {
+          const response = await fetch('https://project-sc.onrender.com/profile', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -19,25 +21,25 @@ const Profile = () => {
 
           if (response.ok) {
             const profileData = await response.json();
-            setProfile(profileData);
+            setProfile(profileData); // Store profile data
           } else {
             console.error('Failed to fetch profile:', response.status);
           }
         } catch (error) {
           console.error('Error fetching profile:', error);
         } finally {
-          setLoading(false);
+          setLoading(false); // Set loading to false when fetching completes
         }
       } else {
-        setLoading(false);
+        setLoading(false); // Set loading to false if not authenticated
       }
     };
 
     fetchProfile();
-  }, [isAuthenticated, getAccessTokenSilently]);
+  }, [isAuthenticated, getAccessTokenSilently, setProfile]); // Add dependencies
 
   if (loading) {
-    return <div>Loading profile...</div>;
+    return <HomepageLoader />; // Show HomepageLoader while loading
   }
 
   if (!isAuthenticated) {
@@ -52,7 +54,7 @@ const Profile = () => {
     <div className="profile-container">
       <div className="profile-header">
         <div className="profile-image-container">
-          <img src={user.picture}  alt="User Profile" className="profile-image" />
+          <img src={user.picture} alt="User Profile" className="profile-image" />
         </div>
         <h2 className="user-name">{user.name || 'User Name'}</h2>
       </div>
@@ -74,7 +76,7 @@ const Profile = () => {
           <span className="right-arrow">&gt;</span>
         </div>
       </div>
-      </div>
+    </div>
   );
 };
 

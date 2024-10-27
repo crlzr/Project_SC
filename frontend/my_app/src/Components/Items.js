@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback} from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef} from 'react';
+import { useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import StarIcon from '@mui/icons-material/Star';
-import ChatIcon from '@mui/icons-material/Chat';
 import LogoLoader from './LogoLoader';
 import Calendar from './Calendar';
 import format from 'date-fns/format';
@@ -16,25 +15,33 @@ import 'mapbox-gl/dist/mapbox-gl.css'; // Import Mapbox CSS
 import Modal from '@mui/material/Modal'; // Import Modal
 import Chat from './Session';
 import { useAuth0 } from '@auth0/auth0-react'; // Import Auth0
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleLeft } from '@fortawesome/free-regular-svg-icons';
+
 
 
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
 
 const ItemsListing = (syncConversation) => {
-  const { loginWithRedirect, logout, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
   const { category_name, itemId } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCalendar, setShowCalendar] = useState(false);
   const [confirmedDates, setConfirmedDates] = useState(null);
-
+  const [userLocation, setUserLocation] = useState(null);
+  const [distance, setDistance] = useState(null);
+  const [isDatesConfirmed, setIsDatesConfirmed] = useState(false);
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const markerRef = useRef([]);
 
   mapboxgl.accessToken = process.env.REACT_APP_MB_TOKEN;
 
+  const handleBackButtonClick = () => {
+    navigate(-1); // Navigate to the previous page
+  };
 
   // const clearMarkers = () => {
   //   markerRef.current.forEach(marker => marker.remove());
@@ -45,7 +52,8 @@ const ItemsListing = (syncConversation) => {
     const fetchItemDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:5004/${category_name}/${itemId}`);
+        // const response = await axios.get(`http://localhost:5005/${category_name}/${itemId}`);
+        const response = await axios.get(`https://project-sc.onrender.com/${category_name}/${itemId}`);
         setItem(response.data);
       } catch (error) {
         console.error('Error fetching item details:', error);
@@ -69,7 +77,47 @@ const ItemsListing = (syncConversation) => {
   const handleConfirmDates = (dates) => {
     setConfirmedDates(dates);
     setShowCalendar(false);
+    setIsDatesConfirmed(true);  // Update button label state
   };
+
+  // Get user location
+  useEffect(() => {
+    const getUserLocation = () => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ latitude, longitude });
+        },
+        (error) => {
+          console.error('Error getting user location:', error);
+        }
+      );
+    };
+
+    getUserLocation();
+  }, []);
+
+  useEffect(() => {
+    if (item && userLocation) {
+      const { renter_latitude, renter_longitude } = item;
+
+      // Calculate distance in kilometers
+      const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371; // Radius of the Earth in km
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in km
+      };
+
+      const distanceInKm = calculateDistance(userLocation.latitude, userLocation.longitude, renter_latitude, renter_longitude);
+      setDistance(distanceInKm);
+    }
+  }, [item, userLocation]);
 
 
   useEffect(() => {
@@ -171,7 +219,8 @@ const ItemsListing = (syncConversation) => {
       localStorage.setItem('paymentEndDate', confirmedDates.endDate.toISOString());     // Store end date as ISO string
       localStorage.setItem('paymentMessage', 'Payment Successful');
 
-      const response = await axios.post('http://localhost:5004/create-checkout-session', {
+      // const response = await axios.post('http://localhost:5005/create-checkout-session', {
+      const response = await axios.post('https://project-sc.onrender.com/create-checkout-session', {
         amount: totalAmount,
         category: item.Category_id,
         itemName: item.Item_name,
@@ -202,14 +251,22 @@ const ItemsListing = (syncConversation) => {
     return <p>No item found.</p>;
   }
 
-  const handleLogin = () => {
-    loginWithRedirect({
-        redirectUri: window.location.origin + window.location.pathname // Redirect back to the same page
-    });
-};
+  // const handleLogin = () => {
+  //   loginWithRedirect({
+  //       redirectUri: window.location.origin + window.location.pathname // Redirect back to the same page
+  //   });
+// };
 
   return (
     <div className="item-details-container">
+      <div className="back-button-container">
+      {/* Back Button */}
+      <FontAwesomeIcon 
+        icon={faCircleLeft} 
+        onClick={handleBackButtonClick} 
+        className="back-icon"
+      />
+      </div>
       <Card sx={{ maxWidth: 400, margin: '20px' }} className="item-details-card">
         <CardMedia
           component="img"
@@ -241,23 +298,29 @@ const ItemsListing = (syncConversation) => {
                   <StarIcon className="star-icon" alt="star-icon" />
                 </div>
               </div>
-              {isAuthenticated && <Chat syncConversation={syncConversation} />} 
+              {isAuthenticated && <Chat syncConversation={syncConversation} />}
             </div>
+            {/* Display distance from user's location */}
+            {distance !== null && (
+                <p className="distance-info">{distance.toFixed(1)} km away</p>
+              )}
           </div>
           {/* Map container */}
           <div ref={mapContainerRef} style={{ width: '100%', height: '300px' }} className="map-container" />
-          {!isAuthenticated && 
+          {!isAuthenticated &&
           <div className="rent-login-button-container">
             <p className="login-rent-prompt">Please log in to rent item</p>
             <button className="rent-login-button" onClick={() => loginWithRedirect()}>Log in</button>
           </div>
           }
-          {isAuthenticated && 
+          {isAuthenticated &&
           <div className="rent-button-container">
-          <button className="rent-button" onClick={handleRentNowClick}>Rent Now</button>
+            <button className="rent-button" onClick={handleRentNowClick}>
+              {isDatesConfirmed ? "Edit Dates" : "Rent Now"}
+            </button>
           </div>
           }
-          
+
           {/* {showCalendar && <Calendar onConfirmDates={handleConfirmDates} />}  */}
           {/* Modal for Calendar */}
           <Modal
@@ -272,7 +335,7 @@ const ItemsListing = (syncConversation) => {
             </Modal>
             {confirmedDates && (
               <div className="confirmed-dates">
-                <h4 className="dates-title">Confirmed Dates:</h4>
+                <h4 className="dates-title">Selected Dates:</h4>
                 <p className="date-range">{format(confirmedDates.startDate, 'dd/MM/yyyy')} - {format(confirmedDates.endDate, 'dd/MM/yyyy')}</p>
                 <button className="proceed-button" onClick={handleProceedToPayment}>
             Proceed to Payment

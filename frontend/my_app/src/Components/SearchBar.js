@@ -17,13 +17,14 @@ const SearchBar = ({ onSearch }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://localhost:5004/item/search?q=${query}`);
+      // const response = await fetch(`http://localhost:5005/item/search?q=${query}`);
+      const response = await fetch(`https://project-sc.onrender.com/item/search?q=${query}`);
       if (!response.ok) {
         throw new Error('Failed to fetch search results');
       }
       const data = await response.json();
       console.log("Fetched Data:", data);
-      onSearch(data);
+      onSearch(data); // Pass the fetched data back to the parent component
       navigate(`/search?query=${query}`, { state: { results: data } });
     } catch (err) {
       setError(err.message);

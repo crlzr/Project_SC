@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import Navbar from './Components/Navbar';
@@ -17,8 +17,8 @@ import SearchResults from './Components/SearchResult';
 import ItemForm from './Components/ItemForm';
 
 const App = () => {
-
   const [searchResults, setSearchResults] = useState([]);
+  const [firstConversationId, setFirstConversationId] = useState(null); // State to hold the first conversation ID
 
   const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
 
@@ -36,7 +36,6 @@ const App = () => {
         welcomeMessage: 'Hi!',
       });
     } else {
-      // Return a default guest user if not authenticated
       return new Talk.User({
         id: 'guest',
         name: 'Guest',
@@ -47,58 +46,81 @@ const App = () => {
     }
   }, [isAuthenticated, user]);
 
-  if (isLoading) return <div>Loading...</div>; // Handle loading state
+  useEffect(() => {
+    const fetchConversations = async () => {
+      if (isAuthenticated && user) {
+        try {
+          // const response = await fetch(`http://localhost:5005/conversations?userId=${user.sub}`); // Adjust your API endpoint
+          const response = await fetch(`https://project-sc.onrender.com/conversations?userId=${user.sub}`); // Adjust your API endpoint
+          const data = await response.json();
+          const filteredConversations = data.filter(convo => convo.custom.state !== 'hidden');
+
+          if (filteredConversations.length > 0) {
+            setFirstConversationId(filteredConversations[0].id); // Set the ID of the first non-hidden conversation
+          }
+        } catch (error) {
+          console.error('Error fetching conversations:', error);
+        }
+      }
+    };
+
+    fetchConversations();
+  }, [isAuthenticated, user]);
+
+  if (isLoading) return <div></div>; // Handle loading state
 
   return (
-    <Session appId={process.env.REACT_APP_TALKJS_APP_ID} syncUser={syncUser}>
-      <Router>
-      <div className="logo-container">
-          <img src={"sharecirclelogo.png"} alt="Logo" className="logo" />
-          <h1 className="logo-text">Share Circle</h1>
-        </div>
-        <Routes>
-          <Route path="/items/nearby" element={<NearbyItems />} />
-           {/* Chat Route */}
-          <Route
-            path="/chat"
-            element={
-              isAuthenticated ? (
-                <Inbox
-                  conversationId={`conversation_${user.sub}`}
-                  style={{ width: '100%', height: '500px' }}
-                  className="talkjs-container"
-                />
-              ) : (
-                <div className="login-prompt" style={{ textAlign: 'center' }}>
-                  <h2>You need to log in to access the chat.</h2>
-                  <button className="login-button" onClick={loginWithRedirect}>Log In</button>
+    <div className="whole-homepage">
+      <Session appId={process.env.REACT_APP_TALKJS_APP_ID} syncUser={syncUser}>
+        <Router>
+          <div className="logo-container">
+            <img src={"sharecirclelogo.png"} alt="Logo" className="logo" />
+            <h1 className="logo-text">Share Circle</h1>
+          </div>
+          <Routes>
+            <Route path="/items/nearby" element={<NearbyItems />} />
+            {/* Chat Route */}
+            <Route
+              path="/chat"
+              element={
+                isAuthenticated ? (
+                  <Inbox
+                    conversationId={firstConversationId ? `conversation_${firstConversationId}` : undefined} // Open the first chat if available
+                    style={{ width: '100%', height: '500px' }}
+                    className="talkjs-container"
+                  />
+                ) : (
+                  <div className="login-prompt" style={{ textAlign: 'center' }}>
+                    <h2>You need to log in to access the chat.</h2>
+                    <button className="login-button" onClick={loginWithRedirect}>Log In</button>
+                  </div>
+                )
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <div className="searchbar-categories">
+                  <SearchBar onSearch={setSearchResults} />
+                  <Categories />
                 </div>
-              )
-            }
-          />
-          <Route
-          path="/"
-          element={
-            <div className="searchbar-categories">
-              <SearchBar onSearch={setSearchResults} />
-              < Categories />
-            </div>
-          }
-        />
-        {/* Route for search results */}
-        <Route
-          path="/search"
-          element={<SearchResults results={searchResults} />}
-        />
-          <Route path="/profile" element={<><Profile /><Home /></>} />
-          <Route path="/items" element={<ItemForm />} />
-          <Route path="/category/:category_name" element={<CategoryItems />} />
-          <Route path="/category/:category_name/:itemId" element={<ItemsListing/>} />
-          <Route path="/success" element={<SuccessPage />} />
-        </Routes>
-        <Navbar onAccountClick={handleAccountClick} />
-      </Router>
-    </Session>
+              }
+            />
+            {/* Route for search results */}
+            <Route
+              path="/search"
+              element={<SearchResults results={searchResults} />}
+            />
+            <Route path="/profile" element={<><Home /><Profile /></>} />
+            <Route path="/items" element={<ItemForm />} />
+            <Route path="/category/:category_name" element={<CategoryItems />} />
+            <Route path="/category/:category_name/:itemId" element={<ItemsListing />} />
+            <Route path="/success" element={<SuccessPage />} />
+          </Routes>
+          <Navbar onAccountClick={handleAccountClick} />
+        </Router>
+      </Session>
+    </div>
   );
 };
 

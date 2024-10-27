@@ -13,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: 'openid profile email',
     }}
+    cacheLocation="localstorage"  // Use local storage for session persistence
   >
     <App />
   </Auth0Provider>

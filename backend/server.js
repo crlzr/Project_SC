@@ -21,8 +21,8 @@ const PORT = process.env.PORT || 5005;
 // ];
 
 app.use(cors({
-  // origin: 'https://sharecircle.netlify.app',
-  origin: 'http://localhost:3000',
+  origin: 'https://sharecircle.netlify.app',
+  // origin: 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify methods allowed
   credentials: true, // Allow credentials if needed
 }));
@@ -64,7 +64,7 @@ const upload = multer({ storage });
 // Function to upload images on Cloudinary, transform them and get URL on command line
 // (async function() {
 //   try {
-//     const results = await cloudinary.uploader.upload('./images/profile_pics/KarenCompli2.jpg'); // Specify the correct image file
+//     const results = await cloudinary.uploader.upload('./images/profile_pics/NicoleGorospe2.jpg'); // Specify the correct image file
 //     console.log('Upload successful:', results);
 
 //     const url = cloudinary.url(results.public_id, {
@@ -134,7 +134,8 @@ app.post('/create-checkout-session', async (req, res) => {
               quantity: 1, // Adjust quantity as needed
           }],
           mode: 'payment', // Payment mode
-          success_url: 'http://localhost:3000/success?message=Payment+Successful',
+          // success_url: 'http://localhost:3000/success?message=Payment+Successful',
+          success_url: 'https://sharecircle.netlify.app/success?message=Payment+Successful',
           //success_url: 'http://localhost:3000/success', // Redirect on success
           cancel_url: previousPageUrl, // Redirect to previous item page
       });
@@ -154,8 +155,11 @@ app.get('/item/search', async (req, res) => {
   }
   try {
     const query = `
-      SELECT * FROM "Items"
+      SELECT *,
+      "Categories"."Name" AS "category"
+      FROM "Items"
       INNER JOIN "Renters" ON "Items"."Renter_id" = "Renters"."Renter_id"
+      INNER JOIN "Categories" ON "Items"."Category_id" = "Categories"."ID"
       WHERE "Items"."Item_name" ILIKE $1
     `;
     const values = [`%${searchQuery}%`];
@@ -191,7 +195,8 @@ app.get('/items/nearby', jwtCheck, async (req, res) => {
       ST_Y(ST_AsText("Renters"."location"::geometry)) AS "renter_latitude",
       "Items"."Renter_name",
       "Categories"."Name" AS "category",
-      "Renters"."Rating" AS "Rating"
+      "Renters"."Rating" AS "Rating",
+      "Renters"."Profile_pic" AS "Pic"
   FROM "Items"
   INNER JOIN "Renters" ON "Items"."Renter_id" = "Renters"."Renter_id"
   INNER JOIN "Categories" ON "Items"."Category_id" = "Categories"."ID"
@@ -275,7 +280,12 @@ app.get('/:category_name', async (req, res) => {
   const categoryName = req.params.category_name;
   console.log('Fetching items with Category_name:', categoryName);
   const query = `
-    SELECT "Items".*, "Categories"."Name" AS "CategoryName", "Renters"."Rating", "Renters"."Profile_pic"
+    SELECT "Items".*,
+    "Categories"."Name" AS "CategoryName",
+    "Renters"."Rating",
+    "Renters"."Profile_pic",
+    ST_X(ST_AsText("Renters"."location"::geometry)) AS "renter_longitude",
+    ST_Y(ST_AsText("Renters"."location"::geometry)) AS "renter_latitude"
     FROM "Items"
     INNER JOIN "Categories" ON "Items"."Category_id" = "Categories"."ID"
     INNER JOIN "Renters" ON "Items"."Renter_id" = "Renters"."Renter_id"
@@ -336,11 +346,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // POST route to add a new item
 app.post('/items', upload.single('image'), async (req, res) => {
-  const { itemName, description, pricePerDay, availability, category_id, renter_id } = req.body;
+  const { itemName, description, pricePerDay, availability, category_id, renter_id, renter_name } = req.body;
   const image = req.file; // Get the uploaded image
 
   // Validate the inputs
-  if (!itemName || !description || !pricePerDay || !image || !availability || !category_id || !renter_id) {
+  if (!itemName || !description || !pricePerDay || !image || !availability || !category_id || !renter_id || !renter_name) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
@@ -382,11 +392,11 @@ app.post('/items', upload.single('image'), async (req, res) => {
 
     // Insert item details into the database
     const query = `
-      INSERT INTO "Items" ("Item_name", "Description", "Price_per_day", "Image_url", "Availability", "Category_id", "Renter_id")
-      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
+      INSERT INTO "Items" ("Item_name", "Description", "Price_per_day", "Image_url", "Availability", "Category_id", "Renter_id", "Renter_name")
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;
     `;
 
-    const values = [itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id];
+    const values = [itemName, description, pricePerDay, imageUrl, availability, category_id, renter_id, renter_name];
     const result = await pool.query(query, values);
 
     // Return the newly added item

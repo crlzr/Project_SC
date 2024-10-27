@@ -4,10 +4,11 @@ const ItemForm = () => {
   const [itemName, setItemName] = useState('');
   const [description, setDescription] = useState('');
   const [pricePerDay, setPricePerDay] = useState('');
-  const [availability, setAvailability] = useState(false);
+  const [availability] = useState(false);
   const [categoryId, setCategoryId] = useState(1);
-  const [renterId] = useState(1); // Set your default RenterID here
+  const [renterId] = useState(7); // Set your default RenterID here
   const [image, setImage] = useState(null); // State to handle image file
+  const [renterName] = useState('Nicole'); // Set your default Renter Name here
 
   const categories = [
     { id: 1, name: 'Electronics' },
@@ -31,9 +32,11 @@ const ItemForm = () => {
     formData.append('category_id', categoryId);
     formData.append('renter_id', renterId); // Include renterId in the FormData
     formData.append('image', image); // Append the image file
+    formData.append('renter_name', renterName);
 
     try {
-      const response = await fetch('http://localhost:5004/items', {
+      // const response = await fetch('http://localhost:5005/items', {
+      const response = await fetch('https://project-sc.onrender.com/items', {
         method: 'POST',
         body: formData, // Send form data with image and other details
       });
@@ -56,24 +59,32 @@ const ItemForm = () => {
     <body className='item-form-body'>
     <form onSubmit={handleSubmit} className='add-item-form'>
       <input
-        type="text"
-        placeholder="Item Name"
+        type="text" id='item-name-field'
+        placeholder="Item Name e.g. Drone Forte-X10"
         value={itemName}
         onChange={(e) => setItemName(e.target.value)}
         required
       />
-      <input
-        type="text"
-        placeholder="Description"
+      <div className='item-description-container-box'>
+      <textarea
+        id='item-description-field'
+        placeholder="Description e.g. This drone uses AAA batteries. This is a DJI drone."
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required
-      />
+        rows="5" /* Adjust the rows to control initial height */
+        ></textarea>
+      </div>
       <input
         type="number"
-        placeholder="Price per Day"
+        placeholder="Price per Day e.g. $10.00"
         value={pricePerDay}
-        onChange={(e) => setPricePerDay(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value >= 0) { // Ensure value is non-negative
+            setPricePerDay(value);
+          }
+        }}
         required
       />
       <input
@@ -81,14 +92,14 @@ const ItemForm = () => {
         onChange={(e) => setImage(e.target.files[0])} // Handle image file input
         required
       />
-      <label>
+      {/* <label>
         <input
           type="checkbox"
           checked={availability}
           onChange={() => setAvailability(!availability)}
         />
         Available
-      </label>
+      </label> */}
       <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
         {categories.map(category => (
           <option key={category.id} value={category.id}>
@@ -101,6 +112,11 @@ const ItemForm = () => {
       <input
       type="hidden"
       value={renterId}
+      readOnly
+      />
+      <input
+      type="hidden"
+      value={renterName}
       readOnly
       />
 

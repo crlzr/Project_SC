@@ -1,33 +1,33 @@
 import React from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import ChatIcon from '@mui/icons-material/Chat';
 import AccountIcon from '@mui/icons-material/AccountCircle';
-import { useNavigate } from 'react-router-dom';
-import { Inbox } from "@talkjs/react";
-import Chat from "./Session";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const Navbar = ({ onAccountClick }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
 
-    // Navigate to nearby items
-  const handleFetchNearbyItems = () => {
+  // Navigation functions
+  const handleFetchNearbyItems = (e) => {
+    e.preventDefault();
     navigate('/items/nearby');
   };
 
-  // Navigate to profile page
-  const handleProfilePage = () => {
+  const handleProfilePage = (e) => {
+    e.preventDefault();
     navigate('/profile');
   };
 
-    // Adding Items
-    const onAddItemClick = () => {
-      navigate('/items');
-    };
+  const onAddItemClick = (e) => {
+    e.preventDefault();
+    navigate('/items');
+  };
 
-  const handleInbox = () => {
+  const handleInbox = (e) => {
+    e.preventDefault();
     navigate('/chat');
   };
 
@@ -35,33 +35,35 @@ const Navbar = ({ onAccountClick }) => {
     <nav className="navbar">
       <div className="navbar-center">
         <ul className="nav-links">
-          <li>
-            <HomeIcon className="nav-icon" alt="home" />
-            <a href="/">Home</a>
+          <li className={location.pathname === '/' ? 'active' : ''}>
+            <HomeIcon className={`nav-icon ${location.pathname === '/' ? 'active' : ''}`} alt="home" />
+            <a href="/" className={location.pathname === '/' ? 'active' : ''}>
+              Home
+            </a>
           </li>
-          <li>
-            <TravelExploreIcon className="nav-icon" alt="nearby" />
-            <button onClick={handleFetchNearbyItems} className="explore-button">
+          <li className={location.pathname === '/items/nearby' ? 'active' : ''}>
+            <TravelExploreIcon className={`nav-icon ${location.pathname === '/items/nearby' ? 'active' : ''}`} alt="nearby" />
+            <a href="/items/nearby" onClick={handleFetchNearbyItems} className={location.pathname === '/items/nearby' ? 'active' : ''}>
               Nearby
-            </button>
+            </a>
           </li>
-          <li>
-            <AddCircleIcon className="nav-icon" alt="Add Item" />
-            <button onClick={onAddItemClick} className="add-item-button">
+          <li className={location.pathname === '/items' ? 'active' : ''}>
+            <AddCircleIcon className={`nav-icon ${location.pathname === '/items' ? 'active' : ''}`} alt="Add Item" />
+            <a href="/items" onClick={onAddItemClick} className={location.pathname === '/items' ? 'active' : ''}>
               Item
-            </button>
+            </a>
           </li>
-          <li>
-            <ChatIcon className="nav-icon" alt="chat" />
-            <button onClick={handleInbox} className="chat-button">
+          <li className={location.pathname === '/chat' ? 'active' : ''}>
+            <ChatIcon className={`nav-icon ${location.pathname === '/chat' ? 'active' : ''}`} alt="chat" />
+            <a href="/chat" onClick={handleInbox} className={location.pathname === '/chat' ? 'active' : ''}>
               Chat
-            </button>
+            </a>
           </li>
-          <li>
-            <AccountIcon className="nav-icon" alt="account" />
-            <button onClick={handleProfilePage} className="account-button">
+          <li className={location.pathname === '/profile' ? 'active' : ''}>
+            <AccountIcon className={`nav-icon ${location.pathname === '/profile' ? 'active' : ''}`} alt="account" />
+            <a href="/profile" onClick={handleProfilePage} className={location.pathname === '/profile' ? 'active' : ''}>
               Account
-            </button>
+            </a>
           </li>
         </ul>
       </div>
